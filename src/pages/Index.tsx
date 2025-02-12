@@ -152,21 +152,61 @@ const Index = () => {
               />
             </motion.div>
           </div>
-          <div className="flex items-center gap-2">
-            <motion.div
-              key={VIP_LEVELS[3].tier}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="w-full"
-            >
-              <VIPCard
-                level={VIP_LEVELS[3]}
-                currentTurnover={mockUser.currentTurnover}
-                onUpgradeClick={() => handleUpgrade(VIP_LEVELS[3].tier)}
-                isCurrentTier={VIP_LEVELS[3].tier === mockUser.currentTier}
-              />
-            </motion.div>
-          </div>
+          <AnimatePresence mode="wait">
+            {showLevel2 ? (
+              <div className="flex items-center gap-2">
+                <motion.div
+                  key="level2"
+                  initial={{ opacity: 0, x: -50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 50 }}
+                  transition={{ duration: 0.3 }}
+                  className="w-full"
+                >
+                  <VIPCard
+                    level={VIP_LEVELS[3]}
+                    currentTurnover={mockUser.currentTurnover}
+                    onUpgradeClick={() => handleUpgrade(VIP_LEVELS[3].tier)}
+                    isCurrentTier={VIP_LEVELS[3].tier === mockUser.currentTier}
+                  />
+                </motion.div>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setShowLevel2(false)}
+                  className="shrink-0"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setShowLevel2(true)}
+                  className="shrink-0"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                <motion.div
+                  key="level3"
+                  initial={{ opacity: 0, x: -50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 50 }}
+                  transition={{ duration: 0.3 }}
+                  className="w-full"
+                >
+                  <VIPCard
+                    level={VIP_LEVELS[4]}
+                    currentTurnover={mockUser.currentTurnover}
+                    onUpgradeClick={() => handleUpgrade(VIP_LEVELS[4].tier)}
+                    isCurrentTier={VIP_LEVELS[4].tier === mockUser.currentTier}
+                  />
+                </motion.div>
+              </div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </div>
