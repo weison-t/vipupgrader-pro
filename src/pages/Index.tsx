@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { VIPCard } from '../components/VIPCard';
@@ -5,7 +6,7 @@ import { VIP_LEVELS, getNextTier, calculateProgress } from '../config/vip-config
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const mockUser = {
   id: '1',
@@ -87,19 +88,29 @@ const Index = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <AnimatePresence mode="wait">
             {showLevel4 ? (
-              <motion.div
-                key="level4"
-                initial={{ opacity: 0, x: -50 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 50 }}
-                transition={{ duration: 0.3 }}
-              >
-                <VIPCard
-                  level={VIP_LEVELS[0]}
-                  currentTurnover={mockUser.currentTurnover}
-                  onNavigateClick={() => setShowLevel4(false)}
-                />
-              </motion.div>
+              <div className="flex items-center gap-2">
+                <motion.div
+                  key="level4"
+                  initial={{ opacity: 0, x: -50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 50 }}
+                  transition={{ duration: 0.3 }}
+                  className="w-full"
+                >
+                  <VIPCard
+                    level={VIP_LEVELS[0]}
+                    currentTurnover={mockUser.currentTurnover}
+                  />
+                </motion.div>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setShowLevel4(false)}
+                  className="shrink-0"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
             ) : (
               <div className="flex items-center gap-2">
                 <Button
