@@ -142,45 +142,49 @@ const Index = () => {
             <div className="space-y-4">
               {specialOffers.map((offer, index) => (
                 <div key={index} className="p-4 rounded-lg bg-primary/5 border border-primary/10">
-                  <h4 className="font-medium mb-1">{offer.title}</h4>
-                  <p className="text-sm text-muted-foreground mb-3">{offer.description}</p>
-                  <AnimatePresence mode="wait">
-                    {revealedCodes[offer.code] ? (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="flex items-center gap-2"
-                      >
-                        <code className="px-2 py-1 rounded bg-primary/10 text-sm font-mono">
-                          {offer.code}
-                        </code>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleCopyCode(offer.code)}
-                          className="h-7"
+                  <div className="flex justify-between items-start">
+                    <div className="space-y-1">
+                      <h4 className="font-medium">{offer.title}</h4>
+                      <p className="text-sm text-muted-foreground">{offer.description}</p>
+                    </div>
+                    <AnimatePresence mode="wait">
+                      {revealedCodes[offer.code] ? (
+                        <motion.div
+                          initial={{ opacity: 0, width: 0 }}
+                          animate={{ opacity: 1, width: "auto" }}
+                          exit={{ opacity: 0, width: 0 }}
+                          className="flex items-center gap-2 ml-4"
                         >
-                          <Copy className="w-3 h-3" />
-                        </Button>
-                      </motion.div>
-                    ) : (
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                      >
-                        <Button
-                          variant="secondary"
-                          size="sm"
-                          onClick={() => setRevealedCodes(prev => ({ ...prev, [offer.code]: true }))}
-                          className="h-7"
+                          <code className="px-2 py-1 rounded bg-primary/10 text-sm font-mono">
+                            {offer.code}
+                          </code>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleCopyCode(offer.code)}
+                            className="h-7"
+                          >
+                            <Copy className="w-3 h-3" />
+                          </Button>
+                        </motion.div>
+                      ) : (
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
                         >
-                          Show Code
-                        </Button>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                          <Button
+                            variant="secondary"
+                            size="sm"
+                            onClick={() => setRevealedCodes(prev => ({ ...prev, [offer.code]: true }))}
+                            className="h-7 ml-4"
+                          >
+                            Show Code
+                          </Button>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 </div>
               ))}
             </div>
