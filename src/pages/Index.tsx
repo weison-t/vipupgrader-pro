@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { VIPCard } from '../components/VIPCard';
@@ -89,6 +88,14 @@ const Index = () => {
           <AnimatePresence mode="wait">
             {showLevel4 ? (
               <div className="flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setShowLevel4(false)}
+                  className="shrink-0"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
                 <motion.div
                   key="level4"
                   initial={{ opacity: 0, x: -50 }}
@@ -102,14 +109,6 @@ const Index = () => {
                     currentTurnover={mockUser.currentTurnover}
                   />
                 </motion.div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setShowLevel4(false)}
-                  className="shrink-0"
-                >
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
               </div>
             ) : (
               <div className="flex items-center gap-2">
