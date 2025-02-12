@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { VIPCard } from '../components/VIPCard';
@@ -5,7 +6,7 @@ import { VIP_LEVELS, getNextTier, calculateProgress } from '../config/vip-config
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Gift, TrendingUp } from 'lucide-react';
 
 const mockUser = {
   id: '1',
@@ -43,6 +44,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <div className="container py-8 space-y-8">
+        {/* Header Section */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -54,6 +56,7 @@ const Index = () => {
           </p>
         </motion.div>
 
+        {/* Status Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -85,6 +88,53 @@ const Index = () => {
           )}
         </motion.div>
 
+        {/* Recommendations Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="grid grid-cols-1 md:grid-cols-2 gap-6"
+        >
+          <div className="bg-card p-6 rounded-lg border backdrop-blur-sm">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 rounded-full bg-primary/10">
+                <TrendingUp className="w-5 h-5 text-primary" />
+              </div>
+              <h3 className="text-xl font-semibold">Recommendations</h3>
+            </div>
+            <ul className="space-y-3">
+              <li className="flex items-start gap-3">
+                <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2"></div>
+                <p className="text-sm text-muted-foreground">Increase your turnover by $500 to reach the next tier faster</p>
+              </li>
+              <li className="flex items-start gap-3">
+                <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2"></div>
+                <p className="text-sm text-muted-foreground">Complete your profile to unlock additional benefits</p>
+              </li>
+            </ul>
+          </div>
+
+          <div className="bg-card p-6 rounded-lg border backdrop-blur-sm">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 rounded-full bg-primary/10">
+                <Gift className="w-5 h-5 text-primary" />
+              </div>
+              <h3 className="text-xl font-semibold">Special for You</h3>
+            </div>
+            <div className="space-y-4">
+              <div className="p-4 rounded-lg bg-primary/5 border border-primary/10">
+                <h4 className="font-medium mb-1">Weekend Bonus</h4>
+                <p className="text-sm text-muted-foreground">Get 2x points on all transactions this weekend</p>
+              </div>
+              <div className="p-4 rounded-lg bg-primary/5 border border-primary/10">
+                <h4 className="font-medium mb-1">Birthday Special</h4>
+                <p className="text-sm text-muted-foreground">Claim your birthday bonus before it expires</p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* VIP Levels Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <AnimatePresence mode="wait">
             {showLevel4 ? (
