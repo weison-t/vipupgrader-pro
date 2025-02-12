@@ -57,62 +57,6 @@ export const VIP_LEVELS: VIPLevel[] = [
       },
     ],
   },
-  {
-    tier: 'GOLD',
-    name: 'Gold VIP',
-    turnoverRequired: 10000,
-    color: '#FFD700',
-    benefits: [
-      {
-        title: 'Concierge Support',
-        description: 'Personal account manager',
-        icon: Shield.name,
-      },
-      {
-        title: 'Premium Rewards',
-        description: '3x turnover rewards',
-        icon: Gift.name,
-      },
-      {
-        title: 'VIP Events',
-        description: 'Exclusive gold member events',
-        icon: Crown.name,
-      },
-      {
-        title: 'Priority Features',
-        description: 'First access to beta features',
-        icon: Zap.name,
-      },
-    ],
-  },
-  {
-    tier: 'PLATINUM',
-    name: 'Platinum VIP',
-    turnoverRequired: 25000,
-    color: '#E5E4E2',
-    benefits: [
-      {
-        title: 'Ultimate Support',
-        description: '24/7 dedicated team',
-        icon: Shield.name,
-      },
-      {
-        title: 'Elite Rewards',
-        description: '5x turnover on all activities',
-        icon: Gift.name,
-      },
-      {
-        title: 'Exclusive Events',
-        description: 'Private platinum events',
-        icon: Crown.name,
-      },
-      {
-        title: 'Custom Features',
-        description: 'Personalized feature set',
-        icon: Zap.name,
-      },
-    ],
-  },
 ];
 
 export const getNextTier = (currentTier: string): VIPLevel | null => {
