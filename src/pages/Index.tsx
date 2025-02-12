@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { VIPCard } from '../components/VIPCard';
@@ -42,6 +43,13 @@ const Index = () => {
     toast({
       title: "Code Copied!",
       description: "Promotion code has been copied to your clipboard.",
+    });
+  };
+
+  const handleApplyCode = (code: string) => {
+    toast({
+      title: "Code Applied!",
+      description: `The promotion code ${code} has been applied to your account.`,
     });
   };
 
@@ -147,43 +155,61 @@ const Index = () => {
                       <h4 className="font-medium">{offer.title}</h4>
                       <p className="text-sm text-muted-foreground">{offer.description}</p>
                     </div>
-                    <AnimatePresence mode="wait">
-                      {revealedCodes[offer.code] ? (
-                        <motion.div
-                          initial={{ opacity: 0, width: 0 }}
-                          animate={{ opacity: 1, width: "auto" }}
-                          exit={{ opacity: 0, width: 0 }}
-                          className="flex items-center gap-2 ml-4"
-                        >
-                          <code className="px-2 py-1 rounded bg-primary/10 text-sm font-mono">
-                            {offer.code}
-                          </code>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleCopyCode(offer.code)}
-                            className="h-7"
+                    <div className="flex flex-col gap-2">
+                      <AnimatePresence mode="wait">
+                        {revealedCodes[offer.code] ? (
+                          <motion.div
+                            initial={{ opacity: 0, width: 0 }}
+                            animate={{ opacity: 1, width: "auto" }}
+                            exit={{ opacity: 0, width: 0 }}
+                            className="flex items-center gap-2 ml-4"
                           >
-                            <Copy className="w-3 h-3" />
-                          </Button>
-                        </motion.div>
-                      ) : (
+                            <code className="px-2 py-1 rounded bg-primary/10 text-sm font-mono">
+                              {offer.code}
+                            </code>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleCopyCode(offer.code)}
+                              className="h-7"
+                            >
+                              <Copy className="w-3 h-3" />
+                            </Button>
+                          </motion.div>
+                        ) : (
+                          <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                          >
+                            <Button
+                              variant="secondary"
+                              size="sm"
+                              onClick={() => setRevealedCodes(prev => ({ ...prev, [offer.code]: true }))}
+                              className="h-7 ml-4"
+                            >
+                              Show Code
+                            </Button>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                      {revealedCodes[offer.code] && (
                         <motion.div
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="ml-4"
                         >
                           <Button
-                            variant="secondary"
+                            variant="default"
                             size="sm"
-                            onClick={() => setRevealedCodes(prev => ({ ...prev, [offer.code]: true }))}
-                            className="h-7 ml-4"
+                            onClick={() => handleApplyCode(offer.code)}
+                            className="h-7 w-full"
                           >
-                            Show Code
+                            Apply
                           </Button>
                         </motion.div>
                       )}
-                    </AnimatePresence>
+                    </div>
                   </div>
                 </div>
               ))}
