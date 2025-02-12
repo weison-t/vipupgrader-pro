@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { VIPCard } from '../components/VIPCard';
@@ -22,7 +21,7 @@ const Index = () => {
   const { toast } = useToast();
   const [upgradeInProgress, setUpgradeInProgress] = useState(false);
   const [showLevel4, setShowLevel4] = useState(false);
-  const [showLevel3, setShowLevel3] = useState(true);
+  const [showLevel2, setShowLevel2] = useState(true);
 
   const handleUpgrade = async (tier: string) => {
     setUpgradeInProgress(true);
@@ -167,14 +166,6 @@ const Index = () => {
                 isCurrentTier={VIP_LEVELS[3].tier === mockUser.currentTier}
               />
             </motion.div>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setShowLevel3(false)}
-              className="shrink-0"
-            >
-              <ChevronRight className="h-4 w-4" />
-            </Button>
           </div>
         </div>
       </div>
