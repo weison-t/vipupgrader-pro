@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { VIPCard } from '../components/VIPCard';
@@ -6,7 +5,7 @@ import { VIP_LEVELS, getNextTier, calculateProgress } from '../config/vip-config
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft, ChevronRight, Gift, TrendingUp } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Gift, TrendingUp, Copy } from 'lucide-react';
 
 const mockUser = {
   id: '1',
@@ -18,11 +17,33 @@ const mockUser = {
   lastUpgrade: new Date('2023-06-01'),
 };
 
+const specialOffers = [
+  {
+    title: 'Weekend Bonus',
+    description: 'Get 2x points on all transactions this weekend',
+    code: 'WEEKEND2X'
+  },
+  {
+    title: 'Birthday Special',
+    description: 'Claim your birthday bonus before it expires',
+    code: 'BDAY2024'
+  }
+];
+
 const Index = () => {
   const { toast } = useToast();
   const [upgradeInProgress, setUpgradeInProgress] = useState(false);
   const [showLevel4, setShowLevel4] = useState(false);
   const [showLevel2, setShowLevel2] = useState(true);
+  const [revealedCodes, setRevealedCodes] = useState<{ [key: string]: boolean }>({});
+
+  const handleCopyCode = (code: string) => {
+    navigator.clipboard.writeText(code);
+    toast({
+      title: "Code Copied!",
+      description: "Promotion code has been copied to your clipboard.",
+    });
+  };
 
   const handleUpgrade = async (tier: string) => {
     setUpgradeInProgress(true);
@@ -44,7 +65,6 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <div className="container py-8 space-y-8">
-        {/* Header Section */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -56,7 +76,6 @@ const Index = () => {
           </p>
         </motion.div>
 
-        {/* Status Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -88,7 +107,6 @@ const Index = () => {
           )}
         </motion.div>
 
-        {/* Recommendations Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -122,19 +140,53 @@ const Index = () => {
               <h3 className="text-xl font-semibold">Special for You</h3>
             </div>
             <div className="space-y-4">
-              <div className="p-4 rounded-lg bg-primary/5 border border-primary/10">
-                <h4 className="font-medium mb-1">Weekend Bonus</h4>
-                <p className="text-sm text-muted-foreground">Get 2x points on all transactions this weekend</p>
-              </div>
-              <div className="p-4 rounded-lg bg-primary/5 border border-primary/10">
-                <h4 className="font-medium mb-1">Birthday Special</h4>
-                <p className="text-sm text-muted-foreground">Claim your birthday bonus before it expires</p>
-              </div>
+              {specialOffers.map((offer, index) => (
+                <div key={index} className="p-4 rounded-lg bg-primary/5 border border-primary/10">
+                  <h4 className="font-medium mb-1">{offer.title}</h4>
+                  <p className="text-sm text-muted-foreground mb-3">{offer.description}</p>
+                  <AnimatePresence mode="wait">
+                    {revealedCodes[offer.code] ? (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="flex items-center gap-2"
+                      >
+                        <code className="px-2 py-1 rounded bg-primary/10 text-sm font-mono">
+                          {offer.code}
+                        </code>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleCopyCode(offer.code)}
+                          className="h-7"
+                        >
+                          <Copy className="w-3 h-3" />
+                        </Button>
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                      >
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          onClick={() => setRevealedCodes(prev => ({ ...prev, [offer.code]: true }))}
+                          className="h-7"
+                        >
+                          Show Code
+                        </Button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ))}
             </div>
           </div>
         </motion.div>
 
-        {/* VIP Levels Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <AnimatePresence mode="wait">
             {showLevel4 ? (
