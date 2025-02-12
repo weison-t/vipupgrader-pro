@@ -198,10 +198,10 @@ const Index = () => {
                   className="w-full"
                 >
                   <VIPCard
-                    level={VIP_LEVELS[3]}
+                    level={VIP_LEVELS[4]}
                     currentTurnover={mockUser.currentTurnover}
-                    onUpgradeClick={() => handleUpgrade(VIP_LEVELS[3].tier)}
-                    isCurrentTier={VIP_LEVELS[3].tier === mockUser.currentTier}
+                    onUpgradeClick={() => handleUpgrade(VIP_LEVELS[4].tier)}
+                    isCurrentTier={VIP_LEVELS[4].tier === mockUser.currentTier}
                   />
                 </motion.div>
               </div>

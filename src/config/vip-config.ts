@@ -70,6 +70,29 @@ export const VIP_LEVELS: VIPLevel[] = [
       },
     ],
   },
+  {
+    tier: 'GOLD',
+    name: 'Elite Diamond - Level 3',
+    turnoverRequired: 10000,
+    color: '#FFD700',
+    benefits: [
+      {
+        title: 'VIP Support',
+        description: 'Personal account manager',
+        icon: Shield.name,
+      },
+      {
+        title: 'Premium Rewards',
+        description: '3x turnover rewards',
+        icon: Gift.name,
+      },
+      {
+        title: 'Elite Access',
+        description: 'Exclusive VIP events',
+        icon: CreditCard.name,
+      },
+    ],
+  },
 ];
 
 export const getNextTier = (currentTier: string): VIPLevel | null => {
