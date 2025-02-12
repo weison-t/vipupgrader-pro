@@ -5,7 +5,7 @@ import { VIP_LEVELS, getNextTier, calculateProgress } from '../config/vip-config
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const mockUser = {
   id: '1',
@@ -180,7 +180,7 @@ const Index = () => {
                   onClick={() => setShowLevel2(false)}
                   className="shrink-0"
                 >
-                  <ChevronLeft className="h-4 w-4" />
+                  <ChevronRight className="h-4 w-4" />
                 </Button>
               </div>
             ) : (
@@ -206,7 +206,7 @@ const Index = () => {
                   onClick={() => setShowLevel2(true)}
                   className="shrink-0"
                 >
-                  <ChevronLeft className="h-4 w-4" />
+                  <ChevronRight className="h-4 w-4" />
                 </Button>
               </div>
             )}
