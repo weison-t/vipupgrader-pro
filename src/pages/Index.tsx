@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { VIPCard } from '../components/VIPCard';
 import { VIP_LEVELS, getNextTier, calculateProgress } from '../config/vip-config';
 import { Progress } from '@/components/ui/progress';
@@ -20,6 +20,7 @@ const mockUser = {
 const Index = () => {
   const { toast } = useToast();
   const [upgradeInProgress, setUpgradeInProgress] = useState(false);
+  const [showLevel4, setShowLevel4] = useState(false);
 
   const handleUpgrade = async (tier: string) => {
     setUpgradeInProgress(true);
@@ -87,7 +88,40 @@ const Index = () => {
 
         {/* VIP Levels Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {VIP_LEVELS.map((level, index) => (
+          <AnimatePresence mode="wait">
+            {showLevel4 ? (
+              <motion.div
+                key="level4"
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 50 }}
+                transition={{ duration: 0.3 }}
+              >
+                <VIPCard
+                  level={VIP_LEVELS[0]}
+                  currentTurnover={mockUser.currentTurnover}
+                  onNavigateClick={() => setShowLevel4(false)}
+                  showNavigationButton={true}
+                />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="level5"
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 50 }}
+                transition={{ duration: 0.3 }}
+              >
+                <VIPCard
+                  level={VIP_LEVELS[1]}
+                  currentTurnover={mockUser.currentTurnover}
+                  onNavigateClick={() => setShowLevel4(true)}
+                  showNavigationButton={true}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+          {VIP_LEVELS.slice(2).map((level, index) => (
             <motion.div
               key={level.tier}
               initial={{ opacity: 0, y: 20 }}

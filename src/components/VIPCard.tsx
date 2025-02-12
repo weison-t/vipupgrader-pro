@@ -1,7 +1,7 @@
 
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Shield, ChevronRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Shield, ChevronRight, ChevronLeft } from 'lucide-react';
 import { VIPLevel } from '../types/vip';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
@@ -11,14 +11,18 @@ interface VIPCardProps {
   level: VIPLevel;
   currentTurnover: number;
   onUpgradeClick?: () => void;
+  onNavigateClick?: () => void;
   isCurrentTier?: boolean;
+  showNavigationButton?: boolean;
 }
 
 export const VIPCard: React.FC<VIPCardProps> = ({
   level,
   currentTurnover,
   onUpgradeClick,
+  onNavigateClick,
   isCurrentTier = false,
+  showNavigationButton = false,
 }) => {
   const isEligible = currentTurnover >= level.turnoverRequired;
   
@@ -42,6 +46,16 @@ export const VIPCard: React.FC<VIPCardProps> = ({
         
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-3">
+            {showNavigationButton && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={onNavigateClick}
+                className="mr-2"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+            )}
             <Shield className="w-6 h-6" style={{ color: level.color }} />
             <h3 className="text-lg font-semibold">{level.name}</h3>
           </div>

@@ -1,8 +1,21 @@
 
 import { VIPLevel } from '../types/vip';
-import { Shield, Gift, CreditCard, Zap, Crown } from 'lucide-react';
+import { Shield, Gift, CreditCard } from 'lucide-react';
 
 export const VIP_LEVELS: VIPLevel[] = [
+  {
+    tier: 'LEVEL_4',
+    name: 'Diamond - Level 4',
+    turnoverRequired: 0,
+    color: '#A1A1AA',
+    benefits: [
+      {
+        title: 'Basic Support',
+        description: 'Access to standard customer support',
+        icon: Shield.name,
+      },
+    ],
+  },
   {
     tier: 'STANDARD',
     name: 'Diamond - Level 5',
@@ -62,6 +75,11 @@ export const VIP_LEVELS: VIPLevel[] = [
 export const getNextTier = (currentTier: string): VIPLevel | null => {
   const currentIndex = VIP_LEVELS.findIndex((level) => level.tier === currentTier);
   return currentIndex < VIP_LEVELS.length - 1 ? VIP_LEVELS[currentIndex + 1] : null;
+};
+
+export const getPreviousTier = (currentTier: string): VIPLevel | null => {
+  const currentIndex = VIP_LEVELS.findIndex((level) => level.tier === currentTier);
+  return currentIndex > 0 ? VIP_LEVELS[currentIndex - 1] : null;
 };
 
 export const calculateProgress = (currentTurnover: number, currentTier: string): number => {
