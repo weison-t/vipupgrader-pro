@@ -31,20 +31,20 @@ export const VIPCard: React.FC<VIPCardProps> = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="w-full"
+      className="w-full h-full"
     >
       <Card className={`
-        relative overflow-hidden p-6 border transition-all duration-300
+        relative overflow-hidden p-6 border transition-all duration-300 h-full
         ${isCurrentTier ? 'border-2 border-primary' : 'hover:border-primary/50'}
         backdrop-blur-sm bg-background/95
       `}>
         {isCurrentTier && (
-          <div className="absolute top-3 right-3 px-2 py-1 text-xs rounded-full bg-primary text-primary-foreground">
+          <div className="absolute top-2 right-3 px-2 py-1 text-xs rounded-full bg-primary text-primary-foreground">
             Current Tier
           </div>
         )}
         
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-4 mt-2">
           <div className="flex items-center space-x-3">
             {showNavigationButton && (
               <Button
