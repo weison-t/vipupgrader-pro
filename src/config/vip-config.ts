@@ -5,7 +5,7 @@ import { Shield, Gift, CreditCard, Zap, Crown } from 'lucide-react';
 export const VIP_LEVELS: VIPLevel[] = [
   {
     tier: 'STANDARD',
-    name: 'Standard Member',
+    name: 'Diamond - Level 5',
     turnoverRequired: 0,
     color: '#A1A1AA',
     benefits: [
@@ -18,7 +18,7 @@ export const VIP_LEVELS: VIPLevel[] = [
   },
   {
     tier: 'BRONZE',
-    name: 'Bronze VIP',
+    name: 'Elite Diamond - Level 1',
     turnoverRequired: 1000,
     color: '#CD7F32',
     benefits: [
@@ -36,7 +36,7 @@ export const VIP_LEVELS: VIPLevel[] = [
   },
   {
     tier: 'SILVER',
-    name: 'Silver VIP',
+    name: 'Elite Diamond - Level 2',
     turnoverRequired: 5000,
     color: '#C0C0C0',
     benefits: [
