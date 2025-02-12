@@ -6,7 +6,7 @@ export const VIP_LEVELS: VIPLevel[] = [
   {
     tier: 'STANDARD',
     name: 'Standard Member',
-    pointsRequired: 0,
+    turnoverRequired: 0,
     color: '#A1A1AA',
     benefits: [
       {
@@ -19,7 +19,7 @@ export const VIP_LEVELS: VIPLevel[] = [
   {
     tier: 'BRONZE',
     name: 'Bronze VIP',
-    pointsRequired: 1000,
+    turnoverRequired: 1000,
     color: '#CD7F32',
     benefits: [
       {
@@ -37,7 +37,7 @@ export const VIP_LEVELS: VIPLevel[] = [
   {
     tier: 'SILVER',
     name: 'Silver VIP',
-    pointsRequired: 5000,
+    turnoverRequired: 5000,
     color: '#C0C0C0',
     benefits: [
       {
@@ -47,7 +47,7 @@ export const VIP_LEVELS: VIPLevel[] = [
       },
       {
         title: 'Enhanced Rewards',
-        description: '2x points on purchases',
+        description: '2x turnover rewards',
         icon: Gift.name,
       },
       {
@@ -60,7 +60,7 @@ export const VIP_LEVELS: VIPLevel[] = [
   {
     tier: 'GOLD',
     name: 'Gold VIP',
-    pointsRequired: 10000,
+    turnoverRequired: 10000,
     color: '#FFD700',
     benefits: [
       {
@@ -70,7 +70,7 @@ export const VIP_LEVELS: VIPLevel[] = [
       },
       {
         title: 'Premium Rewards',
-        description: '3x points on purchases',
+        description: '3x turnover rewards',
         icon: Gift.name,
       },
       {
@@ -88,7 +88,7 @@ export const VIP_LEVELS: VIPLevel[] = [
   {
     tier: 'PLATINUM',
     name: 'Platinum VIP',
-    pointsRequired: 25000,
+    turnoverRequired: 25000,
     color: '#E5E4E2',
     benefits: [
       {
@@ -98,7 +98,7 @@ export const VIP_LEVELS: VIPLevel[] = [
       },
       {
         title: 'Elite Rewards',
-        description: '5x points on all activities',
+        description: '5x turnover on all activities',
         icon: Gift.name,
       },
       {
@@ -120,14 +120,14 @@ export const getNextTier = (currentTier: string): VIPLevel | null => {
   return currentIndex < VIP_LEVELS.length - 1 ? VIP_LEVELS[currentIndex + 1] : null;
 };
 
-export const calculateProgress = (currentPoints: number, currentTier: string): number => {
+export const calculateProgress = (currentTurnover: number, currentTier: string): number => {
   const currentLevel = VIP_LEVELS.find((level) => level.tier === currentTier);
   const nextLevel = getNextTier(currentTier);
 
   if (!currentLevel || !nextLevel) return 100;
 
-  const pointsNeeded = nextLevel.pointsRequired - currentLevel.pointsRequired;
-  const pointsEarned = currentPoints - currentLevel.pointsRequired;
+  const turnoverNeeded = nextLevel.turnoverRequired - currentLevel.turnoverRequired;
+  const turnoverEarned = currentTurnover - currentLevel.turnoverRequired;
 
-  return Math.min(Math.max((pointsEarned / pointsNeeded) * 100, 0), 100);
+  return Math.min(Math.max((turnoverEarned / turnoverNeeded) * 100, 0), 100);
 };

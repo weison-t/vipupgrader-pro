@@ -10,7 +10,7 @@ export interface VIPBenefit {
 export interface VIPLevel {
   tier: VIPTier;
   name: string;
-  pointsRequired: number;
+  turnoverRequired: number;
   benefits: VIPBenefit[];
   color: string;
 }
@@ -19,7 +19,7 @@ export interface Member {
   id: string;
   name: string;
   email: string;
-  currentPoints: number;
+  currentTurnover: number;
   currentTier: VIPTier;
   joinDate: Date;
   lastUpgrade: Date | null;

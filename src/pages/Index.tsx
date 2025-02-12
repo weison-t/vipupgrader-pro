@@ -11,7 +11,7 @@ const mockUser = {
   id: '1',
   name: 'John Doe',
   email: 'john@example.com',
-  currentPoints: 2500,
+  currentTurnover: 2500,
   currentTier: 'BRONZE',
   joinDate: new Date('2023-01-01'),
   lastUpgrade: new Date('2023-06-01'),
@@ -36,7 +36,7 @@ const Index = () => {
 
   const currentLevel = VIP_LEVELS.find(level => level.tier === mockUser.currentTier)!;
   const nextLevel = getNextTier(mockUser.currentTier);
-  const progress = calculateProgress(mockUser.currentPoints, mockUser.currentTier);
+  const progress = calculateProgress(mockUser.currentTurnover, mockUser.currentTier);
 
   return (
     <div className="min-h-screen bg-background">
@@ -66,8 +66,8 @@ const Index = () => {
               <p className="text-muted-foreground">Current Tier: {currentLevel.name}</p>
             </div>
             <div className="text-right">
-              <p className="text-2xl font-semibold">{mockUser.currentPoints.toLocaleString()}</p>
-              <p className="text-sm text-muted-foreground">Total Points</p>
+              <p className="text-2xl font-semibold">${mockUser.currentTurnover.toLocaleString()}</p>
+              <p className="text-sm text-muted-foreground">Total Turnover</p>
             </div>
           </div>
 
@@ -79,7 +79,7 @@ const Index = () => {
               </div>
               <Progress value={progress} className="h-2" />
               <p className="text-sm text-muted-foreground">
-                {(nextLevel.pointsRequired - mockUser.currentPoints).toLocaleString()} more points needed
+                ${(nextLevel.turnoverRequired - mockUser.currentTurnover).toLocaleString()} more turnover needed
               </p>
             </div>
           )}
@@ -96,7 +96,7 @@ const Index = () => {
             >
               <VIPCard
                 level={level}
-                currentPoints={mockUser.currentPoints}
+                currentTurnover={mockUser.currentTurnover}
                 onUpgradeClick={() => handleUpgrade(level.tier)}
                 isCurrentTier={level.tier === mockUser.currentTier}
               />

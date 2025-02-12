@@ -9,18 +9,18 @@ import { Card } from '@/components/ui/card';
 
 interface VIPCardProps {
   level: VIPLevel;
-  currentPoints: number;
+  currentTurnover: number;
   onUpgradeClick?: () => void;
   isCurrentTier?: boolean;
 }
 
 export const VIPCard: React.FC<VIPCardProps> = ({
   level,
-  currentPoints,
+  currentTurnover,
   onUpgradeClick,
   isCurrentTier = false,
 }) => {
-  const isEligible = currentPoints >= level.pointsRequired;
+  const isEligible = currentTurnover >= level.turnoverRequired;
   
   return (
     <motion.div
@@ -46,7 +46,7 @@ export const VIPCard: React.FC<VIPCardProps> = ({
             <h3 className="text-lg font-semibold">{level.name}</h3>
           </div>
           <span className="text-sm text-muted-foreground">
-            {level.pointsRequired.toLocaleString()} points
+            ${level.turnoverRequired.toLocaleString()} turnover
           </span>
         </div>
 
@@ -72,10 +72,10 @@ export const VIPCard: React.FC<VIPCardProps> = ({
 
         {!isCurrentTier && (
           <div className="mt-4">
-            <Progress value={isEligible ? 100 : (currentPoints / level.pointsRequired) * 100} className="mb-2" />
+            <Progress value={isEligible ? 100 : (currentTurnover / level.turnoverRequired) * 100} className="mb-2" />
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground">
-                {currentPoints.toLocaleString()} / {level.pointsRequired.toLocaleString()} points
+                ${currentTurnover.toLocaleString()} / ${level.turnoverRequired.toLocaleString()} turnover
               </span>
               <Button
                 onClick={onUpgradeClick}
