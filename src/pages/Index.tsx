@@ -89,14 +89,24 @@ const Index = () => {
           <AnimatePresence mode="wait">
             {showLevel4 ? (
               <div className="flex items-center gap-2">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setShowLevel4(false)}
-                  className="shrink-0"
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                </Button>
+                <div className="flex flex-col gap-2 shrink-0">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setShowLevel4(false)}
+                    className="shrink-0"
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setShowLevel4(false)}
+                    className="shrink-0"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+                </div>
                 <motion.div
                   key="level4"
                   initial={{ opacity: 0, x: -50 }}
@@ -110,25 +120,9 @@ const Index = () => {
                     currentTurnover={mockUser.currentTurnover}
                   />
                 </motion.div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setShowLevel4(false)}
-                  className="shrink-0"
-                >
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
               </div>
             ) : (
               <div className="flex items-center gap-2">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setShowLevel4(true)}
-                  className="shrink-0"
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                </Button>
                 <motion.div
                   key="level5"
                   initial={{ opacity: 0, x: -50 }}
@@ -218,7 +212,7 @@ const Index = () => {
                   onClick={() => setShowLevel2(true)}
                   className="shrink-0"
                 >
-                  <ChevronLeft className="h-4 w-4" />
+                  <ChevronRight className="h-4 w-4" />
                 </Button>
               </div>
             )}
