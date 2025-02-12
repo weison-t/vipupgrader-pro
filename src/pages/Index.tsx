@@ -136,7 +136,22 @@ const Index = () => {
               </div>
             )}
           </AnimatePresence>
-          {VIP_LEVELS.slice(2).map((level, index) => (
+          <div className="flex items-center gap-2">
+            <motion.div
+              key={VIP_LEVELS[2].tier}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="w-full"
+            >
+              <VIPCard
+                level={VIP_LEVELS[2]}
+                currentTurnover={mockUser.currentTurnover}
+                onUpgradeClick={() => handleUpgrade(VIP_LEVELS[2].tier)}
+                isCurrentTier={VIP_LEVELS[2].tier === mockUser.currentTier}
+              />
+            </motion.div>
+          </div>
+          {VIP_LEVELS.slice(3).map((level, index) => (
             <motion.div
               key={level.tier}
               initial={{ opacity: 0, y: 20 }}
