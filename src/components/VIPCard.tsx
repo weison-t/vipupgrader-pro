@@ -44,7 +44,7 @@ export const VIPCard: React.FC<VIPCardProps> = ({
           </div>
         )}
         
-        <div className="flex items-center justify-between mb-4 mt-2">
+        <div className="space-y-1 mb-4 mt-2">
           <div className="flex items-center space-x-3">
             {showNavigationButton && (
               <Button
@@ -59,7 +59,7 @@ export const VIPCard: React.FC<VIPCardProps> = ({
             <Shield className="w-6 h-6" style={{ color: level.color }} />
             <h3 className="text-lg font-semibold">{level.name}</h3>
           </div>
-          <span className="text-sm text-muted-foreground">
+          <span className="text-sm text-muted-foreground pl-9">
             ${level.turnoverRequired.toLocaleString()} turnover
           </span>
         </div>
