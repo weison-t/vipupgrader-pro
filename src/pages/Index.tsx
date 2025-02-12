@@ -88,7 +88,7 @@ const Index = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <AnimatePresence mode="wait">
             {showLevel4 ? (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 h-full">
                 <div className="flex flex-col gap-2 shrink-0">
                   <Button
                     variant="ghost"
@@ -105,7 +105,7 @@ const Index = () => {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 50 }}
                   transition={{ duration: 0.3 }}
-                  className="w-full"
+                  className="w-full h-full"
                 >
                   <VIPCard
                     level={VIP_LEVELS[0]}
@@ -114,7 +114,7 @@ const Index = () => {
                 </motion.div>
               </div>
             ) : (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 h-full">
                 <div className="flex flex-col gap-2 shrink-0">
                   <Button
                     variant="ghost"
@@ -131,7 +131,7 @@ const Index = () => {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 50 }}
                   transition={{ duration: 0.3 }}
-                  className="w-full"
+                  className="w-full h-full"
                 >
                   <VIPCard
                     level={VIP_LEVELS[1]}
@@ -141,12 +141,12 @@ const Index = () => {
               </div>
             )}
           </AnimatePresence>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 h-full">
             <motion.div
               key={VIP_LEVELS[2].tier}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="w-full"
+              className="w-full h-full"
             >
               <VIPCard
                 level={VIP_LEVELS[2]}
@@ -158,14 +158,14 @@ const Index = () => {
           </div>
           <AnimatePresence mode="wait">
             {showLevel2 ? (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 h-full">
                 <motion.div
                   key="level2"
                   initial={{ opacity: 0, x: -50 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 50 }}
                   transition={{ duration: 0.3 }}
-                  className="w-full"
+                  className="w-full h-full"
                 >
                   <VIPCard
                     level={VIP_LEVELS[3]}
@@ -184,14 +184,14 @@ const Index = () => {
                 </Button>
               </div>
             ) : (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 h-full">
                 <motion.div
                   key="level3"
                   initial={{ opacity: 0, x: -50 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 50 }}
                   transition={{ duration: 0.3 }}
-                  className="w-full"
+                  className="w-full h-full"
                 >
                   <VIPCard
                     level={VIP_LEVELS[4]}
