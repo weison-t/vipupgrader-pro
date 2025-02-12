@@ -123,6 +123,24 @@ const Index = () => {
               </div>
             ) : (
               <div className="flex items-center gap-2">
+                <div className="flex flex-col gap-2 shrink-0">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setShowLevel4(true)}
+                    className="shrink-0"
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setShowLevel4(true)}
+                    className="shrink-0"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+                </div>
                 <motion.div
                   key="level5"
                   initial={{ opacity: 0, x: -50 }}
@@ -136,14 +154,6 @@ const Index = () => {
                     currentTurnover={mockUser.currentTurnover}
                   />
                 </motion.div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setShowLevel4(true)}
-                  className="shrink-0"
-                >
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
               </div>
             )}
           </AnimatePresence>
