@@ -1,5 +1,5 @@
 
-export type VIPTier = 'STANDARD' | 'BRONZE' | 'SILVER' | 'GOLD' | 'PLATINUM';
+export type VIPTier = 'LEVEL_4' | 'STANDARD' | 'BRONZE' | 'SILVER' | 'GOLD' | 'PLATINUM';
 
 export interface VIPBenefit {
   title: string;
