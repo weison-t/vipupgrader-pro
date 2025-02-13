@@ -1,9 +1,9 @@
-
 import React, { useState } from 'react';
 import { MenuBar } from '@/components/MenuBar';
-import { Gift, Headset, Trophy, ChevronDown, ChevronUp, Info } from 'lucide-react';
+import { Gift, Headset, Trophy, ChevronDown, ChevronUp, Info, QrCode } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 
 const privileges = [
   {
@@ -26,7 +26,11 @@ const privileges = [
       "Personal account manager",
       "Customized banking solutions",
       "Expedited withdrawal processing"
-    ]
+    ],
+    qrCodes: {
+      whatsapp: "/whatsapp-qr.png",
+      telegram: "/telegram-qr.png"
+    }
   },
   {
     title: "Surprise VIP Experiences & Gifts",
@@ -46,6 +50,47 @@ const Privilege = () => {
 
   const toggleCard = (index: number) => {
     setSelectedCard(prev => prev === index ? null : index);
+  };
+
+  const renderQRCodes = (index: number) => {
+    if (index !== 1) return null; // Only show QR codes for Dedicated VIP Liaison
+    
+    return (
+      <div className="mt-8">
+        <Separator className="mb-8" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="flex flex-col items-center space-y-4">
+            <h3 className="text-lg font-semibold flex items-center gap-2">
+              <QrCode className="w-5 h-5 text-primary" />
+              WhatsApp Contact
+            </h3>
+            <div className="p-4 bg-white rounded-lg">
+              <img 
+                src="/whatsapp-qr.png" 
+                alt="WhatsApp QR Code" 
+                className="w-48 h-48 object-contain"
+              />
+            </div>
+            <p className="text-sm text-muted-foreground">Scan to contact us on WhatsApp</p>
+          </div>
+          
+          <div className="flex flex-col items-center space-y-4">
+            <h3 className="text-lg font-semibold flex items-center gap-2">
+              <QrCode className="w-5 h-5 text-primary" />
+              Telegram Contact
+            </h3>
+            <div className="p-4 bg-white rounded-lg">
+              <img 
+                src="/telegram-qr.png" 
+                alt="Telegram QR Code" 
+                className="w-48 h-48 object-contain"
+              />
+            </div>
+            <p className="text-sm text-muted-foreground">Scan to contact us on Telegram</p>
+          </div>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -124,6 +169,7 @@ const Privilege = () => {
                         <span>{detail}</span>
                       </motion.div>
                     ))}
+                    {renderQRCodes(selectedCard)}
                   </CardContent>
                 </Card>
               </motion.div>
