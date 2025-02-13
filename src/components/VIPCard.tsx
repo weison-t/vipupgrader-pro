@@ -124,7 +124,7 @@ export const VIPCard: React.FC<VIPCardProps> = ({
             />
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground">
-                ${nextSubTierTurnover.toLocaleString()} turnover required
+                ${currentTurnover.toLocaleString()} / ${nextSubTierTurnover.toLocaleString()} turnover
               </span>
               <Button
                 onClick={onUpgradeClick}
