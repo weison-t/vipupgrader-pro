@@ -5,9 +5,9 @@ import { Progress } from '@/components/ui/progress';
 import { VIP_LEVELS } from '@/config/vip-config';
 
 const Journey = () => {
-  // For demonstration, we'll assume the user is at Bronze level with 2000 turnover
+  // Updated turnover from 2000 to 2500
   const currentTier = 'BRONZE';
-  const currentTurnover = 2000;
+  const currentTurnover = 2500;
 
   const getCurrentTierIndex = () => {
     return VIP_LEVELS.findIndex(level => level.tier === currentTier);
