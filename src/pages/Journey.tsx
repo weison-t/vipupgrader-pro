@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { MenuBar } from '@/components/MenuBar';
 import { motion } from 'framer-motion';
@@ -33,14 +34,14 @@ const Journey = () => {
 
   const getCurrentTierProgress = () => {
     const currentSubLevel = calculateSubLevel();
-    const nextSubLevelTurnover = getNextSubLevelTurnover();
-    const currentSubLevelTurnover = getLevelTurnover(currentSubLevel - 1);
+    const currentLevelStart = getLevelTurnover(currentSubLevel - 1);
+    const currentLevelEnd = getLevelTurnover(currentSubLevel);
     
-    // Calculate progress as percentage between current sub-level and next sub-level
-    const progressInSubLevel = currentTurnover - currentSubLevelTurnover;
-    const subLevelRange = nextSubLevelTurnover - currentSubLevelTurnover;
+    // Calculate progress within the current level range
+    const progressInLevel = currentTurnover - currentLevelStart;
+    const levelRange = currentLevelEnd - currentLevelStart;
     
-    return (progressInSubLevel / subLevelRange) * 100;
+    return (progressInLevel / levelRange) * 100;
   };
 
   const getLevelTurnover = (levelNumber: number) => {
@@ -126,16 +127,14 @@ const Journey = () => {
                 
                 <div className="absolute top-0 left-0 w-full flex justify-between" style={{ transform: 'translateY(-50%)' }}>
                   {[...Array(5)].map((_, index) => {
-                    const currentTierIndex = getCurrentTierIndex();
-                    const isCurrentTierInterval = currentTier === VIP_LEVELS[currentTierIndex].tier;
                     const currentSubLevel = calculateSubLevel();
-                    const isCompleted = index + 1 <= currentSubLevel;
+                    const isCompleted = index + 1 < currentSubLevel;
                     
                     return (
                       <div
                         key={index}
                         className={`w-1 h-3 rounded-full transition-all ${
-                          isCurrentTierInterval && isCompleted ? 'bg-primary' : 'bg-muted'
+                          isCompleted ? 'bg-primary' : 'bg-muted'
                         }`}
                       />
                     );
