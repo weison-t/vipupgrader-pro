@@ -259,7 +259,7 @@ const Index = () => {
             </div>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <AnimatePresence mode="wait">
               {showLevel4 ? (
                 <div className="flex items-center gap-2 h-full">
@@ -284,7 +284,6 @@ const Index = () => {
                     <VIPCard
                       level={VIP_LEVELS[0]}
                       currentTurnover={mockUser.currentTurnover}
-                      currentSubLevel={currentSubLevel}
                     />
                   </motion.div>
                 </div>
@@ -316,21 +315,21 @@ const Index = () => {
                 </div>
               )}
             </AnimatePresence>
-            <div className="flex items-center gap-2 h-full">
-              <motion.div
-                key={VIP_LEVELS[2].tier}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="w-full h-full"
-              >
-                <VIPCard
-                  level={VIP_LEVELS[2]}
-                  currentTurnover={mockUser.currentTurnover}
-                  onUpgradeClick={() => handleUpgrade(VIP_LEVELS[2].tier)}
-                  isCurrentTier={VIP_LEVELS[2].tier === mockUser.currentTier}
-                />
-              </motion.div>
-            </div>
+
+            <motion.div
+              key={currentLevel.tier}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="w-full h-full"
+            >
+              <VIPCard
+                level={currentLevel}
+                currentTurnover={mockUser.currentTurnover}
+                isCurrentTier={true}
+                currentSubLevel={currentSubLevel}
+              />
+            </motion.div>
+
             <AnimatePresence mode="wait">
               {showLevel2 ? (
                 <div className="flex items-center gap-2 h-full">
@@ -346,7 +345,6 @@ const Index = () => {
                       level={VIP_LEVELS[3]}
                       currentTurnover={mockUser.currentTurnover}
                       onUpgradeClick={() => handleUpgrade(VIP_LEVELS[3].tier)}
-                      isCurrentTier={VIP_LEVELS[3].tier === mockUser.currentTier}
                     />
                   </motion.div>
                   <Button
@@ -372,7 +370,6 @@ const Index = () => {
                       level={VIP_LEVELS[4]}
                       currentTurnover={mockUser.currentTurnover}
                       onUpgradeClick={() => handleUpgrade(VIP_LEVELS[4].tier)}
-                      isCurrentTier={VIP_LEVELS[4].tier === mockUser.currentTier}
                     />
                   </motion.div>
                   <Button
