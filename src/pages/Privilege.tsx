@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { MenuBar } from '@/components/MenuBar';
 import { Gift, Headset, Trophy, ChevronDown, ChevronUp, Info, QrCode } from 'lucide-react';
@@ -6,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { VIP_LEVELS } from '@/config/vip-config';
 
 const privileges = [
   {
@@ -63,6 +63,7 @@ const privileges = [
 
 const Privilege = () => {
   const [selectedCard, setSelectedCard] = useState<number | null>(null);
+  const currentTier = VIP_LEVELS.find(level => level.tier === 'GOLD'); // Using GOLD as default tier for example
 
   const toggleCard = (index: number) => {
     setSelectedCard(prev => prev === index ? null : index);
@@ -144,7 +145,9 @@ const Privilege = () => {
         <MenuBar />
         <div className="space-y-8">
           <div className="text-center">
-            <h1 className="text-4xl font-bold mb-4">VIP Privileges</h1>
+            <h1 className="text-4xl font-bold mb-4">
+              {currentTier?.name} VIP Privileges
+            </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Discover the exclusive benefits and privileges available to our valued VIP members.
             </p>
