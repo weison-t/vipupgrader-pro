@@ -15,7 +15,8 @@ const privileges = [
       "Weekly Cashback rewards up to 15%",
       "Monthly reload bonuses exclusive to VIP members",
       "Special seasonal promotions with enhanced rates"
-    ]
+    ],
+    bannerImage: "https://images.unsplash.com/photo-1500673922987-e212871fec22?auto=format&fit=crop&w=1200&q=80"
   },
   {
     title: "Dedicated VIP Liaison",
@@ -88,6 +89,23 @@ const Privilege = () => {
             </div>
             <p className="text-sm text-muted-foreground">Scan to contact us on Telegram</p>
           </div>
+        </div>
+      </div>
+    );
+  };
+
+  const renderBanner = (index: number) => {
+    if (index !== 0) return null; // Only show banner for Exclusive Promotion & Bonus
+    
+    return (
+      <div className="mt-8">
+        <Separator className="mb-8" />
+        <div className="rounded-lg overflow-hidden">
+          <img 
+            src={privileges[index].bannerImage} 
+            alt="VIP Promotions Banner" 
+            className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
+          />
         </div>
       </div>
     );
@@ -170,6 +188,7 @@ const Privilege = () => {
                       </motion.div>
                     ))}
                     {renderQRCodes(selectedCard)}
+                    {renderBanner(selectedCard)}
                   </CardContent>
                 </Card>
               </motion.div>
