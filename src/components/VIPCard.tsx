@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Shield, ChevronRight, ChevronLeft, Gift, CreditCard } from 'lucide-react';
+import { Shield, ChevronRight, ChevronLeft } from 'lucide-react';
 import { VIPLevel } from '../types/vip';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
