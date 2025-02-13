@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { MenuBar } from '@/components/MenuBar';
 import { motion } from 'framer-motion';
@@ -13,6 +14,17 @@ const Journey = () => {
     return VIP_LEVELS.findIndex(level => level.tier === currentTier);
   };
 
+  const getSubLevelTurnoverIncrement = () => {
+    const currentTierIndex = getCurrentTierIndex();
+    const currentLevel = VIP_LEVELS[currentTierIndex];
+    const nextLevel = VIP_LEVELS[currentTierIndex + 1];
+    
+    if (!nextLevel) return 0;
+
+    const tierRange = nextLevel.turnoverRequired - currentLevel.turnoverRequired;
+    return tierRange / 5; // 5 sub-levels per tier
+  };
+
   const getCurrentTierProgress = () => {
     const currentTierIndex = getCurrentTierIndex();
     const currentLevel = VIP_LEVELS[currentTierIndex];
@@ -20,30 +32,28 @@ const Journey = () => {
     
     if (!nextLevel) return 100;
 
-    const tierRange = nextLevel.turnoverRequired - currentLevel.turnoverRequired;
-    const currentProgress = currentTurnover - currentLevel.turnoverRequired;
-    const percentage = (currentProgress / tierRange) * 100;
+    const currentSubLevel = Math.ceil((currentTurnover - currentLevel.turnoverRequired) / getSubLevelTurnoverIncrement());
+    const subLevelStart = currentLevel.turnoverRequired + ((currentSubLevel - 1) * getSubLevelTurnoverIncrement());
+    const subLevelEnd = subLevelStart + getSubLevelTurnoverIncrement();
     
-    return Math.min(Math.max(percentage, 0), 100);
-  };
-
-  const getLevelTurnover = (levelNumber: number) => {
-    const currentTierIndex = getCurrentTierIndex();
-    const currentLevel = VIP_LEVELS[currentTierIndex];
-    const nextLevel = VIP_LEVELS[currentTierIndex + 1];
-    
-    if (!nextLevel) return currentLevel.turnoverRequired;
-
-    const tierRange = nextLevel.turnoverRequired - currentLevel.turnoverRequired;
-    const turnoverPerLevel = tierRange / 5;
-    return Math.round(currentLevel.turnoverRequired + (turnoverPerLevel * levelNumber));
+    const progressWithinSubLevel = ((currentTurnover - subLevelStart) / (subLevelEnd - subLevelStart)) * 100;
+    return Math.min(Math.max(progressWithinSubLevel, 0), 100);
   };
 
   const getNextSubLevelTurnover = () => {
-    const currentProgress = getCurrentTierProgress();
-    const nextLevel = Math.ceil(currentProgress / 20); // This gives us the next level (1-5)
-    return getLevelTurnover(nextLevel);
+    const currentTierIndex = getCurrentTierIndex();
+    const currentLevel = VIP_LEVELS[currentTierIndex];
+    const currentSubLevel = Math.ceil((currentTurnover - currentLevel.turnoverRequired) / getSubLevelTurnoverIncrement());
+    return currentLevel.turnoverRequired + (currentSubLevel * getSubLevelTurnoverIncrement());
   };
+
+  const getCurrentSubLevel = () => {
+    const currentTierIndex = getCurrentTierIndex();
+    const currentLevel = VIP_LEVELS[currentTierIndex];
+    return Math.ceil((currentTurnover - currentLevel.turnoverRequired) / getSubLevelTurnoverIncrement());
+  };
+
+  const turnoverNeeded = getNextSubLevelTurnover() - currentTurnover;
 
   return (
     <div className="min-h-screen bg-background">
@@ -62,7 +72,7 @@ const Journey = () => {
             <div className="text-center mb-8">
               <div className="bg-accent/50 py-4 px-6 rounded-lg inline-block">
                 <h2 className="text-2xl font-semibold mb-2">
-                  {VIP_LEVELS[getCurrentTierIndex()].name} - Level {Math.ceil(getCurrentTierProgress() / 20)}
+                  {VIP_LEVELS[getCurrentTierIndex()].name} - Level {getCurrentSubLevel()}
                 </h2>
                 <p className="text-muted-foreground">
                   ${currentTurnover.toLocaleString()} / ${getNextSubLevelTurnover().toLocaleString()} turnover
@@ -104,41 +114,14 @@ const Journey = () => {
                 })}
               </div>
 
-              {/* Progress Bar with Level Intervals */}
+              {/* Progress Bar */}
               <div className="relative w-[98%] mx-auto">
                 <Progress value={getCurrentTierProgress()} className="h-2" />
-                
-                {/* Level Interval Markers */}
-                <div className="absolute top-0 left-0 w-full flex justify-between" style={{ transform: 'translateY(-50%)' }}>
-                  {[...Array(5)].map((_, index) => {
-                    const currentTierIndex = getCurrentTierIndex();
-                    const isCurrentTierInterval = currentTier === VIP_LEVELS[currentTierIndex].tier;
-                    const intervalProgress = (index + 1) * 20;
-                    const isCompleted = getCurrentTierProgress() >= intervalProgress;
-                    
-                    return (
-                      <div
-                        key={index}
-                        className={`w-1 h-3 rounded-full transition-all ${
-                          isCurrentTierInterval && isCompleted ? 'bg-primary' : 'bg-muted'
-                        }`}
-                      />
-                    );
-                  })}
-                </div>
-
-                {/* Level Numbers and Turnovers */}
-                <div className="absolute top-4 left-0 w-full flex justify-between">
-                  {[...Array(5)].map((_, index) => (
-                    <div
-                      key={index}
-                      className="flex flex-col items-center text-[10px] text-muted-foreground"
-                      style={{ transform: 'translateX(-50%)' }}
-                    >
-                      <span>L{index + 1}</span>
-                      <span className="mt-1">${getLevelTurnover(index).toLocaleString()}</span>
-                    </div>
-                  ))}
+                <div className="mt-2 flex justify-between text-sm">
+                  <span>{getCurrentTierProgress().toFixed(1)}% Complete</span>
+                  <span className="text-muted-foreground">
+                    ${turnoverNeeded.toLocaleString()} more needed
+                  </span>
                 </div>
               </div>
             </div>
