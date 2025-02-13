@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { VIPCard } from '../components/VIPCard';
@@ -65,6 +64,18 @@ const Index = () => {
     const tierRange = nextTierLevel.turnoverRequired - currentLevel.turnoverRequired;
     const subLevelIncrement = tierRange / 5;
     return currentLevel.turnoverRequired + (nextLevel * subLevelIncrement);
+  };
+
+  const getLevelTurnover = (levelNumber: number) => {
+    const currentTierIndex = VIP_LEVELS.findIndex(level => level.tier === mockUser.currentTier);
+    const currentLevel = VIP_LEVELS[currentTierIndex];
+    const nextLevel = VIP_LEVELS[currentTierIndex + 1];
+    
+    if (!nextLevel) return currentLevel.turnoverRequired;
+
+    const tierRange = nextLevel.turnoverRequired - currentLevel.turnoverRequired;
+    const turnoverPerLevel = tierRange / 5;
+    return Math.round(currentLevel.turnoverRequired + (turnoverPerLevel * levelNumber));
   };
 
   const handleCopyCode = (code: string) => {
@@ -134,15 +145,45 @@ const Index = () => {
             </div>
 
             {nextLevel && (
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span>Progress to Level {currentSubLevel + 1}</span>
-                  <span>{progress.toFixed(0)}%</span>
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>Progress to Level {currentSubLevel + 1}</span>
+                    <span>{getCurrentTierProgress().toFixed(0)}%</span>
+                  </div>
+                  <Progress value={getCurrentTierProgress()} className="h-2" />
+                  <p className="text-sm text-muted-foreground">
+                    ${(getNextSubLevelTurnover() - mockUser.currentTurnover).toLocaleString()} more turnover needed
+                  </p>
                 </div>
-                <Progress value={progress} className="h-2" />
-                <p className="text-sm text-muted-foreground">
-                  ${(getNextSubLevelTurnover() - mockUser.currentTurnover).toLocaleString()} more turnover needed
-                </p>
+
+                <div className="relative w-full">
+                  <div className="absolute top-0 left-0 w-full flex justify-between" style={{ transform: 'translateY(-50%)' }}>
+                    {[...Array(5)].map((_, index) => {
+                      const isCompleted = getCurrentTierProgress() >= ((index + 1) * 20);
+                      return (
+                        <div
+                          key={index}
+                          className={`w-1 h-3 rounded-full transition-all ${
+                            isCompleted ? 'bg-primary' : 'bg-muted'
+                          }`}
+                        />
+                      );
+                    })}
+                  </div>
+                  <div className="absolute top-4 left-0 w-full flex justify-between">
+                    {[...Array(5)].map((_, index) => (
+                      <div
+                        key={index}
+                        className="flex flex-col items-center text-[10px] text-muted-foreground"
+                        style={{ transform: 'translateX(-50%)' }}
+                      >
+                        <span>L{index + 1}</span>
+                        <span className="mt-1">${getLevelTurnover(index).toLocaleString()}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             )}
           </motion.div>
