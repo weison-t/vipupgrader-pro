@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { MenuBar } from '@/components/MenuBar';
 import { motion } from 'framer-motion';
@@ -14,6 +13,7 @@ import {
 const Journey = () => {
   const currentTier = 'BRONZE';
   const currentTurnover = 2500;
+  const bronzeMaxTurnover = 4200;  // Level 5 turnover requirement
 
   const getCurrentTierIndex = () => {
     return VIP_LEVELS.findIndex(level => level.tier === currentTier);
@@ -33,15 +33,12 @@ const Journey = () => {
   };
 
   const getCurrentTierProgress = () => {
-    const currentSubLevel = calculateSubLevel();
-    const currentLevelStart = getLevelTurnover(currentSubLevel - 1);
-    const currentLevelEnd = getLevelTurnover(currentSubLevel);
+    // Calculate progress based on total Bronze tier range (1000 to 4200)
+    const startTurnover = 1000; // Bronze tier start
+    const progressTurnover = Math.min(currentTurnover, bronzeMaxTurnover) - startTurnover;
+    const totalRange = bronzeMaxTurnover - startTurnover;
     
-    // Calculate progress within the current level range
-    const progressInLevel = currentTurnover - currentLevelStart;
-    const levelRange = currentLevelEnd - currentLevelStart;
-    
-    return (progressInLevel / levelRange) * 100;
+    return (progressTurnover / totalRange) * 100;
   };
 
   const getLevelTurnover = (levelNumber: number) => {
@@ -50,8 +47,7 @@ const Journey = () => {
   };
 
   const getNextSubLevelTurnover = () => {
-    const currentSubLevel = calculateSubLevel();
-    return getLevelTurnover(currentSubLevel);
+    return bronzeMaxTurnover;
   };
 
   return (
