@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { VIPCard } from '../components/VIPCard';
@@ -148,7 +149,7 @@ const Index = () => {
               <div className="space-y-4">
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span>Progress to Level {currentSubLevel + 1}</span>
+                    <span>Progress to {currentLevel.name} - Level {currentSubLevel + 1}</span>
                     <span>{getCurrentTierProgress().toFixed(0)}%</span>
                   </div>
                   <Progress value={getCurrentTierProgress()} className="h-2" />
