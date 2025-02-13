@@ -42,7 +42,9 @@ export const VIPCard: React.FC<VIPCardProps> = ({
   
   const currentSubTierTurnover = getCurrentSubTierTurnover();
   const nextSubTierTurnover = getNextSubTierTurnover();
-  const subTierProgress = ((currentTurnover - currentSubTierTurnover) / (nextSubTierTurnover - currentSubTierTurnover)) * 100;
+  
+  // Calculate progress based on current turnover vs required turnover for this sub-tier
+  const subTierProgress = (currentTurnover / currentSubTierTurnover) * 100;
   
   return (
     <motion.div
@@ -128,11 +130,11 @@ export const VIPCard: React.FC<VIPCardProps> = ({
               </span>
               <Button
                 onClick={onUpgradeClick}
-                disabled={currentTurnover < nextSubTierTurnover}
+                disabled={currentTurnover < currentSubTierTurnover}
                 className="ml-4"
-                variant={currentTurnover >= nextSubTierTurnover ? "default" : "outline"}
+                variant={currentTurnover >= currentSubTierTurnover ? "default" : "outline"}
               >
-                {currentTurnover >= nextSubTierTurnover ? "Upgrade Now" : "Not Eligible"}
+                {currentTurnover >= currentSubTierTurnover ? "Upgrade Now" : "Not Eligible"}
                 <ChevronRight className="w-4 h-4 ml-2" />
               </Button>
             </div>
