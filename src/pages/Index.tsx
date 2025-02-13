@@ -109,15 +109,33 @@ const Index = () => {
   const turnoverNeeded = nextSubLevelTurnover - mockUser.currentTurnover;
 
   const getPreviousSubLevel = () => {
-    const currentTierIndex = getCurrentTierIndex();
-    if (currentTierIndex === 0) return 1;
-    return Math.max(1, currentSubLevel - 1);
+    if (currentSubLevel === 1) {
+      return 5;
+    }
+    return currentSubLevel - 1;
   };
 
   const getNextSubLevel = () => {
-    const currentTierIndex = getCurrentTierIndex();
-    if (currentTierIndex === VIP_LEVELS.length - 1) return 5;
-    return Math.min(5, currentSubLevel + 1);
+    if (currentSubLevel === 5) {
+      return 1;
+    }
+    return currentSubLevel + 1;
+  };
+
+  const getPreviousTierForDisplay = () => {
+    if (currentSubLevel === 1) {
+      const currentTierIndex = getCurrentTierIndex();
+      return currentTierIndex > 0 ? VIP_LEVELS[currentTierIndex - 1] : VIP_LEVELS[0];
+    }
+    return currentLevel;
+  };
+
+  const getNextTierForDisplay = () => {
+    if (currentSubLevel === 5) {
+      const currentTierIndex = getCurrentTierIndex();
+      return currentTierIndex < VIP_LEVELS.length - 1 ? VIP_LEVELS[currentTierIndex + 1] : VIP_LEVELS[VIP_LEVELS.length - 1];
+    }
+    return currentLevel;
   };
 
   return (
@@ -294,7 +312,7 @@ const Index = () => {
                     className="w-full h-full"
                   >
                     <VIPCard
-                      level={VIP_LEVELS[0]}
+                      level={getPreviousTierForDisplay()}
                       currentTurnover={mockUser.currentTurnover}
                       currentSubLevel={getPreviousSubLevel()}
                     />
@@ -321,9 +339,9 @@ const Index = () => {
                     className="w-full h-full"
                   >
                     <VIPCard
-                      level={VIP_LEVELS[1]}
+                      level={VIP_LEVELS[0]}
                       currentTurnover={mockUser.currentTurnover}
-                      currentSubLevel={getPreviousSubLevel()}
+                      currentSubLevel={5}
                     />
                   </motion.div>
                 </div>
@@ -356,10 +374,10 @@ const Index = () => {
                     className="w-full h-full"
                   >
                     <VIPCard
-                      level={VIP_LEVELS[3]}
+                      level={currentLevel}
                       currentTurnover={mockUser.currentTurnover}
-                      onUpgradeClick={() => handleUpgrade(VIP_LEVELS[3].tier)}
-                      currentSubLevel={getNextSubLevel()}
+                      onUpgradeClick={() => handleUpgrade(currentLevel.tier)}
+                      currentSubLevel={currentSubLevel + 2}
                     />
                   </motion.div>
                   <Button
@@ -382,10 +400,10 @@ const Index = () => {
                     className="w-full h-full"
                   >
                     <VIPCard
-                      level={VIP_LEVELS[4]}
+                      level={currentLevel}
                       currentTurnover={mockUser.currentTurnover}
-                      onUpgradeClick={() => handleUpgrade(VIP_LEVELS[4].tier)}
-                      currentSubLevel={getNextSubLevel()}
+                      onUpgradeClick={() => handleUpgrade(currentLevel.tier)}
+                      currentSubLevel={currentSubLevel + 1}
                     />
                   </motion.div>
                   <Button
