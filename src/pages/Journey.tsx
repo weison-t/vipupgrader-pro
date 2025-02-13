@@ -42,11 +42,9 @@ const Journey = () => {
 
           <div className="mt-12 space-y-8">
             {/* VIP Progress Bar */}
-            <div className="relative pt-8">
-              <Progress value={getCurrentTierProgress()} className="h-2" />
-              
+            <div className="relative">
               {/* Tier Markers */}
-              <div className="absolute top-0 left-0 w-full flex justify-between">
+              <div className="flex justify-between mb-8">
                 {VIP_LEVELS.map((level, index) => {
                   const isCurrentTier = level.tier === currentTier;
                   const isPastTier = index < getCurrentTierIndex();
@@ -54,32 +52,37 @@ const Journey = () => {
                   return (
                     <div 
                       key={level.tier}
-                      className="flex flex-col items-center relative"
+                      className="flex flex-col items-center"
                       style={{ width: '14%' }}
                     >
                       <div 
-                        className={`w-3 h-3 rounded-full mb-2 ${
-                          isCurrentTier ? 'bg-primary scale-125' :
+                        className={`w-4 h-4 rounded-full mb-2 transition-all ${
+                          isCurrentTier ? 'bg-primary scale-125 ring-2 ring-primary ring-offset-2' :
                           isPastTier ? 'bg-primary' : 'bg-muted'
                         }`}
                       />
-                      <span className={`text-xs font-medium ${
+                      <span className={`text-xs font-medium text-center ${
                         isCurrentTier ? 'text-primary font-bold' :
                         isPastTier ? 'text-primary' : 'text-muted-foreground'
                       }`}>
                         {level.name}
                       </span>
-                      <span className="text-[10px] text-muted-foreground">
+                      <span className="text-[10px] text-muted-foreground mt-1">
                         ${level.turnoverRequired.toLocaleString()}
                       </span>
                     </div>
                   );
                 })}
               </div>
+
+              {/* Progress Bar */}
+              <div className="relative w-[98%] mx-auto">
+                <Progress value={getCurrentTierProgress()} className="h-2" />
+              </div>
             </div>
 
             {/* Current Tier Info */}
-            <div className="text-center mt-8">
+            <div className="text-center mt-12">
               <h2 className="text-2xl font-semibold mb-2">
                 {VIP_LEVELS[getCurrentTierIndex()].name}
               </h2>
