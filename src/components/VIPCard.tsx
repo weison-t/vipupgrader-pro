@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Shield, ChevronRight, ChevronLeft } from 'lucide-react';
@@ -5,6 +6,7 @@ import { VIPLevel } from '../types/vip';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { VIP_LEVELS } from '@/config/vip-config';
 
 interface VIPCardProps {
   level: VIPLevel;
@@ -140,122 +142,3 @@ export const VIPCard: React.FC<VIPCardProps> = ({
     </motion.div>
   );
 };
-
-export const VIP_LEVELS = [
-  {
-    tier: 'STANDARD',
-    name: 'Standard',
-    turnoverRequired: 0,
-    color: '#A1A1AA',
-    benefits: [
-      {
-        title: 'Basic Support',
-        description: 'Access to standard customer support',
-        icon: Shield.name,
-      },
-    ],
-  },
-  {
-    tier: 'BRONZE',
-    name: 'Bronze',
-    turnoverRequired: 1000,
-    color: '#CD7F32',
-    benefits: [
-      {
-        title: 'Priority Support',
-        description: '24/7 priority customer support',
-        icon: Shield.name,
-      },
-      {
-        title: 'Special Offers',
-        description: 'Exclusive bronze member discounts',
-        icon: Gift.name,
-      },
-    ],
-  },
-  {
-    tier: 'SILVER',
-    name: 'Silver',
-    turnoverRequired: 5000,
-    color: '#C0C0C0',
-    benefits: [
-      {
-        title: 'Premium Support',
-        description: 'Dedicated support line',
-        icon: Shield.name,
-      },
-      {
-        title: 'Enhanced Rewards',
-        description: '2x turnover rewards',
-        icon: Gift.name,
-      },
-      {
-        title: 'Exclusive Access',
-        description: 'Early access to new features',
-        icon: CreditCard.name,
-      },
-    ],
-  },
-  {
-    tier: 'GOLD',
-    name: 'Gold',
-    turnoverRequired: 10000,
-    color: '#FFD700',
-    benefits: [
-      {
-        title: 'VIP Support',
-        description: 'Personal account manager',
-        icon: Shield.name,
-      },
-      {
-        title: 'Premium Rewards',
-        description: '3x turnover rewards',
-        icon: Gift.name,
-      },
-      {
-        title: 'Elite Access',
-        description: 'Exclusive VIP events',
-        icon: CreditCard.name,
-      },
-    ],
-  },
-  {
-    tier: 'PLATINUM',
-    name: 'Platinum',
-    turnoverRequired: 25000,
-    color: '#E5E4E2',
-    benefits: [
-      {
-        title: 'Dedicated Support',
-        description: '24/7 personal concierge',
-        icon: Shield.name,
-      },
-    ],
-  },
-  {
-    tier: 'DIAMOND',
-    name: 'Diamond',
-    turnoverRequired: 50000,
-    color: '#B9F2FF',
-    benefits: [
-      {
-        title: 'Ultimate Support',
-        description: 'Priority dedicated team',
-        icon: Shield.name,
-      },
-    ],
-  },
-  {
-    tier: 'ELITE_DIAMOND',
-    name: 'Elite Diamond',
-    turnoverRequired: 100000,
-    color: '#00FFFF',
-    benefits: [
-      {
-        title: 'Elite Support',
-        description: 'Direct line to management',
-        icon: Shield.name,
-      },
-    ],
-  },
-];
