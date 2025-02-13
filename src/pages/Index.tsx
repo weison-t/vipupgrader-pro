@@ -43,23 +43,8 @@ const Index = () => {
   };
 
   const getCurrentTierProgress = () => {
-    const currentTierIndex = getCurrentTierIndex();
-    const currentLevel = VIP_LEVELS[currentTierIndex];
-    const nextLevel = VIP_LEVELS[currentTierIndex + 1];
-    
-    if (!nextLevel) return 100;
-
-    // For Bronze tier, we divide it into 5 sub-levels
-    const tierRange = nextLevel.turnoverRequired - currentLevel.turnoverRequired; // 5000 - 1000 = 4000
-    const subLevelSize = tierRange / 5; // 800 per sub-level
-    const currentSubLevel = Math.floor((mockUser.currentTurnover - currentLevel.turnoverRequired) / subLevelSize); // Current sub-level (1)
-    const subLevelStart = currentLevel.turnoverRequired + (currentSubLevel * subLevelSize); // Start of current sub-level (1800)
-    const nextSubLevelTarget = subLevelStart + subLevelSize; // Next sub-level target (2600)
-    
-    // Calculate progress within current sub-level
-    const currentProgress = mockUser.currentTurnover - subLevelStart;
-    const percentage = (currentProgress / subLevelSize) * 100;
-    
+    const nextSubLevelTarget = getNextSubLevelTurnover();
+    const percentage = (mockUser.currentTurnover / nextSubLevelTarget) * 100;
     return Math.min(Math.max(percentage, 0), 100);
   };
 
