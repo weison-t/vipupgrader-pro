@@ -1,0 +1,11 @@
+/*
+  X-Robots-Tag: all
+  Cache-Control: no-cache, no-store, must-revalidate
+  Pragma: no-cache
+  Expires: 0
+
+/*.html
+  Cache-Control: no-cache, no-store, must-revalidate
+  Clear-Site-Data: "*"
+  X-Robots-Tag: all
+  Content-Security-Policy: frame-ancestors 'self' teams.microsoft.com *.teams.microsoft.com 
