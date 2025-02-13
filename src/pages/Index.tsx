@@ -275,7 +275,6 @@ const Index = () => {
                       level={VIP_LEVELS[0]}
                       currentTurnover={mockUser.currentTurnover}
                       currentSubLevel={currentSubLevel}
-                      isCurrentTier={VIP_LEVELS[0].tier === mockUser.currentTier}
                     />
                   </motion.div>
                 </div>
@@ -302,8 +301,6 @@ const Index = () => {
                     <VIPCard
                       level={VIP_LEVELS[1]}
                       currentTurnover={mockUser.currentTurnover}
-                      currentSubLevel={currentSubLevel}
-                      isCurrentTier={VIP_LEVELS[1].tier === mockUser.currentTier}
                     />
                   </motion.div>
                 </div>
@@ -321,7 +318,6 @@ const Index = () => {
                   currentTurnover={mockUser.currentTurnover}
                   onUpgradeClick={() => handleUpgrade(VIP_LEVELS[2].tier)}
                   isCurrentTier={VIP_LEVELS[2].tier === mockUser.currentTier}
-                  currentSubLevel={currentSubLevel}
                 />
               </motion.div>
             </div>
@@ -341,7 +337,6 @@ const Index = () => {
                       currentTurnover={mockUser.currentTurnover}
                       onUpgradeClick={() => handleUpgrade(VIP_LEVELS[3].tier)}
                       isCurrentTier={VIP_LEVELS[3].tier === mockUser.currentTier}
-                      currentSubLevel={currentSubLevel}
                     />
                   </motion.div>
                   <Button
@@ -368,7 +363,6 @@ const Index = () => {
                       currentTurnover={mockUser.currentTurnover}
                       onUpgradeClick={() => handleUpgrade(VIP_LEVELS[4].tier)}
                       isCurrentTier={VIP_LEVELS[4].tier === mockUser.currentTier}
-                      currentSubLevel={currentSubLevel}
                     />
                   </motion.div>
                   <Button
