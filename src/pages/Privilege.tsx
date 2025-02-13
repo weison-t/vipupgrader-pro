@@ -4,6 +4,7 @@ import { Gift, Headset, Trophy, ChevronDown, ChevronUp, Info, QrCode } from 'luc
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 const privileges = [
   {
@@ -16,7 +17,13 @@ const privileges = [
       "Monthly reload bonuses exclusive to VIP members",
       "Special seasonal promotions with enhanced rates"
     ],
-    bannerImage: "https://images.unsplash.com/photo-1500673922987-e212871fec22?auto=format&fit=crop&w=1200&q=80"
+    bannerImages: [
+      "https://images.unsplash.com/photo-1500673922987-e212871fec22?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1635776062127-d379bfcba9f4?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1602631085520-7441196eea6d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1533371452382-d45a9da51ad9?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1486299267070-83823f5448dd?auto=format&fit=crop&w=1200&q=80"
+    ]
   },
   {
     title: "Dedicated VIP Liaison",
@@ -100,12 +107,24 @@ const Privilege = () => {
     return (
       <div className="mt-8">
         <Separator className="mb-8" />
-        <div className="rounded-lg overflow-hidden">
-          <img 
-            src={privileges[index].bannerImage} 
-            alt="VIP Promotions Banner" 
-            className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
-          />
+        <div className="relative mx-auto w-full max-w-4xl">
+          <Carousel className="w-full">
+            <CarouselContent>
+              {privileges[index].bannerImages.map((image, i) => (
+                <CarouselItem key={i}>
+                  <div className="rounded-lg overflow-hidden">
+                    <img 
+                      src={image} 
+                      alt={`VIP Promotion Banner ${i + 1}`} 
+                      className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
         </div>
       </div>
     );
