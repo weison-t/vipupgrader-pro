@@ -40,29 +40,14 @@ const Journey = () => {
     
     if (!nextLevel) return 100;
 
-    const currentSubLevel = calculateSubLevel();
-    const previousLevelTurnover = getLevelTurnover(currentSubLevel - 1);
-    const nextLevelTurnover = getLevelTurnover(currentSubLevel);
+    // Calculate total progress within the tier
+    const totalTierProgress = currentTurnover - currentLevel.turnoverRequired;
+    const tierRange = nextLevel.turnoverRequired - currentLevel.turnoverRequired;
     
-    // Calculate progress within the current sub-level with higher precision
-    const progressInSubLevel = currentTurnover - previousLevelTurnover;
-    const subLevelRange = nextLevelTurnover - previousLevelTurnover;
+    // Convert to percentage (0-100)
+    const progressPercentage = (totalTierProgress / tierRange) * 100;
     
-    // Convert to percentage (0-100) within the current sub-level
-    const progressPercentage = (progressInSubLevel / subLevelRange) * 100;
-    
-    // Calculate final progress based on current sub-level (each level = 20%)
-    const baseProgress = (currentSubLevel - 1) * 20;
-    const additionalProgress = (progressPercentage / 100) * 20;
-    
-    // If we're very close to the next level (within 100), adjust the visual progress
-    const remainingToNext = nextLevelTurnover - currentTurnover;
-    if (remainingToNext <= 100) {
-      // Make the progress appear much closer to completion
-      return baseProgress + (19 * (1 - (remainingToNext / 100)));
-    }
-    
-    return baseProgress + additionalProgress;
+    return progressPercentage;
   };
 
   const getLevelTurnover = (levelNumber: number) => {
