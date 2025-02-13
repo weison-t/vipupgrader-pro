@@ -33,25 +33,15 @@ const Journey = () => {
   };
 
   const getCurrentTierProgress = () => {
-    const currentTierIndex = getCurrentTierIndex();
-    const currentLevel = VIP_LEVELS[currentTierIndex];
-    const nextLevel = VIP_LEVELS[currentTierIndex + 1];
-    
-    if (!nextLevel) return 100;
-
-    const tierRange = nextLevel.turnoverRequired - currentLevel.turnoverRequired;
-    const subLevelSize = tierRange / 5;
     const currentSubLevel = calculateSubLevel();
+    const nextSubLevelTurnover = getNextSubLevelTurnover();
+    const currentSubLevelTurnover = getLevelTurnover(currentSubLevel - 1);
     
-    const currentSubLevelTurnover = currentLevel.turnoverRequired + ((currentSubLevel - 1) * subLevelSize);
-    
+    // Calculate progress as percentage between current sub-level and next sub-level
     const progressInSubLevel = currentTurnover - currentSubLevelTurnover;
+    const subLevelRange = nextSubLevelTurnover - currentSubLevelTurnover;
     
-    const baseProgress = (currentSubLevel - 1) * 20;
-    
-    const additionalProgress = (progressInSubLevel / subLevelSize) * 20;
-    
-    return baseProgress + additionalProgress;
+    return (progressInSubLevel / subLevelRange) * 100;
   };
 
   const getLevelTurnover = (levelNumber: number) => {
