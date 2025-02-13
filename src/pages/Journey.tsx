@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { MenuBar } from '@/components/MenuBar';
 import { motion } from 'framer-motion';
@@ -47,12 +48,19 @@ const Journey = () => {
     const progressInSubLevel = currentTurnover - previousLevelTurnover;
     const subLevelRange = nextLevelTurnover - previousLevelTurnover;
     
-    // Convert to percentage (0-100) first for better precision
+    // Convert to percentage (0-100) within the current sub-level
     const progressPercentage = (progressInSubLevel / subLevelRange) * 100;
     
     // Calculate final progress based on current sub-level (each level = 20%)
     const baseProgress = (currentSubLevel - 1) * 20;
     const additionalProgress = (progressPercentage / 100) * 20;
+    
+    // If we're very close to the next level (within 100), adjust the visual progress
+    const remainingToNext = nextLevelTurnover - currentTurnover;
+    if (remainingToNext <= 100) {
+      // Make the progress appear much closer to completion
+      return baseProgress + (19 * (1 - (remainingToNext / 100)));
+    }
     
     return baseProgress + additionalProgress;
   };
