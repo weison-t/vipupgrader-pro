@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { VIPCard } from '../components/VIPCard';
@@ -156,34 +155,6 @@ const Index = () => {
                   <p className="text-sm text-muted-foreground">
                     ${(getNextSubLevelTurnover() - mockUser.currentTurnover).toLocaleString()} more turnover needed
                   </p>
-                </div>
-
-                <div className="relative w-full">
-                  <div className="absolute top-0 left-0 w-full flex justify-between" style={{ transform: 'translateY(-50%)' }}>
-                    {[...Array(5)].map((_, index) => {
-                      const isCompleted = getCurrentTierProgress() >= ((index + 1) * 20);
-                      return (
-                        <div
-                          key={index}
-                          className={`w-1 h-3 rounded-full transition-all ${
-                            isCompleted ? 'bg-primary' : 'bg-muted'
-                          }`}
-                        />
-                      );
-                    })}
-                  </div>
-                  <div className="absolute top-4 left-0 w-full flex justify-between">
-                    {[...Array(5)].map((_, index) => (
-                      <div
-                        key={index}
-                        className="flex flex-col items-center text-[10px] text-muted-foreground"
-                        style={{ transform: 'translateX(-50%)' }}
-                      >
-                        <span>L{index + 1}</span>
-                        <span className="mt-1">${getLevelTurnover(index).toLocaleString()}</span>
-                      </div>
-                    ))}
-                  </div>
                 </div>
               </div>
             )}
