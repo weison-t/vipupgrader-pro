@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { MenuBar } from '@/components/MenuBar';
 import { Gift, Headset, Trophy, ChevronDown, ChevronUp, Info, QrCode } from 'lucide-react';
@@ -49,6 +50,13 @@ const privileges = [
       "Birthday and anniversary surprises",
       "Luxury gift packages",
       "VIP-only tournaments and competitions"
+    ],
+    bannerImages: [
+      "https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1514533212735-5df27d970db9?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?auto=format&fit=crop&w=1200&q=80"
     ]
   }
 ];
@@ -102,7 +110,7 @@ const Privilege = () => {
   };
 
   const renderBanner = (index: number) => {
-    if (index !== 0) return null; // Only show banner for Exclusive Promotion & Bonus
+    if (index !== 0 && index !== 2) return null; // Only show banner for Exclusive Promotion & Bonus and Surprise VIP Experiences
     
     return (
       <div className="mt-8">
@@ -110,12 +118,12 @@ const Privilege = () => {
         <div className="relative mx-auto w-full max-w-4xl">
           <Carousel className="w-full">
             <CarouselContent>
-              {privileges[index].bannerImages.map((image, i) => (
+              {privileges[index].bannerImages?.map((image, i) => (
                 <CarouselItem key={i}>
                   <div className="rounded-lg overflow-hidden">
                     <img 
                       src={image} 
-                      alt={`VIP Promotion Banner ${i + 1}`} 
+                      alt={`VIP ${privileges[index].title} Banner ${i + 1}`} 
                       className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
                     />
                   </div>
