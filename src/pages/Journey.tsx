@@ -13,6 +13,20 @@ const Journey = () => {
     return VIP_LEVELS.findIndex(level => level.tier === currentTier);
   };
 
+  const calculateSubLevel = () => {
+    const currentTierIndex = getCurrentTierIndex();
+    const currentLevel = VIP_LEVELS[currentTierIndex];
+    const nextLevel = VIP_LEVELS[currentTierIndex + 1];
+    
+    if (!nextLevel) return 5;
+
+    const tierRange = nextLevel.turnoverRequired - currentLevel.turnoverRequired;
+    const subTierSize = tierRange / 5;
+    const progressInTier = currentTurnover - currentLevel.turnoverRequired;
+    
+    return Math.min(Math.ceil(progressInTier / subTierSize), 5);
+  };
+
   const getCurrentTierProgress = () => {
     const currentTierIndex = getCurrentTierIndex();
     const currentLevel = VIP_LEVELS[currentTierIndex];
@@ -22,11 +36,14 @@ const Journey = () => {
 
     const tierRange = nextLevel.turnoverRequired - currentLevel.turnoverRequired;
     const subTierSize = tierRange / 5;
-    const currentSubLevel = Math.ceil(getCurrentTierProgress() / 20);
+    const currentSubLevel = calculateSubLevel();
     const currentSubTierTurnover = Math.round(currentLevel.turnoverRequired + (subTierSize * (currentSubLevel - 1)));
+    const nextSubTierTurnover = Math.round(currentLevel.turnoverRequired + (subTierSize * currentSubLevel));
     
     // Calculate progress within current sub-tier
-    return (currentTurnover / currentSubTierTurnover) * 100;
+    const progressInSubTier = currentTurnover - currentSubTierTurnover;
+    const subTierRange = nextSubTierTurnover - currentSubTierTurnover;
+    return (progressInSubTier / subTierRange) * 100;
   };
 
   const getLevelTurnover = (levelNumber: number) => {
@@ -42,9 +59,8 @@ const Journey = () => {
   };
 
   const getNextSubLevelTurnover = () => {
-    const currentProgress = getCurrentTierProgress();
-    const nextLevel = Math.ceil(currentProgress / 20); // This gives us the next level (1-5)
-    return getLevelTurnover(nextLevel);
+    const currentSubLevel = calculateSubLevel();
+    return getLevelTurnover(currentSubLevel);
   };
 
   return (
@@ -64,7 +80,7 @@ const Journey = () => {
             <div className="text-center mb-8">
               <div className="bg-accent/50 py-4 px-6 rounded-lg inline-block">
                 <h2 className="text-2xl font-semibold mb-2">
-                  {VIP_LEVELS[getCurrentTierIndex()].name} - Level {Math.ceil(getCurrentTierProgress() / 20)}
+                  {VIP_LEVELS[getCurrentTierIndex()].name} - Level {calculateSubLevel()}
                 </h2>
                 <p className="text-muted-foreground">
                   ${currentTurnover.toLocaleString()} / ${getNextSubLevelTurnover().toLocaleString()} turnover
@@ -115,8 +131,8 @@ const Journey = () => {
                   {[...Array(5)].map((_, index) => {
                     const currentTierIndex = getCurrentTierIndex();
                     const isCurrentTierInterval = currentTier === VIP_LEVELS[currentTierIndex].tier;
-                    const intervalProgress = (index + 1) * 20;
-                    const isCompleted = getCurrentTierProgress() >= intervalProgress;
+                    const currentSubLevel = calculateSubLevel();
+                    const isCompleted = index + 1 <= currentSubLevel;
                     
                     return (
                       <div
