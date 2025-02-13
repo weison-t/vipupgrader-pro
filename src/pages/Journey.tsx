@@ -38,13 +38,16 @@ const Journey = () => {
     const previousLevelTurnover = getLevelTurnover(currentSubLevel - 1);
     const nextLevelTurnover = getLevelTurnover(currentSubLevel);
     
-    // Calculate progress within the current sub-level
+    // Calculate progress within the current sub-level with higher precision
     const progressInSubLevel = currentTurnover - previousLevelTurnover;
     const subLevelRange = nextLevelTurnover - previousLevelTurnover;
     
-    // Convert to percentage and multiply by 20 to get the correct segment position
+    // Convert to percentage (0-100) first for better precision
+    const progressPercentage = (progressInSubLevel / subLevelRange) * 100;
+    
+    // Calculate final progress based on current sub-level (each level = 20%)
     const baseProgress = (currentSubLevel - 1) * 20;
-    const additionalProgress = (progressInSubLevel / subLevelRange) * 20;
+    const additionalProgress = (progressPercentage / 100) * 20;
     
     return baseProgress + additionalProgress;
   };
