@@ -28,8 +28,8 @@ const privileges = [
       "Expedited withdrawal processing"
     ],
     qrCodes: {
-      whatsapp: "/whatsapp-qr.png",
-      telegram: "/telegram-qr.png"
+      whatsapp: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=300&h=300",
+      telegram: "https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=300&h=300"
     }
   },
   {
