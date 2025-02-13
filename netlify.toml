@@ -1,0 +1,26 @@
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    Cache-Control = "no-cache"
+    X-Content-Type-Options = "nosniff"
+
+[build]
+  publish = "dist"
+  command = "npm run build"
+
+[[plugins]]
+  package = "@netlify/plugin-lighthouse"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    cache-control = '''
+      max-age=0,
+      no-cache,
+      no-store,
+      must-revalidate''' 
