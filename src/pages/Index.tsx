@@ -67,10 +67,10 @@ const Index = () => {
     
     if (!nextLevel) return currentLevel.turnoverRequired;
 
-    const tierRange = nextLevel.turnoverRequired - currentLevel.turnoverRequired; // 4000
-    const subLevelSize = tierRange / 5; // 800
+    const tierRange = nextLevel.turnoverRequired - currentLevel.turnoverRequired;
+    const subLevelSize = tierRange / 5;
     const currentSubLevel = Math.floor((mockUser.currentTurnover - currentLevel.turnoverRequired) / subLevelSize);
-    return Math.round(currentLevel.turnoverRequired + ((currentSubLevel + 1) * subLevelSize)); // Next sub-level target (2600)
+    return Math.round(currentLevel.turnoverRequired + ((currentSubLevel + 1) * subLevelSize));
   };
 
   const handleCopyCode = (code: string) => {
@@ -90,7 +90,6 @@ const Index = () => {
 
   const handleUpgrade = async (tier: string) => {
     setUpgradeInProgress(true);
-    // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1500));
     
     toast({
@@ -377,7 +376,7 @@ const Index = () => {
                       level={currentLevel}
                       currentTurnover={mockUser.currentTurnover}
                       onUpgradeClick={() => handleUpgrade(currentLevel.tier)}
-                      currentSubLevel={currentSubLevel + 2}
+                      currentSubLevel={getNextSubLevel() + 1}
                     />
                   </motion.div>
                   <Button
@@ -403,7 +402,7 @@ const Index = () => {
                       level={currentLevel}
                       currentTurnover={mockUser.currentTurnover}
                       onUpgradeClick={() => handleUpgrade(currentLevel.tier)}
-                      currentSubLevel={currentSubLevel + 1}
+                      currentSubLevel={getNextSubLevel()}
                     />
                   </motion.div>
                   <Button

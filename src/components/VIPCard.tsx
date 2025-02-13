@@ -77,7 +77,9 @@ export const VIPCard: React.FC<VIPCardProps> = ({
               </Button>
             )}
             <Shield className="w-6 h-6" style={{ color: level.color }} />
-            <h3 className="text-lg font-semibold">{level.name}</h3>
+            <h3 className="text-lg font-semibold">
+              {level.name} - Level {currentSubLevel}
+            </h3>
           </div>
           <span className="text-sm text-muted-foreground pl-9">
             ${level.turnoverRequired.toLocaleString()} turnover required
