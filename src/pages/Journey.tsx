@@ -22,7 +22,6 @@ import {
 const Journey = () => {
   const currentTier = 'BRONZE';
   const currentTurnover = 2500;
-  const bronzeMaxTurnover = 4200;  // Level 5 turnover requirement
 
   const getCurrentTierIndex = () => {
     return VIP_LEVELS.findIndex(level => level.tier === currentTier);
@@ -31,32 +30,40 @@ const Journey = () => {
   const calculateSubLevel = () => {
     const currentTierIndex = getCurrentTierIndex();
     const currentLevel = VIP_LEVELS[currentTierIndex];
+    const nextLevel = VIP_LEVELS[currentTierIndex + 1];
     
-    if (currentTurnover < 1800) return 1;  // Level 1: 1000-1800
-    if (currentTurnover < 2600) return 2;  // Level 2: 1800-2600
-    if (currentTurnover < 3400) return 3;  // Level 3: 2600-3400
-    if (currentTurnover < 4200) return 4;  // Level 4: 3400-4200
-    if (currentTurnover < 5000) return 5;  // Level 5: 4200-5000
-    
-    return 5;
+    if (!nextLevel) return 1;
+
+    const tierRange = nextLevel.turnoverRequired - currentLevel.turnoverRequired;
+    const subLevelSize = tierRange / 5;
+    return Math.floor((currentTurnover - currentLevel.turnoverRequired) / subLevelSize) + 1;
   };
 
   const getCurrentTierProgress = () => {
-    // Calculate progress based on total Bronze tier range (1000 to 4200)
     const startTurnover = 1000; // Bronze tier start
-    const progressTurnover = Math.min(currentTurnover, bronzeMaxTurnover) - startTurnover;
-    const totalRange = bronzeMaxTurnover - startTurnover;
+    const nextSubLevelTurnover = getNextSubLevelTurnover();
+    const progressTurnover = Math.min(currentTurnover - startTurnover, nextSubLevelTurnover - startTurnover);
+    const totalRange = nextSubLevelTurnover - startTurnover;
     
     return (progressTurnover / totalRange) * 100;
+  };
+
+  const getNextSubLevelTurnover = () => {
+    const currentTierIndex = getCurrentTierIndex();
+    const currentLevel = VIP_LEVELS[currentTierIndex];
+    const nextLevel = VIP_LEVELS[currentTierIndex + 1];
+    
+    if (!nextLevel) return currentLevel.turnoverRequired;
+
+    const tierRange = nextLevel.turnoverRequired - currentLevel.turnoverRequired;
+    const subLevelSize = tierRange / 5;
+    const currentSubLevel = Math.floor((currentTurnover - currentLevel.turnoverRequired) / subLevelSize);
+    return Math.round(currentLevel.turnoverRequired + ((currentSubLevel + 1) * subLevelSize));
   };
 
   const getLevelTurnover = (levelNumber: number) => {
     const bronzeLevels = [1000, 1800, 2600, 3400, 4200, 5000];
     return bronzeLevels[levelNumber];
-  };
-
-  const getNextSubLevelTurnover = () => {
-    return bronzeMaxTurnover;
   };
 
   return (
