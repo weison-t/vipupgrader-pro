@@ -28,10 +28,6 @@ const Journey = () => {
     return Math.min(Math.max(percentage, 0), 100);
   };
 
-  const getLevelLabel = (level: number) => {
-    return `Level ${level}`;
-  };
-
   return (
     <div className="min-h-screen bg-background">
       <div className="container py-8">
@@ -45,35 +41,47 @@ const Journey = () => {
           </div>
 
           <div className="mt-12 space-y-8">
-            {/* Overall VIP Tiers */}
-            <div className="relative">
-              <Progress value={getCurrentTierProgress()} className="h-4" />
+            {/* VIP Progress Bar */}
+            <div className="relative pt-8">
+              <Progress value={getCurrentTierProgress()} className="h-2" />
               
-              <div className="flex justify-between mt-4">
-                {[1, 2, 3, 4, 5].map((level) => (
-                  <div 
-                    key={level}
-                    className={`flex flex-col items-center ${
-                      (level - 1) * 20 <= getCurrentTierProgress() ? 'text-primary' : 'text-muted-foreground'
-                    }`}
-                  >
+              {/* Tier Markers */}
+              <div className="absolute top-0 left-0 w-full flex justify-between">
+                {VIP_LEVELS.map((level, index) => {
+                  const isCurrentTier = level.tier === currentTier;
+                  const isPastTier = index < getCurrentTierIndex();
+                  
+                  return (
                     <div 
-                      className={`w-3 h-3 rounded-full mb-2 ${
-                        (level - 1) * 20 <= getCurrentTierProgress() ? 'bg-primary' : 'bg-muted'
-                      }`}
-                    />
-                    <span className="text-xs font-medium">
-                      {getLevelLabel(level)}
-                    </span>
-                  </div>
-                ))}
+                      key={level.tier}
+                      className="flex flex-col items-center relative"
+                      style={{ width: '14%' }}
+                    >
+                      <div 
+                        className={`w-3 h-3 rounded-full mb-2 ${
+                          isCurrentTier ? 'bg-primary scale-125' :
+                          isPastTier ? 'bg-primary' : 'bg-muted'
+                        }`}
+                      />
+                      <span className={`text-xs font-medium ${
+                        isCurrentTier ? 'text-primary font-bold' :
+                        isPastTier ? 'text-primary' : 'text-muted-foreground'
+                      }`}>
+                        {level.name}
+                      </span>
+                      <span className="text-[10px] text-muted-foreground">
+                        ${level.turnoverRequired.toLocaleString()}
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
             {/* Current Tier Info */}
             <div className="text-center mt-8">
               <h2 className="text-2xl font-semibold mb-2">
-                {VIP_LEVELS[getCurrentTierIndex()].name} - Level {Math.ceil(getCurrentTierProgress() / 20)}
+                {VIP_LEVELS[getCurrentTierIndex()].name}
               </h2>
               <p className="text-muted-foreground">
                 ${currentTurnover.toLocaleString()} / ${VIP_LEVELS[getCurrentTierIndex() + 1]?.turnoverRequired.toLocaleString()} turnover
