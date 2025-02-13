@@ -56,7 +56,11 @@ const Journey = () => {
   };
 
   const getNextSubLevelTurnover = () => {
-    return bronzeMaxTurnover;
+    if (currentTurnover < 1800) return 1800;  // Next is Level 1
+    if (currentTurnover < 2600) return 2600;  // Next is Level 2
+    if (currentTurnover < 3400) return 3400;  // Next is Level 3
+    if (currentTurnover < 4200) return 4200;  // Next is Level 4
+    return 5000;  // Next is Level 5
   };
 
   return (
