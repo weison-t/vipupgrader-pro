@@ -63,7 +63,7 @@ const privileges = [
 
 const Privilege = () => {
   const [selectedCard, setSelectedCard] = useState<number | null>(null);
-  const currentTier = VIP_LEVELS.find(level => level.tier === 'GOLD'); // Using GOLD as default tier for example
+  const currentTier = VIP_LEVELS.find(level => level.tier === 'BRONZE'); // Changed from GOLD to BRONZE
 
   const toggleCard = (index: number) => {
     setSelectedCard(prev => prev === index ? null : index);
