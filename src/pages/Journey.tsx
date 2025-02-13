@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { MenuBar } from '@/components/MenuBar';
 import { motion } from 'framer-motion';
@@ -40,6 +39,12 @@ const Journey = () => {
     return Math.round(currentLevel.turnoverRequired + (turnoverPerLevel * levelNumber));
   };
 
+  const getNextSubLevelTurnover = () => {
+    const currentProgress = getCurrentTierProgress();
+    const nextLevel = Math.ceil(currentProgress / 20); // This gives us the next level (1-5)
+    return getLevelTurnover(nextLevel);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container py-8">
@@ -60,7 +65,7 @@ const Journey = () => {
                   {VIP_LEVELS[getCurrentTierIndex()].name} - Level {Math.ceil(getCurrentTierProgress() / 20)}
                 </h2>
                 <p className="text-muted-foreground">
-                  ${currentTurnover.toLocaleString()} / ${VIP_LEVELS[getCurrentTierIndex() + 1]?.turnoverRequired.toLocaleString()} turnover
+                  ${currentTurnover.toLocaleString()} / ${getNextSubLevelTurnover().toLocaleString()} turnover
                 </p>
               </div>
             </div>
