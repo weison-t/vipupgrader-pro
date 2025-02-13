@@ -26,7 +26,23 @@ export const VIPCard: React.FC<VIPCardProps> = ({
   showNavigationButton = false,
   currentSubLevel = 1,
 }) => {
-  const isEligible = currentTurnover >= level.turnoverRequired;
+  // Calculate sub-tier turnover requirements
+  const getSubTierTurnover = (subLevel: number) => {
+    const nextTierTurnover = level.tier === 'ELITE_DIAMOND' 
+      ? level.turnoverRequired * 2 
+      : VIP_LEVELS[VIP_LEVELS.findIndex(l => l.tier === level.tier) + 1]?.turnoverRequired ?? level.turnoverRequired * 2;
+    
+    const tierRange = nextTierTurnover - level.turnoverRequired;
+    const subTierSize = tierRange / 5;
+    return Math.round(level.turnoverRequired + (subTierSize * (subLevel - 1)));
+  };
+
+  const getCurrentSubTierTurnover = () => getSubTierTurnover(currentSubLevel);
+  const getNextSubTierTurnover = () => getSubTierTurnover(currentSubLevel + 1);
+  
+  const currentSubTierTurnover = getCurrentSubTierTurnover();
+  const nextSubTierTurnover = getNextSubTierTurnover();
+  const subTierProgress = ((currentTurnover - currentSubTierTurnover) / (nextSubTierTurnover - currentSubTierTurnover)) * 100;
   
   return (
     <motion.div
@@ -62,7 +78,7 @@ export const VIPCard: React.FC<VIPCardProps> = ({
             <h3 className="text-lg font-semibold">{level.name} - L{currentSubLevel}</h3>
           </div>
           <span className="text-sm text-muted-foreground pl-9">
-            ${level.turnoverRequired.toLocaleString()} turnover
+            ${currentSubTierTurnover.toLocaleString()} turnover required
           </span>
         </div>
 
@@ -102,18 +118,21 @@ export const VIPCard: React.FC<VIPCardProps> = ({
 
         {!isCurrentTier && (
           <div className="mt-4">
-            <Progress value={isEligible ? 100 : (currentTurnover / level.turnoverRequired) * 100} className="mb-2" />
+            <Progress 
+              value={Math.min(Math.max(subTierProgress, 0), 100)} 
+              className="mb-2" 
+            />
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground">
-                ${currentTurnover.toLocaleString()} / ${level.turnoverRequired.toLocaleString()} turnover
+                ${currentTurnover.toLocaleString()} / ${nextSubTierTurnover.toLocaleString()} turnover
               </span>
               <Button
                 onClick={onUpgradeClick}
-                disabled={!isEligible}
+                disabled={currentTurnover < nextSubTierTurnover}
                 className="ml-4"
-                variant={isEligible ? "default" : "outline"}
+                variant={currentTurnover >= nextSubTierTurnover ? "default" : "outline"}
               >
-                {isEligible ? "Upgrade Now" : "Not Eligible"}
+                {currentTurnover >= nextSubTierTurnover ? "Upgrade Now" : "Not Eligible"}
                 <ChevronRight className="w-4 h-4 ml-2" />
               </Button>
             </div>
@@ -123,3 +142,48 @@ export const VIPCard: React.FC<VIPCardProps> = ({
     </motion.div>
   );
 };
+
+const VIP_LEVELS = [
+  {
+    tier: 'STANDARD',
+    name: 'Standard',
+    turnoverRequired: 0,
+    color: '#A1A1AA',
+  },
+  {
+    tier: 'BRONZE',
+    name: 'Bronze',
+    turnoverRequired: 1000,
+    color: '#CD7F32',
+  },
+  {
+    tier: 'SILVER',
+    name: 'Silver',
+    turnoverRequired: 5000,
+    color: '#C0C0C0',
+  },
+  {
+    tier: 'GOLD',
+    name: 'Gold',
+    turnoverRequired: 10000,
+    color: '#FFD700',
+  },
+  {
+    tier: 'PLATINUM',
+    name: 'Platinum',
+    turnoverRequired: 25000,
+    color: '#E5E4E2',
+  },
+  {
+    tier: 'DIAMOND',
+    name: 'Diamond',
+    turnoverRequired: 50000,
+    color: '#B9F2FF',
+  },
+  {
+    tier: 'ELITE_DIAMOND',
+    name: 'Elite Diamond',
+    turnoverRequired: 100000,
+    color: '#00FFFF',
+  },
+];
