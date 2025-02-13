@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { MenuBar } from '@/components/MenuBar';
 import { motion } from 'framer-motion';
@@ -179,7 +180,6 @@ const Journey = () => {
                           level={level}
                           currentTurnover={currentTurnover}
                           isCurrentTier={level.tier === currentTier}
-                          currentSubLevel={level.tier === currentTier ? calculateSubLevel() : 1}
                           onUpgradeClick={() => console.log(`Upgrade to ${level.name}`)}
                         />
                       </div>
