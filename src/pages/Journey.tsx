@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { MenuBar } from '@/components/MenuBar';
 import { motion } from 'framer-motion';
@@ -134,13 +133,14 @@ const Journey = () => {
               <div className="relative w-[98%] mx-auto">
                 <TooltipProvider>
                   <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div className="w-full">
-                        <Progress value={Math.min(Math.max(getCurrentTierProgress(), 0), 100)} className="h-2" />
-                      </div>
+                    <TooltipTrigger className="w-full block">
+                      <Progress 
+                        value={Math.min(Math.max(getCurrentTierProgress(), 0), 100)} 
+                        className="h-2 cursor-pointer" 
+                      />
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>Current Turnover: ${currentTurnover.toLocaleString()}</p>
+                      <p className="text-sm font-medium">Current Turnover: ${currentTurnover.toLocaleString()}</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
