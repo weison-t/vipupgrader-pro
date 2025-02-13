@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { MenuBar } from '@/components/MenuBar';
 import { motion } from 'framer-motion';
@@ -5,7 +6,6 @@ import { Progress } from '@/components/ui/progress';
 import { VIP_LEVELS } from '@/config/vip-config';
 
 const Journey = () => {
-  // Updated turnover from 2000 to 2500
   const currentTier = 'BRONZE';
   const currentTurnover = 2500;
 
@@ -21,10 +21,12 @@ const Journey = () => {
     if (!nextLevel) return 100;
 
     const tierRange = nextLevel.turnoverRequired - currentLevel.turnoverRequired;
-    const currentProgress = currentTurnover - currentLevel.turnoverRequired;
-    const percentage = (currentProgress / tierRange) * 100;
+    const subTierSize = tierRange / 5;
+    const currentSubLevel = Math.ceil(getCurrentTierProgress() / 20);
+    const currentSubTierTurnover = Math.round(currentLevel.turnoverRequired + (subTierSize * (currentSubLevel - 1)));
     
-    return Math.min(Math.max(percentage, 0), 100);
+    // Calculate progress within current sub-tier
+    return (currentTurnover / currentSubTierTurnover) * 100;
   };
 
   const getLevelTurnover = (levelNumber: number) => {
@@ -106,7 +108,7 @@ const Journey = () => {
 
               {/* Progress Bar with Level Intervals */}
               <div className="relative w-[98%] mx-auto">
-                <Progress value={getCurrentTierProgress()} className="h-2" />
+                <Progress value={Math.min(Math.max(getCurrentTierProgress(), 0), 100)} className="h-2" />
                 
                 {/* Level Interval Markers */}
                 <div className="absolute top-0 left-0 w-full flex justify-between" style={{ transform: 'translateY(-50%)' }}>
