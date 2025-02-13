@@ -42,7 +42,7 @@ export const VIPCard: React.FC<VIPCardProps> = ({
       `}>
         {isCurrentTier && (
           <div className="absolute top-2 right-3 px-2 py-1 text-xs rounded-full bg-primary text-primary-foreground">
-            Current Tier - L{currentSubLevel}
+            Current Tier
           </div>
         )}
         
@@ -59,7 +59,7 @@ export const VIPCard: React.FC<VIPCardProps> = ({
               </Button>
             )}
             <Shield className="w-6 h-6" style={{ color: level.color }} />
-            <h3 className="text-lg font-semibold">{level.name}</h3>
+            <h3 className="text-lg font-semibold">{level.name} - L{currentSubLevel}</h3>
           </div>
           <span className="text-sm text-muted-foreground pl-9">
             ${level.turnoverRequired.toLocaleString()} turnover
