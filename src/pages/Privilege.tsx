@@ -18,11 +18,11 @@ const privileges = [
       "Special seasonal promotions with enhanced rates"
     ],
     bannerImages: [
-      "https://images.unsplash.com/photo-1500673922987-e212871fec22?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1635776062127-d379bfcba9f4?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1602631085520-7441196eea6d?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1533371452382-d45a9da51ad9?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1486299267070-83823f5448dd?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1579621970588-a35d0e7ab9b6?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1635048424329-a9bfb146d7aa?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1579621970795-87facc2f976d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=1200&q=80"
     ]
   },
   {
