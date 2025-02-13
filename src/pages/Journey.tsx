@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { MenuBar } from '@/components/MenuBar';
 import { motion } from 'framer-motion';
@@ -26,6 +25,18 @@ const Journey = () => {
     const percentage = (currentProgress / tierRange) * 100;
     
     return Math.min(Math.max(percentage, 0), 100);
+  };
+
+  const getLevelTurnover = (levelNumber: number) => {
+    const currentTierIndex = getCurrentTierIndex();
+    const currentLevel = VIP_LEVELS[currentTierIndex];
+    const nextLevel = VIP_LEVELS[currentTierIndex + 1];
+    
+    if (!nextLevel) return currentLevel.turnoverRequired;
+
+    const tierRange = nextLevel.turnoverRequired - currentLevel.turnoverRequired;
+    const turnoverPerLevel = tierRange / 5;
+    return Math.round(currentLevel.turnoverRequired + (turnoverPerLevel * levelNumber));
   };
 
   return (
@@ -98,15 +109,16 @@ const Journey = () => {
                   })}
                 </div>
 
-                {/* Level Numbers */}
+                {/* Level Numbers and Turnovers */}
                 <div className="absolute top-4 left-0 w-full flex justify-between">
                   {[...Array(5)].map((_, index) => (
                     <div
                       key={index}
-                      className="text-[10px] text-muted-foreground"
+                      className="flex flex-col items-center text-[10px] text-muted-foreground"
                       style={{ transform: 'translateX(-50%)' }}
                     >
-                      L{index + 1}
+                      <span>L{index + 1}</span>
+                      <span className="mt-1">${getLevelTurnover(index).toLocaleString()}</span>
                     </div>
                   ))}
                 </div>
