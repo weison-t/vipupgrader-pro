@@ -16,6 +16,7 @@ interface VIPCardProps {
   showNavigationButton?: boolean;
   currentSubLevel?: number;
   showProgress?: boolean;
+  showLevel?: boolean;
 }
 
 export const VIPCard: React.FC<VIPCardProps> = ({
@@ -27,6 +28,7 @@ export const VIPCard: React.FC<VIPCardProps> = ({
   showNavigationButton = false,
   currentSubLevel = 1,
   showProgress = true,
+  showLevel = true,
 }) => {
   const getSubTierTurnover = (subLevel: number) => {
     const nextTierTurnover = level.tier === 'ELITE_DIAMOND' 
@@ -78,7 +80,7 @@ export const VIPCard: React.FC<VIPCardProps> = ({
             )}
             <Shield className="w-6 h-6" style={{ color: level.color }} />
             <h3 className="text-lg font-semibold">
-              {level.name} - Level {currentSubLevel}
+              {level.name}{showLevel ? ` - Level ${currentSubLevel}` : ''}
             </h3>
           </div>
           <span className="text-sm text-muted-foreground pl-9">
@@ -204,3 +206,4 @@ const VIP_LEVELS = [
     color: '#00FFFF',
   },
 ];
+

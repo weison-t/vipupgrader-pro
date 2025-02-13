@@ -185,6 +185,7 @@ const Journey = () => {
                           currentTurnover={currentTurnover}
                           isCurrentTier={level.tier === currentTier}
                           showProgress={false}
+                          showLevel={false}
                           onUpgradeClick={() => console.log(`View details for ${level.name}`)}
                         />
                       </div>
