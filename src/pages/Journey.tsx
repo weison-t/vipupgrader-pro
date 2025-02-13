@@ -14,9 +14,22 @@ const Journey = () => {
     return VIP_LEVELS.findIndex(level => level.tier === currentTier);
   };
 
-  const calculateOverallProgress = () => {
-    const currentIndex = getCurrentTierIndex();
-    return ((currentIndex) / (VIP_LEVELS.length - 1)) * 100;
+  const getCurrentTierProgress = () => {
+    const currentTierIndex = getCurrentTierIndex();
+    const currentLevel = VIP_LEVELS[currentTierIndex];
+    const nextLevel = VIP_LEVELS[currentTierIndex + 1];
+    
+    if (!nextLevel) return 100;
+
+    const tierRange = nextLevel.turnoverRequired - currentLevel.turnoverRequired;
+    const currentProgress = currentTurnover - currentLevel.turnoverRequired;
+    const percentage = (currentProgress / tierRange) * 100;
+    
+    return Math.min(Math.max(percentage, 0), 100);
+  };
+
+  const getLevelLabel = (level: number) => {
+    return `Level ${level}`;
   };
 
   return (
@@ -32,32 +45,39 @@ const Journey = () => {
           </div>
 
           <div className="mt-12 space-y-8">
+            {/* Overall VIP Tiers */}
             <div className="relative">
-              <Progress value={calculateOverallProgress()} className="h-4" />
+              <Progress value={getCurrentTierProgress()} className="h-4" />
               
-              <div className="flex justify-between mt-2">
-                {VIP_LEVELS.map((level, index) => (
+              <div className="flex justify-between mt-4">
+                {[1, 2, 3, 4, 5].map((level) => (
                   <div 
-                    key={level.tier}
-                    className={`absolute transform -translate-x-1/2 transition-all ${
-                      index <= getCurrentTierIndex() ? 'text-primary' : 'text-muted-foreground'
+                    key={level}
+                    className={`flex flex-col items-center ${
+                      (level - 1) * 20 <= getCurrentTierProgress() ? 'text-primary' : 'text-muted-foreground'
                     }`}
-                    style={{ left: `${(index / (VIP_LEVELS.length - 1)) * 100}%` }}
                   >
                     <div 
-                      className={`w-4 h-4 rounded-full mb-2 mx-auto transition-all ${
-                        index <= getCurrentTierIndex() ? 'bg-primary' : 'bg-muted'
+                      className={`w-3 h-3 rounded-full mb-2 ${
+                        (level - 1) * 20 <= getCurrentTierProgress() ? 'bg-primary' : 'bg-muted'
                       }`}
                     />
-                    <span className="text-xs font-medium whitespace-nowrap">
-                      {level.name}
+                    <span className="text-xs font-medium">
+                      {getLevelLabel(level)}
                     </span>
-                    <div className="text-[10px] text-muted-foreground">
-                      ${level.turnoverRequired.toLocaleString()}
-                    </div>
                   </div>
                 ))}
               </div>
+            </div>
+
+            {/* Current Tier Info */}
+            <div className="text-center mt-8">
+              <h2 className="text-2xl font-semibold mb-2">
+                {VIP_LEVELS[getCurrentTierIndex()].name} - Level {Math.ceil(getCurrentTierProgress() / 20)}
+              </h2>
+              <p className="text-muted-foreground">
+                ${currentTurnover.toLocaleString()} / ${VIP_LEVELS[getCurrentTierIndex() + 1]?.turnoverRequired.toLocaleString()} turnover
+              </p>
             </div>
           </div>
         </div>
