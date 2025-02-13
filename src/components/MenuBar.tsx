@@ -16,6 +16,11 @@ export const MenuBar = () => {
   return (
     <Menubar className="rounded-none border-b border-none px-2 lg:px-4 mb-4">
       <MenubarMenu>
+        <MenubarTrigger className={`font-bold ${location.pathname === '/journey' ? 'text-primary' : ''}`} onClick={() => navigate('/journey')}>
+          Journey
+        </MenubarTrigger>
+      </MenubarMenu>
+      <MenubarMenu>
         <MenubarTrigger className={`font-bold ${location.pathname === '/' ? 'text-primary' : ''}`} onClick={() => navigate('/')}>
           VIP Status
         </MenubarTrigger>
