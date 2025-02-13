@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { MenuBar } from '@/components/MenuBar';
 import { Gift, Headset, Trophy, ChevronDown, ChevronUp, Info, QrCode } from 'lucide-react';
@@ -63,11 +64,29 @@ const privileges = [
 
 const Privilege = () => {
   const [selectedCard, setSelectedCard] = useState<number | null>(null);
-  const currentTier = VIP_LEVELS.find(level => level.tier === 'BRONZE'); // Changed from GOLD to BRONZE
+  const currentTurnover = 2000; // For demonstration
+  const currentTier = 'BRONZE';
+
+  const getCurrentTierProgress = () => {
+    const currentTierIndex = VIP_LEVELS.findIndex(level => level.tier === currentTier);
+    const currentLevel = VIP_LEVELS[currentTierIndex];
+    const nextLevel = VIP_LEVELS[currentTierIndex + 1];
+    
+    if (!nextLevel) return 100;
+
+    const tierRange = nextLevel.turnoverRequired - currentLevel.turnoverRequired;
+    const currentProgress = currentTurnover - currentLevel.turnoverRequired;
+    const percentage = (currentProgress / tierRange) * 100;
+    
+    return Math.min(Math.max(percentage, 0), 100);
+  };
 
   const toggleCard = (index: number) => {
     setSelectedCard(prev => prev === index ? null : index);
   };
+
+  const currentLevel = VIP_LEVELS.find(level => level.tier === currentTier);
+  const currentSubLevel = Math.ceil(getCurrentTierProgress() / 20);
 
   const renderQRCodes = (index: number) => {
     if (index !== 1) return null; // Only show QR codes for Dedicated VIP Liaison
@@ -146,7 +165,7 @@ const Privilege = () => {
         <div className="space-y-8">
           <div className="text-center">
             <h1 className="text-4xl font-bold mb-4">
-              {currentTier?.name} VIP Privileges
+              {currentLevel?.name} - Level {currentSubLevel} VIP Privileges
             </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Discover the exclusive benefits and privileges available to our valued VIP members.
