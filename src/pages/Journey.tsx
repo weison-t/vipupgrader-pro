@@ -75,16 +75,48 @@ const Journey = () => {
                 })}
               </div>
 
-              {/* Progress Bar */}
+              {/* Progress Bar with Level Intervals */}
               <div className="relative w-[98%] mx-auto">
                 <Progress value={getCurrentTierProgress()} className="h-2" />
+                
+                {/* Level Interval Markers */}
+                <div className="absolute top-0 left-0 w-full flex justify-between" style={{ transform: 'translateY(-50%)' }}>
+                  {[...Array(5)].map((_, index) => {
+                    const currentTierIndex = getCurrentTierIndex();
+                    const isCurrentTierInterval = currentTier === VIP_LEVELS[currentTierIndex].tier;
+                    const intervalProgress = (index + 1) * 20;
+                    const isCompleted = getCurrentTierProgress() >= intervalProgress;
+                    
+                    return (
+                      <div
+                        key={index}
+                        className={`w-1 h-3 rounded-full transition-all ${
+                          isCurrentTierInterval && isCompleted ? 'bg-primary' : 'bg-muted'
+                        }`}
+                      />
+                    );
+                  })}
+                </div>
+
+                {/* Level Numbers */}
+                <div className="absolute top-4 left-0 w-full flex justify-between">
+                  {[...Array(5)].map((_, index) => (
+                    <div
+                      key={index}
+                      className="text-[10px] text-muted-foreground"
+                      style={{ transform: 'translateX(-50%)' }}
+                    >
+                      L{index + 1}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
             {/* Current Tier Info */}
             <div className="text-center mt-12">
               <h2 className="text-2xl font-semibold mb-2">
-                {VIP_LEVELS[getCurrentTierIndex()].name}
+                {VIP_LEVELS[getCurrentTierIndex()].name} - Level {Math.ceil(getCurrentTierProgress() / 20)}
               </h2>
               <p className="text-muted-foreground">
                 ${currentTurnover.toLocaleString()} / ${VIP_LEVELS[getCurrentTierIndex() + 1]?.turnoverRequired.toLocaleString()} turnover
