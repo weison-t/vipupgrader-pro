@@ -79,7 +79,7 @@ const Journey = () => {
             <div className="text-center mb-8">
               <div className="bg-accent/50 py-4 px-6 rounded-lg inline-block">
                 <h2 className="text-2xl font-semibold mb-2">
-                  {VIP_LEVELS[getCurrentTierIndex()].name}
+                  {VIP_LEVELS[getCurrentTierIndex()].name} - Level {calculateSubLevel()}
                 </h2>
                 <p className="text-muted-foreground">
                   ${currentTurnover.toLocaleString()} / ${getNextSubLevelTurnover().toLocaleString()} turnover
