@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { MenuBar } from '@/components/MenuBar';
 import { motion } from 'framer-motion';
@@ -40,14 +39,19 @@ const Journey = () => {
     
     if (!nextLevel) return 100;
 
-    // Calculate total progress within the tier
-    const totalTierProgress = currentTurnover - currentLevel.turnoverRequired;
     const tierRange = nextLevel.turnoverRequired - currentLevel.turnoverRequired;
+    const subLevelSize = tierRange / 5;
+    const currentSubLevel = calculateSubLevel();
     
-    // Convert to percentage (0-100)
-    const progressPercentage = (totalTierProgress / tierRange) * 100;
+    const currentSubLevelTurnover = currentLevel.turnoverRequired + ((currentSubLevel - 1) * subLevelSize);
     
-    return progressPercentage;
+    const progressInSubLevel = currentTurnover - currentSubLevelTurnover;
+    
+    const baseProgress = (currentSubLevel - 1) * 20;
+    
+    const additionalProgress = (progressInSubLevel / subLevelSize) * 20;
+    
+    return baseProgress + additionalProgress;
   };
 
   const getLevelTurnover = (levelNumber: number) => {
