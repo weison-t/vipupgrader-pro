@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { MenuBar } from '@/components/MenuBar';
 import { motion } from 'framer-motion';
@@ -36,14 +35,9 @@ const Journey = () => {
 
     const tierRange = nextLevel.turnoverRequired - currentLevel.turnoverRequired;
     const subTierSize = tierRange / 5;
-    const currentSubLevel = calculateSubLevel();
-    const currentSubTierTurnover = Math.round(currentLevel.turnoverRequired + (subTierSize * (currentSubLevel - 1)));
-    const nextSubTierTurnover = Math.round(currentLevel.turnoverRequired + (subTierSize * currentSubLevel));
+    const progressInTier = currentTurnover - currentLevel.turnoverRequired;
     
-    // Calculate progress within current sub-tier
-    const progressInSubTier = currentTurnover - currentSubTierTurnover;
-    const subTierRange = nextSubTierTurnover - currentSubTierTurnover;
-    return (progressInSubTier / subTierRange) * 100;
+    return (progressInTier / tierRange) * 100;
   };
 
   const getLevelTurnover = (levelNumber: number) => {
@@ -76,7 +70,6 @@ const Journey = () => {
           </div>
 
           <div className="mt-12 space-y-8">
-            {/* Current Tier Info */}
             <div className="text-center mb-8">
               <div className="bg-accent/50 py-4 px-6 rounded-lg inline-block">
                 <h2 className="text-2xl font-semibold mb-2">
@@ -88,9 +81,7 @@ const Journey = () => {
               </div>
             </div>
 
-            {/* VIP Progress Bar */}
             <div className="relative pb-16">
-              {/* Tier Markers */}
               <div className="flex justify-between mb-8">
                 {VIP_LEVELS.map((level, index) => {
                   const isCurrentTier = level.tier === currentTier;
@@ -122,11 +113,9 @@ const Journey = () => {
                 })}
               </div>
 
-              {/* Progress Bar with Level Intervals */}
               <div className="relative w-[98%] mx-auto">
                 <Progress value={Math.min(Math.max(getCurrentTierProgress(), 0), 100)} className="h-2" />
                 
-                {/* Level Interval Markers */}
                 <div className="absolute top-0 left-0 w-full flex justify-between" style={{ transform: 'translateY(-50%)' }}>
                   {[...Array(5)].map((_, index) => {
                     const currentTierIndex = getCurrentTierIndex();
@@ -145,7 +134,6 @@ const Journey = () => {
                   })}
                 </div>
 
-                {/* Level Numbers and Turnovers */}
                 <div className="absolute top-4 left-0 w-full flex justify-between">
                   {[...Array(5)].map((_, index) => (
                     <div
