@@ -42,14 +42,10 @@ const privileges = [
 ];
 
 const Privilege = () => {
-  const [expandedCards, setExpandedCards] = useState<number[]>([]);
+  const [selectedCard, setSelectedCard] = useState<number | null>(null);
 
   const toggleCard = (index: number) => {
-    setExpandedCards(prev => 
-      prev.includes(index) 
-        ? prev.filter(i => i !== index)
-        : [...prev, index]
-    );
+    setSelectedCard(prev => prev === index ? null : index);
   };
 
   return (
@@ -73,7 +69,7 @@ const Privilege = () => {
                 transition={{ delay: index * 0.2 }}
               >
                 <Card 
-                  className="h-full backdrop-blur-sm bg-card/50 border cursor-pointer hover:border-primary/50 transition-colors"
+                  className={`h-full backdrop-blur-sm bg-card/50 border cursor-pointer hover:border-primary/50 transition-colors ${selectedCard === index ? 'border-primary' : ''}`}
                   onClick={() => toggleCard(index)}
                 >
                   <CardHeader className="text-center pb-4">
@@ -87,7 +83,7 @@ const Privilege = () => {
                       {privilege.description}
                     </CardDescription>
                     <div className="flex justify-center mt-4">
-                      {expandedCards.includes(index) ? (
+                      {selectedCard === index ? (
                         <ChevronUp className="w-5 h-5 text-primary" />
                       ) : (
                         <ChevronDown className="w-5 h-5 text-primary" />
@@ -95,33 +91,44 @@ const Privilege = () => {
                     </div>
                   </CardContent>
                 </Card>
-                <AnimatePresence>
-                  {expandedCards.includes(index) && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.2 }}
-                      className="mt-4 space-y-3"
-                    >
-                      {privilege.details.map((detail, detailIndex) => (
-                        <motion.div
-                          key={detailIndex}
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: detailIndex * 0.1 }}
-                          className="flex items-start gap-3 bg-card/50 backdrop-blur-sm p-4 rounded-lg border"
-                        >
-                          <Info className="w-5 h-5 text-primary mt-0.5" />
-                          <span>{detail}</span>
-                        </motion.div>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
               </motion.div>
             ))}
           </div>
+
+          <AnimatePresence>
+            {selectedCard !== null && (
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.2 }}
+                className="mt-8"
+              >
+                <Card className="backdrop-blur-sm bg-card/50 border">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-3">
+                      {privileges[selectedCard].icon}
+                      {privileges[selectedCard].title}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {privileges[selectedCard].details.map((detail, detailIndex) => (
+                      <motion.div
+                        key={detailIndex}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: detailIndex * 0.1 }}
+                        className="flex items-start gap-3"
+                      >
+                        <Info className="w-5 h-5 text-primary mt-0.5" />
+                        <span>{detail}</span>
+                      </motion.div>
+                    ))}
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </div>
