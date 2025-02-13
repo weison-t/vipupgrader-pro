@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { MenuBar } from '@/components/MenuBar';
 import { Gift, Headset, Trophy, ChevronDown, ChevronUp, Info, QrCode } from 'lucide-react';
@@ -7,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Separator } from '@/components/ui/separator';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { VIP_LEVELS } from '@/config/vip-config';
+import { VIPCard } from '@/components/VIPCard';
 
 const privileges = [
   {
@@ -81,81 +81,20 @@ const Privilege = () => {
     return Math.min(Math.max(percentage, 0), 100);
   };
 
+  const getCurrentSubLevel = () => {
+    return Math.ceil(getCurrentTierProgress() / 20);
+  };
+
   const toggleCard = (index: number) => {
     setSelectedCard(prev => prev === index ? null : index);
   };
 
-  const currentLevel = VIP_LEVELS.find(level => level.tier === currentTier);
-  const currentSubLevel = Math.ceil(getCurrentTierProgress() / 20);
-
-  const renderQRCodes = (index: number) => {
-    if (index !== 1) return null; // Only show QR codes for Dedicated VIP Liaison
-    
-    return (
-      <div className="mt-8">
-        <Separator className="mb-8" />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="flex flex-col items-center space-y-4">
-            <h3 className="text-lg font-semibold flex items-center gap-2">
-              <QrCode className="w-5 h-5 text-primary" />
-              WhatsApp Contact
-            </h3>
-            <div className="p-4 bg-white rounded-lg">
-              <img 
-                src="/whatsapp-qr.png" 
-                alt="WhatsApp QR Code" 
-                className="w-48 h-48 object-contain"
-              />
-            </div>
-            <p className="text-sm text-muted-foreground">Scan to contact us on WhatsApp</p>
-          </div>
-          
-          <div className="flex flex-col items-center space-y-4">
-            <h3 className="text-lg font-semibold flex items-center gap-2">
-              <QrCode className="w-5 h-5 text-primary" />
-              Telegram Contact
-            </h3>
-            <div className="p-4 bg-white rounded-lg">
-              <img 
-                src="/telegram-qr.png" 
-                alt="Telegram QR Code" 
-                className="w-48 h-48 object-contain"
-              />
-            </div>
-            <p className="text-sm text-muted-foreground">Scan to contact us on Telegram</p>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const renderBanner = (index: number) => {
-    if (index !== 0 && index !== 2) return null; // Only show banner for Exclusive Promotion & Bonus and Surprise VIP Experiences
-    
-    return (
-      <div className="mt-8">
-        <Separator className="mb-8" />
-        <div className="relative mx-auto w-full max-w-4xl">
-          <Carousel className="w-full">
-            <CarouselContent>
-              {privileges[index].bannerImages?.map((image, i) => (
-                <CarouselItem key={i}>
-                  <div className="rounded-lg overflow-hidden">
-                    <img 
-                      src={image} 
-                      alt={`VIP ${privileges[index].title} Banner ${i + 1}`} 
-                      className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
-        </div>
-      </div>
-    );
+  // Calculate sub-level for each tier based on turnover
+  const getSubLevelForTier = (tierIndex: number) => {
+    if (tierIndex === VIP_LEVELS.findIndex(level => level.tier === currentTier)) {
+      return getCurrentSubLevel();
+    }
+    return 1; // Default sub-level for other tiers
   };
 
   return (
@@ -164,47 +103,63 @@ const Privilege = () => {
         <MenuBar />
         <div className="space-y-8">
           <div className="text-center">
-            <h1 className="text-4xl font-bold mb-4">
-              {currentLevel?.name} - Level {currentSubLevel} VIP Privileges
-            </h1>
+            <h1 className="text-4xl font-bold mb-4">VIP Status</h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Discover the exclusive benefits and privileges available to our valued VIP members.
+              Track your VIP journey and discover exclusive privileges
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {privileges.map((privilege, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.2 }}
-              >
-                <Card 
-                  className={`h-full backdrop-blur-sm bg-card/50 border cursor-pointer hover:border-primary/50 transition-colors ${selectedCard === index ? 'border-primary' : ''}`}
-                  onClick={() => toggleCard(index)}
-                >
-                  <CardHeader className="text-center pb-4">
-                    <div className="flex justify-center mb-4">
-                      {privilege.icon}
-                    </div>
-                    <CardTitle className="text-xl">{privilege.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-center text-muted-foreground">
-                      {privilege.description}
-                    </CardDescription>
-                    <div className="flex justify-center mt-4">
-                      {selectedCard === index ? (
-                        <ChevronUp className="w-5 h-5 text-primary" />
-                      ) : (
-                        <ChevronDown className="w-5 h-5 text-primary" />
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
+          {/* VIP Cards Section */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {VIP_LEVELS.map((level, index) => (
+              <VIPCard
+                key={level.tier}
+                level={level}
+                currentTurnover={currentTurnover}
+                isCurrentTier={level.tier === currentTier}
+                currentSubLevel={getSubLevelForTier(index)}
+                onUpgradeClick={() => console.log(`Upgrade to ${level.name}`)}
+              />
             ))}
+          </div>
+
+          {/* Privileges Section */}
+          <div className="mt-16">
+            <h2 className="text-2xl font-semibold mb-8 text-center">Your VIP Privileges</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {privileges.map((privilege, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.2 }}
+                >
+                  <Card 
+                    className={`h-full backdrop-blur-sm bg-card/50 border cursor-pointer hover:border-primary/50 transition-colors ${selectedCard === index ? 'border-primary' : ''}`}
+                    onClick={() => toggleCard(index)}
+                  >
+                    <CardHeader className="text-center pb-4">
+                      <div className="flex justify-center mb-4">
+                        {privilege.icon}
+                      </div>
+                      <CardTitle className="text-xl">{privilege.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <CardDescription className="text-center text-muted-foreground">
+                        {privilege.description}
+                      </CardDescription>
+                      <div className="flex justify-center mt-4">
+                        {selectedCard === index ? (
+                          <ChevronUp className="w-5 h-5 text-primary" />
+                        ) : (
+                          <ChevronDown className="w-5 h-5 text-primary" />
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
           </div>
 
           <AnimatePresence>
