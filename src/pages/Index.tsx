@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { VIPCard } from '../components/VIPCard';
@@ -42,6 +43,23 @@ const Index = () => {
     return VIP_LEVELS.findIndex(level => level.tier === mockUser.currentTier);
   };
 
+  const getCurrentTierProgress = () => {
+    const currentTierIndex = getCurrentTierIndex();
+    const currentLevel = VIP_LEVELS[currentTierIndex];
+    const nextLevel = VIP_LEVELS[currentTierIndex + 1];
+    
+    if (!nextLevel) return 100;
+
+    // Bronze is 1000, Silver is 5000, so the range is 4000
+    const tierRange = nextLevel.turnoverRequired - currentLevel.turnoverRequired;
+    // Current progress is 2500 - 1000 = 1500
+    const currentProgress = mockUser.currentTurnover - currentLevel.turnoverRequired;
+    // Percentage is (1500 / 4000) * 100 = 37.5%
+    const percentage = (currentProgress / tierRange) * 100;
+    
+    return Math.min(Math.max(percentage, 0), 100);
+  };
+
   const getLevelTurnover = (levelNumber: number) => {
     const currentTierIndex = getCurrentTierIndex();
     const currentLevel = VIP_LEVELS[currentTierIndex];
@@ -52,20 +70,6 @@ const Index = () => {
     const tierRange = nextLevel.turnoverRequired - currentLevel.turnoverRequired;
     const turnoverPerLevel = tierRange / 5;
     return Math.round(currentLevel.turnoverRequired + (turnoverPerLevel * levelNumber));
-  };
-
-  const getCurrentTierProgress = () => {
-    const currentTierIndex = getCurrentTierIndex();
-    const currentLevel = VIP_LEVELS[currentTierIndex];
-    const nextLevel = VIP_LEVELS[currentTierIndex + 1];
-    
-    if (!nextLevel) return 100;
-
-    const tierRange = nextLevel.turnoverRequired - currentLevel.turnoverRequired;
-    const currentProgress = mockUser.currentTurnover - currentLevel.turnoverRequired;
-    const percentage = (currentProgress / tierRange) * 100;
-    
-    return Math.min(Math.max(percentage, 0), 100);
   };
 
   const getNextSubLevelTurnover = () => {
@@ -111,7 +115,7 @@ const Index = () => {
 
   const currentLevel = VIP_LEVELS.find(level => level.tier === mockUser.currentTier)!;
   const nextLevel = getNextTier(mockUser.currentTier);
-  const progress = calculateProgress(mockUser.currentTurnover, mockUser.currentTier);
+  const progress = getCurrentTierProgress();
   const currentSubLevel = Math.ceil(getCurrentTierProgress() / 20);
   const nextSubLevelTurnover = getNextSubLevelTurnover();
   const turnoverNeeded = nextSubLevelTurnover - mockUser.currentTurnover;
