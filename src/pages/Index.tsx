@@ -52,13 +52,13 @@ const Index = () => {
     // For Bronze tier, we divide it into 5 sub-levels
     const tierRange = nextLevel.turnoverRequired - currentLevel.turnoverRequired; // 5000 - 1000 = 4000
     const subLevelSize = tierRange / 5; // 800 per sub-level
-    const currentSubLevel = Math.floor((mockUser.currentTurnover - currentLevel.turnoverRequired) / subLevelSize); // Current sub-level (2)
-    const subLevelStart = currentLevel.turnoverRequired + (currentSubLevel * subLevelSize); // Start of current sub-level (2600)
-    const subLevelEnd = subLevelStart + subLevelSize; // End of current sub-level (3400)
+    const currentSubLevel = Math.floor((mockUser.currentTurnover - currentLevel.turnoverRequired) / subLevelSize); // Current sub-level (1)
+    const subLevelStart = currentLevel.turnoverRequired + (currentSubLevel * subLevelSize); // Start of current sub-level (1800)
+    const nextSubLevelTarget = subLevelStart + subLevelSize; // Next sub-level target (2600)
     
     // Calculate progress within current sub-level
-    const subLevelProgress = mockUser.currentTurnover - subLevelStart;
-    const percentage = (subLevelProgress / subLevelSize) * 100;
+    const currentProgress = mockUser.currentTurnover - subLevelStart;
+    const percentage = (currentProgress / subLevelSize) * 100;
     
     return Math.min(Math.max(percentage, 0), 100);
   };
@@ -85,7 +85,7 @@ const Index = () => {
     const tierRange = nextLevel.turnoverRequired - currentLevel.turnoverRequired; // 4000
     const subLevelSize = tierRange / 5; // 800
     const currentSubLevel = Math.floor((mockUser.currentTurnover - currentLevel.turnoverRequired) / subLevelSize);
-    return Math.round(currentLevel.turnoverRequired + ((currentSubLevel + 1) * subLevelSize)); // Next sub-level target
+    return Math.round(currentLevel.turnoverRequired + ((currentSubLevel + 1) * subLevelSize)); // Next sub-level target (2600)
   };
 
   const handleCopyCode = (code: string) => {
