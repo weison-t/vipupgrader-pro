@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { VIPCard } from '../components/VIPCard';
@@ -38,6 +39,34 @@ const Index = () => {
   const [showLevel2, setShowLevel2] = useState(true);
   const [revealedCodes, setRevealedCodes] = useState<{ [key: string]: boolean }>({});
 
+  const getCurrentTierProgress = () => {
+    const currentTierIndex = VIP_LEVELS.findIndex(level => level.tier === mockUser.currentTier);
+    const currentLevel = VIP_LEVELS[currentTierIndex];
+    const nextLevel = VIP_LEVELS[currentTierIndex + 1];
+    
+    if (!nextLevel) return 100;
+
+    const tierRange = nextLevel.turnoverRequired - currentLevel.turnoverRequired;
+    const currentProgress = mockUser.currentTurnover - currentLevel.turnoverRequired;
+    const percentage = (currentProgress / tierRange) * 100;
+    
+    return Math.min(Math.max(percentage, 0), 100);
+  };
+
+  const getNextSubLevelTurnover = () => {
+    const currentProgress = getCurrentTierProgress();
+    const nextLevel = Math.ceil(currentProgress / 20);
+    const currentTierIndex = VIP_LEVELS.findIndex(level => level.tier === mockUser.currentTier);
+    const currentLevel = VIP_LEVELS[currentTierIndex];
+    const nextTierLevel = VIP_LEVELS[currentTierIndex + 1];
+    
+    if (!nextTierLevel) return currentLevel.turnoverRequired;
+
+    const tierRange = nextTierLevel.turnoverRequired - currentLevel.turnoverRequired;
+    const subLevelIncrement = tierRange / 5;
+    return currentLevel.turnoverRequired + (nextLevel * subLevelIncrement);
+  };
+
   const handleCopyCode = (code: string) => {
     navigator.clipboard.writeText(code);
     toast({
@@ -69,6 +98,7 @@ const Index = () => {
   const currentLevel = VIP_LEVELS.find(level => level.tier === mockUser.currentTier)!;
   const nextLevel = getNextTier(mockUser.currentTier);
   const progress = calculateProgress(mockUser.currentTurnover, mockUser.currentTier);
+  const currentSubLevel = Math.ceil(getCurrentTierProgress() / 20);
 
   return (
     <div className="min-h-screen bg-background">
@@ -95,7 +125,7 @@ const Index = () => {
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h2 className="text-2xl font-semibold mb-1">Welcome, {mockUser.name}</h2>
-                <p className="text-muted-foreground">Current Tier: {currentLevel.name}</p>
+                <p className="text-muted-foreground">Current Tier: {currentLevel.name} - Level {currentSubLevel}</p>
               </div>
               <div className="text-right">
                 <p className="text-2xl font-semibold">${mockUser.currentTurnover.toLocaleString()}</p>
@@ -106,12 +136,12 @@ const Index = () => {
             {nextLevel && (
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span>Progress to {nextLevel.name}</span>
+                  <span>Progress to Level {currentSubLevel + 1}</span>
                   <span>{progress.toFixed(0)}%</span>
                 </div>
                 <Progress value={progress} className="h-2" />
                 <p className="text-sm text-muted-foreground">
-                  ${(nextLevel.turnoverRequired - mockUser.currentTurnover).toLocaleString()} more turnover needed
+                  ${(getNextSubLevelTurnover() - mockUser.currentTurnover).toLocaleString()} more turnover needed
                 </p>
               </div>
             )}
@@ -244,6 +274,7 @@ const Index = () => {
                     <VIPCard
                       level={VIP_LEVELS[0]}
                       currentTurnover={mockUser.currentTurnover}
+                      currentSubLevel={currentSubLevel}
                     />
                   </motion.div>
                 </div>

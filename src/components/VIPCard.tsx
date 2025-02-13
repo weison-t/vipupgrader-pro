@@ -14,6 +14,7 @@ interface VIPCardProps {
   onNavigateClick?: () => void;
   isCurrentTier?: boolean;
   showNavigationButton?: boolean;
+  currentSubLevel?: number;
 }
 
 export const VIPCard: React.FC<VIPCardProps> = ({
@@ -23,6 +24,7 @@ export const VIPCard: React.FC<VIPCardProps> = ({
   onNavigateClick,
   isCurrentTier = false,
   showNavigationButton = false,
+  currentSubLevel = 1,
 }) => {
   const isEligible = currentTurnover >= level.turnoverRequired;
   
@@ -40,7 +42,7 @@ export const VIPCard: React.FC<VIPCardProps> = ({
       `}>
         {isCurrentTier && (
           <div className="absolute top-2 right-3 px-2 py-1 text-xs rounded-full bg-primary text-primary-foreground">
-            Current Tier
+            Current Tier - L{currentSubLevel}
           </div>
         )}
         
