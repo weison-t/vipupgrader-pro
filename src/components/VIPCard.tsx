@@ -26,7 +26,6 @@ export const VIPCard: React.FC<VIPCardProps> = ({
   showNavigationButton = false,
   currentSubLevel = 1,
 }) => {
-  // Calculate sub-tier turnover requirements
   const getSubTierTurnover = (subLevel: number) => {
     const nextTierTurnover = level.tier === 'ELITE_DIAMOND' 
       ? level.turnoverRequired * 2 
@@ -43,7 +42,6 @@ export const VIPCard: React.FC<VIPCardProps> = ({
   const currentSubTierTurnover = getCurrentSubTierTurnover();
   const nextSubTierTurnover = getNextSubTierTurnover();
   
-  // Calculate progress based on current turnover vs required turnover for this sub-tier
   const subTierProgress = (currentTurnover / currentSubTierTurnover) * 100;
   
   return (
@@ -77,10 +75,10 @@ export const VIPCard: React.FC<VIPCardProps> = ({
               </Button>
             )}
             <Shield className="w-6 h-6" style={{ color: level.color }} />
-            <h3 className="text-lg font-semibold">{level.name} - L{currentSubLevel}</h3>
+            <h3 className="text-lg font-semibold">{level.name}</h3>
           </div>
           <span className="text-sm text-muted-foreground pl-9">
-            ${currentSubTierTurnover.toLocaleString()} turnover required
+            ${level.turnoverRequired.toLocaleString()} turnover required
           </span>
         </div>
 
