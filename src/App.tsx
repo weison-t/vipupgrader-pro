@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Journey from "./pages/Journey";
 import Privilege from "./pages/Privilege";
 import OnlyYou from "./pages/OnlyYou";
+import Test from "./pages/Test";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/journey" element={<Journey />} />
           <Route path="/privilege" element={<Privilege />} />
           <Route path="/only-you" element={<OnlyYou />} />
+          <Route path="/test" element={<Test />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
