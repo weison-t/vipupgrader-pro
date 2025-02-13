@@ -4,21 +4,8 @@ import { Shield, Gift, CreditCard } from 'lucide-react';
 
 export const VIP_LEVELS: VIPLevel[] = [
   {
-    tier: 'LEVEL_4',
-    name: 'Diamond - Level 4',
-    turnoverRequired: 0,
-    color: '#A1A1AA',
-    benefits: [
-      {
-        title: 'Basic Support',
-        description: 'Access to standard customer support',
-        icon: Shield.name,
-      },
-    ],
-  },
-  {
     tier: 'STANDARD',
-    name: 'Diamond - Level 5',
+    name: 'Standard',
     turnoverRequired: 0,
     color: '#A1A1AA',
     benefits: [
@@ -31,7 +18,7 @@ export const VIP_LEVELS: VIPLevel[] = [
   },
   {
     tier: 'BRONZE',
-    name: 'Elite Diamond - Level 1',
+    name: 'Bronze',
     turnoverRequired: 1000,
     color: '#CD7F32',
     benefits: [
@@ -49,7 +36,7 @@ export const VIP_LEVELS: VIPLevel[] = [
   },
   {
     tier: 'SILVER',
-    name: 'Elite Diamond - Level 2',
+    name: 'Silver',
     turnoverRequired: 5000,
     color: '#C0C0C0',
     benefits: [
@@ -72,7 +59,7 @@ export const VIP_LEVELS: VIPLevel[] = [
   },
   {
     tier: 'GOLD',
-    name: 'Elite Diamond - Level 3',
+    name: 'Gold',
     turnoverRequired: 10000,
     color: '#FFD700',
     benefits: [
@@ -90,6 +77,45 @@ export const VIP_LEVELS: VIPLevel[] = [
         title: 'Elite Access',
         description: 'Exclusive VIP events',
         icon: CreditCard.name,
+      },
+    ],
+  },
+  {
+    tier: 'PLATINUM',
+    name: 'Platinum',
+    turnoverRequired: 25000,
+    color: '#E5E4E2',
+    benefits: [
+      {
+        title: 'Dedicated Support',
+        description: '24/7 personal concierge',
+        icon: Shield.name,
+      },
+    ],
+  },
+  {
+    tier: 'DIAMOND',
+    name: 'Diamond',
+    turnoverRequired: 50000,
+    color: '#B9F2FF',
+    benefits: [
+      {
+        title: 'Ultimate Support',
+        description: 'Priority dedicated team',
+        icon: Shield.name,
+      },
+    ],
+  },
+  {
+    tier: 'ELITE_DIAMOND',
+    name: 'Elite Diamond',
+    turnoverRequired: 100000,
+    color: '#00FFFF',
+    benefits: [
+      {
+        title: 'Elite Support',
+        description: 'Direct line to management',
+        icon: Shield.name,
       },
     ],
   },
