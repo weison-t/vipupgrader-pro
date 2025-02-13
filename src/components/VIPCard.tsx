@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Shield, ChevronRight, ChevronLeft } from 'lucide-react';
@@ -27,6 +26,35 @@ export const VIPCard: React.FC<VIPCardProps> = ({
   currentSubLevel = 1,
 }) => {
   const isEligible = currentTurnover >= level.turnoverRequired;
+  
+  const calculateSubLevelTurnover = (sublevel: number) => {
+    const nextTierIndex = VIP_LEVELS.findIndex(l => l.tier === level.tier) + 1;
+    const nextTier = VIP_LEVELS[nextTierIndex];
+    
+    if (!nextTier) return level.turnoverRequired;
+
+    const tierRange = nextTier.turnoverRequired - level.turnoverRequired;
+    const subLevelIncrement = tierRange / 5;
+    return level.turnoverRequired + (sublevel * subLevelIncrement);
+  };
+
+  const calculateCurrentSubLevel = () => {
+    if (currentTurnover < level.turnoverRequired) return 0;
+    
+    const nextTierIndex = VIP_LEVELS.findIndex(l => l.tier === level.tier) + 1;
+    const nextTier = VIP_LEVELS[nextTierIndex];
+    
+    if (!nextTier) return 5;
+
+    const tierRange = nextTier.turnoverRequired - level.turnoverRequired;
+    const progress = currentTurnover - level.turnoverRequired;
+    const subLevelSize = tierRange / 5;
+    
+    return Math.min(Math.ceil(progress / subLevelSize), 5);
+  };
+
+  const currentCardSubLevel = calculateCurrentSubLevel();
+  const nextSubLevelTurnover = calculateSubLevelTurnover(currentCardSubLevel + 1);
   
   return (
     <motion.div
@@ -59,10 +87,10 @@ export const VIPCard: React.FC<VIPCardProps> = ({
               </Button>
             )}
             <Shield className="w-6 h-6" style={{ color: level.color }} />
-            <h3 className="text-lg font-semibold">{level.name}</h3>
+            <h3 className="text-lg font-semibold">{level.name} - L{currentCardSubLevel}</h3>
           </div>
           <span className="text-sm text-muted-foreground pl-9">
-            ${level.turnoverRequired.toLocaleString()} turnover
+            ${level.turnoverRequired.toLocaleString()} base turnover
           </span>
         </div>
 
@@ -86,12 +114,15 @@ export const VIPCard: React.FC<VIPCardProps> = ({
           ))}
         </div>
 
-        {!isCurrentTier && (
+        {!isCurrentTier && currentCardSubLevel < 5 && (
           <div className="mt-4">
-            <Progress value={isEligible ? 100 : (currentTurnover / level.turnoverRequired) * 100} className="mb-2" />
+            <Progress 
+              value={(currentTurnover - level.turnoverRequired) / (nextSubLevelTurnover - level.turnoverRequired) * 100} 
+              className="mb-2" 
+            />
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground">
-                ${currentTurnover.toLocaleString()} / ${level.turnoverRequired.toLocaleString()} turnover
+                Progress to L{currentCardSubLevel + 1}
               </span>
               <Button
                 onClick={onUpgradeClick}
@@ -109,3 +140,122 @@ export const VIPCard: React.FC<VIPCardProps> = ({
     </motion.div>
   );
 };
+
+export const VIP_LEVELS = [
+  {
+    tier: 'STANDARD',
+    name: 'Standard',
+    turnoverRequired: 0,
+    color: '#A1A1AA',
+    benefits: [
+      {
+        title: 'Basic Support',
+        description: 'Access to standard customer support',
+        icon: Shield.name,
+      },
+    ],
+  },
+  {
+    tier: 'BRONZE',
+    name: 'Bronze',
+    turnoverRequired: 1000,
+    color: '#CD7F32',
+    benefits: [
+      {
+        title: 'Priority Support',
+        description: '24/7 priority customer support',
+        icon: Shield.name,
+      },
+      {
+        title: 'Special Offers',
+        description: 'Exclusive bronze member discounts',
+        icon: Gift.name,
+      },
+    ],
+  },
+  {
+    tier: 'SILVER',
+    name: 'Silver',
+    turnoverRequired: 5000,
+    color: '#C0C0C0',
+    benefits: [
+      {
+        title: 'Premium Support',
+        description: 'Dedicated support line',
+        icon: Shield.name,
+      },
+      {
+        title: 'Enhanced Rewards',
+        description: '2x turnover rewards',
+        icon: Gift.name,
+      },
+      {
+        title: 'Exclusive Access',
+        description: 'Early access to new features',
+        icon: CreditCard.name,
+      },
+    ],
+  },
+  {
+    tier: 'GOLD',
+    name: 'Gold',
+    turnoverRequired: 10000,
+    color: '#FFD700',
+    benefits: [
+      {
+        title: 'VIP Support',
+        description: 'Personal account manager',
+        icon: Shield.name,
+      },
+      {
+        title: 'Premium Rewards',
+        description: '3x turnover rewards',
+        icon: Gift.name,
+      },
+      {
+        title: 'Elite Access',
+        description: 'Exclusive VIP events',
+        icon: CreditCard.name,
+      },
+    ],
+  },
+  {
+    tier: 'PLATINUM',
+    name: 'Platinum',
+    turnoverRequired: 25000,
+    color: '#E5E4E2',
+    benefits: [
+      {
+        title: 'Dedicated Support',
+        description: '24/7 personal concierge',
+        icon: Shield.name,
+      },
+    ],
+  },
+  {
+    tier: 'DIAMOND',
+    name: 'Diamond',
+    turnoverRequired: 50000,
+    color: '#B9F2FF',
+    benefits: [
+      {
+        title: 'Ultimate Support',
+        description: 'Priority dedicated team',
+        icon: Shield.name,
+      },
+    ],
+  },
+  {
+    tier: 'ELITE_DIAMOND',
+    name: 'Elite Diamond',
+    turnoverRequired: 100000,
+    color: '#00FFFF',
+    benefits: [
+      {
+        title: 'Elite Support',
+        description: 'Direct line to management',
+        icon: Shield.name,
+      },
+    ],
+  },
+];
