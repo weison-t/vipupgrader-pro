@@ -108,6 +108,18 @@ const Index = () => {
   const nextSubLevelTurnover = getNextSubLevelTurnover();
   const turnoverNeeded = nextSubLevelTurnover - mockUser.currentTurnover;
 
+  const getPreviousSubLevel = () => {
+    const currentTierIndex = getCurrentTierIndex();
+    if (currentTierIndex === 0) return 1;
+    return Math.max(1, currentSubLevel - 1);
+  };
+
+  const getNextSubLevel = () => {
+    const currentTierIndex = getCurrentTierIndex();
+    if (currentTierIndex === VIP_LEVELS.length - 1) return 5;
+    return Math.min(5, currentSubLevel + 1);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container py-8">
@@ -284,6 +296,7 @@ const Index = () => {
                     <VIPCard
                       level={VIP_LEVELS[0]}
                       currentTurnover={mockUser.currentTurnover}
+                      currentSubLevel={getPreviousSubLevel()}
                     />
                   </motion.div>
                 </div>
@@ -310,6 +323,7 @@ const Index = () => {
                     <VIPCard
                       level={VIP_LEVELS[1]}
                       currentTurnover={mockUser.currentTurnover}
+                      currentSubLevel={getPreviousSubLevel()}
                     />
                   </motion.div>
                 </div>
@@ -345,6 +359,7 @@ const Index = () => {
                       level={VIP_LEVELS[3]}
                       currentTurnover={mockUser.currentTurnover}
                       onUpgradeClick={() => handleUpgrade(VIP_LEVELS[3].tier)}
+                      currentSubLevel={getNextSubLevel()}
                     />
                   </motion.div>
                   <Button
@@ -370,6 +385,7 @@ const Index = () => {
                       level={VIP_LEVELS[4]}
                       currentTurnover={mockUser.currentTurnover}
                       onUpgradeClick={() => handleUpgrade(VIP_LEVELS[4].tier)}
+                      currentSubLevel={getNextSubLevel()}
                     />
                   </motion.div>
                   <Button
