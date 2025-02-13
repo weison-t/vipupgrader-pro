@@ -38,41 +38,26 @@ const Index = () => {
   const [showLevel2, setShowLevel2] = useState(true);
   const [revealedCodes, setRevealedCodes] = useState<{ [key: string]: boolean }>({});
 
+  const getCurrentTierIndex = () => {
+    return VIP_LEVELS.findIndex(level => level.tier === mockUser.currentTier);
+  };
+
   const getCurrentTierProgress = () => {
-    const currentTierIndex = VIP_LEVELS.findIndex(level => level.tier === mockUser.currentTier);
+    const currentTierIndex = getCurrentTierIndex();
     const currentLevel = VIP_LEVELS[currentTierIndex];
     const nextLevel = VIP_LEVELS[currentTierIndex + 1];
     
     if (!nextLevel) return 100;
 
-    const currentSubLevel = Math.ceil((mockUser.currentTurnover - currentLevel.turnoverRequired) / (getSubLevelTurnoverIncrement()));
-    const subLevelStart = currentLevel.turnoverRequired + ((currentSubLevel - 1) * getSubLevelTurnoverIncrement());
-    const subLevelEnd = subLevelStart + getSubLevelTurnoverIncrement();
-    
-    const progressWithinSubLevel = ((mockUser.currentTurnover - subLevelStart) / (subLevelEnd - subLevelStart)) * 100;
-    return Math.min(Math.max(progressWithinSubLevel, 0), 100);
-  };
-
-  const getSubLevelTurnoverIncrement = () => {
-    const currentTierIndex = VIP_LEVELS.findIndex(level => level.tier === mockUser.currentTier);
-    const currentLevel = VIP_LEVELS[currentTierIndex];
-    const nextLevel = VIP_LEVELS[currentTierIndex + 1];
-    
-    if (!nextLevel) return 0;
-
     const tierRange = nextLevel.turnoverRequired - currentLevel.turnoverRequired;
-    return tierRange / 5; // 5 sub-levels per tier
-  };
-
-  const getNextSubLevelTurnover = () => {
-    const currentTierIndex = VIP_LEVELS.findIndex(level => level.tier === mockUser.currentTier);
-    const currentLevel = VIP_LEVELS[currentTierIndex];
-    const currentSubLevel = Math.ceil((mockUser.currentTurnover - currentLevel.turnoverRequired) / getSubLevelTurnoverIncrement());
-    return currentLevel.turnoverRequired + (currentSubLevel * getSubLevelTurnoverIncrement());
+    const currentProgress = mockUser.currentTurnover - currentLevel.turnoverRequired;
+    const percentage = (currentProgress / tierRange) * 100;
+    
+    return Math.min(Math.max(percentage, 0), 100);
   };
 
   const getLevelTurnover = (levelNumber: number) => {
-    const currentTierIndex = VIP_LEVELS.findIndex(level => level.tier === mockUser.currentTier);
+    const currentTierIndex = getCurrentTierIndex();
     const currentLevel = VIP_LEVELS[currentTierIndex];
     const nextLevel = VIP_LEVELS[currentTierIndex + 1];
     
@@ -81,6 +66,12 @@ const Index = () => {
     const tierRange = nextLevel.turnoverRequired - currentLevel.turnoverRequired;
     const turnoverPerLevel = tierRange / 5;
     return Math.round(currentLevel.turnoverRequired + (turnoverPerLevel * levelNumber));
+  };
+
+  const getNextSubLevelTurnover = () => {
+    const currentProgress = getCurrentTierProgress();
+    const nextLevel = Math.ceil(currentProgress / 20); // This gives us the next level (1-5)
+    return getLevelTurnover(nextLevel);
   };
 
   const handleCopyCode = (code: string) => {
@@ -114,7 +105,7 @@ const Index = () => {
   const currentLevel = VIP_LEVELS.find(level => level.tier === mockUser.currentTier)!;
   const nextLevel = getNextTier(mockUser.currentTier);
   const progress = calculateProgress(mockUser.currentTurnover, mockUser.currentTier);
-  const currentSubLevel = Math.ceil((mockUser.currentTurnover - currentLevel.turnoverRequired) / getSubLevelTurnoverIncrement());
+  const currentSubLevel = Math.ceil(getCurrentTierProgress() / 20);
   const nextSubLevelTurnover = getNextSubLevelTurnover();
   const turnoverNeeded = nextSubLevelTurnover - mockUser.currentTurnover;
 
