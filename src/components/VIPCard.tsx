@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Shield, ChevronRight, ChevronLeft } from 'lucide-react';
+import { Shield, ChevronRight, ChevronLeft, Gift, CreditCard } from 'lucide-react';
 import { VIPLevel } from '../types/vip';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
@@ -67,23 +67,37 @@ export const VIPCard: React.FC<VIPCardProps> = ({
         </div>
 
         <div className="space-y-4 mb-6">
-          {level.benefits.map((benefit, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="flex items-start space-x-3"
-            >
-              <div className="mt-1 p-1.5 rounded-full bg-primary/10">
-                <Shield className="w-4 h-4 text-primary" />
-              </div>
-              <div>
-                <p className="font-medium text-sm">{benefit.title}</p>
-                <p className="text-sm text-muted-foreground">{benefit.description}</p>
-              </div>
-            </motion.div>
-          ))}
+          {level.benefits.map((benefit, index) => {
+            let Icon;
+            switch (benefit.icon) {
+              case 'Gift':
+                Icon = Gift;
+                break;
+              case 'CreditCard':
+                Icon = CreditCard;
+                break;
+              default:
+                Icon = Shield;
+            }
+            
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.1 }}
+                className="flex items-start space-x-3"
+              >
+                <div className="mt-1 p-1.5 rounded-full bg-primary/10">
+                  <Icon className="w-4 h-4 text-primary" />
+                </div>
+                <div>
+                  <p className="font-medium text-sm">{benefit.title}</p>
+                  <p className="text-sm text-muted-foreground">{benefit.description}</p>
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
 
         {!isCurrentTier && (
