@@ -36,6 +36,24 @@ npm i
 npm run dev
 ```
 
+**Branch Workflow**
+
+We use a branch-based workflow for development:
+
+1. All development work happens in the `develop` branch
+2. To start working:
+   ```sh
+   git checkout develop
+   ```
+3. After making changes:
+   ```sh
+   git add .
+   git commit -m "Your descriptive commit message"
+   git push origin develop
+   ```
+4. Create a pull request from `develop` to `main` for review
+5. Changes are merged to `main` only after review
+
 **Edit a file directly in GitHub**
 
 - Navigate to the desired file(s).
