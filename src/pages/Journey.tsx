@@ -3,12 +3,20 @@ import { MenuBar } from '@/components/MenuBar';
 import { motion } from 'framer-motion';
 import { Progress } from '@/components/ui/progress';
 import { VIP_LEVELS } from '@/config/vip-config';
+import { VIPCard } from '@/components/VIPCard';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 const Journey = () => {
   const currentTier = 'BRONZE';
@@ -150,6 +158,37 @@ const Journey = () => {
                   ))}
                 </div>
               </div>
+            </div>
+          </div>
+
+          <div className="mt-16">
+            <h2 className="text-2xl font-semibold mb-8 text-center">Available VIP Tiers</h2>
+            <div className="px-8">
+              <Carousel
+                opts={{
+                  align: "start",
+                  loop: true,
+                }}
+                className="w-full"
+              >
+                <CarouselContent className="-ml-2 md:-ml-4">
+                  {VIP_LEVELS.map((level, index) => (
+                    <CarouselItem key={level.tier} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
+                      <div className="p-1">
+                        <VIPCard
+                          level={level}
+                          currentTurnover={currentTurnover}
+                          isCurrentTier={level.tier === currentTier}
+                          currentSubLevel={level.tier === currentTier ? calculateSubLevel() : 1}
+                          onUpgradeClick={() => console.log(`Upgrade to ${level.name}`)}
+                        />
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious className="hidden md:flex -left-12" />
+                <CarouselNext className="hidden md:flex -right-12" />
+              </Carousel>
             </div>
           </div>
         </div>
