@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { VIPCard } from '../components/VIPCard';
@@ -50,12 +49,16 @@ const Index = () => {
     
     if (!nextLevel) return 100;
 
-    // Bronze is 1000, Silver is 5000, so the range is 4000
-    const tierRange = nextLevel.turnoverRequired - currentLevel.turnoverRequired;
-    // Current progress is 2500 - 1000 = 1500
-    const currentProgress = mockUser.currentTurnover - currentLevel.turnoverRequired;
-    // Percentage is (1500 / 4000) * 100 = 37.5%
-    const percentage = (currentProgress / tierRange) * 100;
+    // For Bronze tier, we divide it into 5 sub-levels
+    const tierRange = nextLevel.turnoverRequired - currentLevel.turnoverRequired; // 5000 - 1000 = 4000
+    const subLevelSize = tierRange / 5; // 800 per sub-level
+    const currentSubLevel = Math.floor((mockUser.currentTurnover - currentLevel.turnoverRequired) / subLevelSize); // Current sub-level (2)
+    const subLevelStart = currentLevel.turnoverRequired + (currentSubLevel * subLevelSize); // Start of current sub-level (2600)
+    const subLevelEnd = subLevelStart + subLevelSize; // End of current sub-level (3400)
+    
+    // Calculate progress within current sub-level
+    const subLevelProgress = mockUser.currentTurnover - subLevelStart;
+    const percentage = (subLevelProgress / subLevelSize) * 100;
     
     return Math.min(Math.max(percentage, 0), 100);
   };
@@ -79,10 +82,10 @@ const Index = () => {
     
     if (!nextLevel) return currentLevel.turnoverRequired;
 
-    const tierRange = nextLevel.turnoverRequired - currentLevel.turnoverRequired;
-    const turnoverPerLevel = tierRange / 5;
-    const currentSubLevel = Math.ceil(getCurrentTierProgress() / 20);
-    return Math.round(currentLevel.turnoverRequired + (currentSubLevel * turnoverPerLevel));
+    const tierRange = nextLevel.turnoverRequired - currentLevel.turnoverRequired; // 4000
+    const subLevelSize = tierRange / 5; // 800
+    const currentSubLevel = Math.floor((mockUser.currentTurnover - currentLevel.turnoverRequired) / subLevelSize);
+    return Math.round(currentLevel.turnoverRequired + ((currentSubLevel + 1) * subLevelSize)); // Next sub-level target
   };
 
   const handleCopyCode = (code: string) => {
@@ -116,7 +119,7 @@ const Index = () => {
   const currentLevel = VIP_LEVELS.find(level => level.tier === mockUser.currentTier)!;
   const nextLevel = getNextTier(mockUser.currentTier);
   const progress = getCurrentTierProgress();
-  const currentSubLevel = Math.ceil(getCurrentTierProgress() / 20);
+  const currentSubLevel = Math.floor((mockUser.currentTurnover - currentLevel.turnoverRequired) / ((nextLevel?.turnoverRequired ?? 0 - currentLevel.turnoverRequired) / 5)) + 1;
   const nextSubLevelTurnover = getNextSubLevelTurnover();
   const turnoverNeeded = nextSubLevelTurnover - mockUser.currentTurnover;
 
