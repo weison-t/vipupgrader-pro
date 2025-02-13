@@ -180,7 +180,8 @@ const Journey = () => {
                           level={level}
                           currentTurnover={currentTurnover}
                           isCurrentTier={level.tier === currentTier}
-                          onUpgradeClick={() => console.log(`Upgrade to ${level.name}`)}
+                          showProgress={false}
+                          onUpgradeClick={() => console.log(`View details for ${level.name}`)}
                         />
                       </div>
                     </CarouselItem>

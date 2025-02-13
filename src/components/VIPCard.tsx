@@ -15,6 +15,7 @@ interface VIPCardProps {
   isCurrentTier?: boolean;
   showNavigationButton?: boolean;
   currentSubLevel?: number;
+  showProgress?: boolean;
 }
 
 export const VIPCard: React.FC<VIPCardProps> = ({
@@ -25,6 +26,7 @@ export const VIPCard: React.FC<VIPCardProps> = ({
   isCurrentTier = false,
   showNavigationButton = false,
   currentSubLevel = 1,
+  showProgress = true,
 }) => {
   const getSubTierTurnover = (subLevel: number) => {
     const nextTierTurnover = level.tier === 'ELITE_DIAMOND' 
@@ -116,7 +118,7 @@ export const VIPCard: React.FC<VIPCardProps> = ({
           })}
         </div>
 
-        {!isCurrentTier && (
+        {!isCurrentTier && showProgress && (
           <div className="mt-4">
             <Progress 
               value={Math.min(Math.max(subTierProgress, 0), 100)} 
@@ -136,6 +138,19 @@ export const VIPCard: React.FC<VIPCardProps> = ({
                 <ChevronRight className="w-4 h-4 ml-2" />
               </Button>
             </div>
+          </div>
+        )}
+
+        {!isCurrentTier && !showProgress && (
+          <div className="mt-4">
+            <Button
+              onClick={onUpgradeClick}
+              className="w-full"
+              variant="default"
+            >
+              View Details
+              <ChevronRight className="w-4 h-4 ml-2" />
+            </Button>
           </div>
         )}
       </Card>
