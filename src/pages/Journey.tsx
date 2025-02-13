@@ -4,6 +4,12 @@ import { MenuBar } from '@/components/MenuBar';
 import { motion } from 'framer-motion';
 import { Progress } from '@/components/ui/progress';
 import { VIP_LEVELS } from '@/config/vip-config';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const Journey = () => {
   const currentTier = 'BRONZE';
@@ -126,7 +132,18 @@ const Journey = () => {
               </div>
 
               <div className="relative w-[98%] mx-auto">
-                <Progress value={Math.min(Math.max(getCurrentTierProgress(), 0), 100)} className="h-2" />
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="w-full">
+                        <Progress value={Math.min(Math.max(getCurrentTierProgress(), 0), 100)} className="h-2" />
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Current Turnover: ${currentTurnover.toLocaleString()}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
                 
                 <div className="absolute top-0 left-0 w-full flex justify-between" style={{ transform: 'translateY(-50%)' }}>
                   {[...Array(5)].map((_, index) => {
