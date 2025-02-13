@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { MenuBar } from '@/components/MenuBar';
 import { motion } from 'framer-motion';
@@ -53,7 +54,7 @@ const Journey = () => {
 
           <div className="mt-12 space-y-8">
             {/* VIP Progress Bar */}
-            <div className="relative">
+            <div className="relative pb-16">
               {/* Tier Markers */}
               <div className="flex justify-between mb-8">
                 {VIP_LEVELS.map((level, index) => {
@@ -126,13 +127,15 @@ const Journey = () => {
             </div>
 
             {/* Current Tier Info */}
-            <div className="text-center mt-12">
-              <h2 className="text-2xl font-semibold mb-2">
-                {VIP_LEVELS[getCurrentTierIndex()].name} - Level {Math.ceil(getCurrentTierProgress() / 20)}
-              </h2>
-              <p className="text-muted-foreground">
-                ${currentTurnover.toLocaleString()} / ${VIP_LEVELS[getCurrentTierIndex() + 1]?.turnoverRequired.toLocaleString()} turnover
-              </p>
+            <div className="text-center mt-4">
+              <div className="bg-accent/50 py-4 px-6 rounded-lg inline-block">
+                <h2 className="text-2xl font-semibold mb-2">
+                  {VIP_LEVELS[getCurrentTierIndex()].name} - Level {Math.ceil(getCurrentTierProgress() / 20)}
+                </h2>
+                <p className="text-muted-foreground">
+                  ${currentTurnover.toLocaleString()} / ${VIP_LEVELS[getCurrentTierIndex() + 1]?.turnoverRequired.toLocaleString()} turnover
+                </p>
+              </div>
             </div>
           </div>
         </div>
