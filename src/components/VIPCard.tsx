@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Shield, ChevronRight, ChevronLeft, Gift, CreditCard } from 'lucide-react';
@@ -142,8 +143,7 @@ export const VIPCard: React.FC<VIPCardProps> = ({
                   className="ml-4"
                   variant="outline"
                 >
-                  Not Eligible
-                  <ChevronRight className="w-4 h-4 ml-2" />
+                  Coming Soon
                 </Button>
               )}
             </div>
@@ -211,3 +211,4 @@ const VIP_LEVELS = [
     color: '#00FFFF',
   },
 ];
+
