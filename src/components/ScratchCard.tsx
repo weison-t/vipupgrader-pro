@@ -111,8 +111,8 @@ const ScratchCard: React.FC<ScratchCardProps> = ({ width, height, children, onCo
     const percentRevealed = (transparent / (pixels.length / 4)) * 100;
     setRevealed(percentRevealed);
 
-    // Changed from 50 to 40 percent threshold
-    if (percentRevealed > 40 && onComplete) {
+    // Changed from 40 to 25 percent threshold
+    if (percentRevealed > 25 && onComplete) {
       onComplete();
     }
   };
