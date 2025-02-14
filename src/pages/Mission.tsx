@@ -305,9 +305,9 @@ const Mission = () => {
       <div className="container py-4">
         <MenuBar />
         <div className="space-y-6">
-          <div className="text-center bg-gradient-to-r from-purple-500/20 via-blue-500/10 to-purple-500/20 py-8 rounded-lg">
-            <h1 className="text-4xl font-bold mb-4 text-primary">Mission Center</h1>
-            <p className="text-primary/80 max-w-2xl mx-auto px-4">
+          <div className="text-center py-4">
+            <h1 className="text-4xl font-bold mb-2 text-primary">Mission Center</h1>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
               Complete missions to earn amazing rewards and multipliers! 
               Chain missions together for combo bonuses and unlock exclusive rewards.
             </p>
