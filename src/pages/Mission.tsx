@@ -5,7 +5,10 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { motion } from 'framer-motion';
-import { Coins, Flame, Calendar, Target, Gift, Trophy } from 'lucide-react';
+import { 
+  Coins, Flame, Calendar, Target, Gift, Trophy, Timer, Users, Star,
+  Crown, Award, Zap, PartyPopper, Medal
+} from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 
 interface Mission {
@@ -16,11 +19,17 @@ interface Mission {
   progress: number;
   maxProgress: number;
   icon: React.ReactNode;
-  type: 'daily' | 'weekly' | 'special';
+  type: 'daily' | 'weekly' | 'special' | 'seasonal' | 'social' | 'achievement' | 'vip' | 'chain';
   status: 'active' | 'completed' | 'locked';
+  expiresAt?: string;
+  chainStep?: number;
+  totalChainSteps?: number;
+  vipTierRequired?: string;
+  comboMultiplier?: number;
 }
 
 const missions: Mission[] = [
+  // Daily Missions
   {
     id: 1,
     title: "Daily Deposit Boost",
@@ -30,7 +39,8 @@ const missions: Mission[] = [
     maxProgress: 1,
     icon: <Coins className="w-5 h-5" />,
     type: 'daily',
-    status: 'active'
+    status: 'active',
+    comboMultiplier: 1.2
   },
   {
     id: 2,
@@ -41,8 +51,11 @@ const missions: Mission[] = [
     maxProgress: 1,
     icon: <Flame className="w-5 h-5" />,
     type: 'daily',
-    status: 'active'
+    status: 'active',
+    comboMultiplier: 1.1
   },
+  
+  // Weekly Missions
   {
     id: 3,
     title: "Login Streak",
@@ -65,17 +78,100 @@ const missions: Mission[] = [
     type: 'weekly',
     status: 'active'
   },
+  
+  // Time-Limited Special Missions
   {
     id: 5,
-    title: "VIP Special",
-    description: "Complete all daily missions this week",
-    reward: "10x Turnover Multiplier + Special Gift",
-    progress: 3,
-    maxProgress: 7,
-    icon: <Gift className="w-5 h-5" />,
+    title: "Flash Challenge",
+    description: "Win 5 games in the next 2 hours",
+    reward: "10x Turnover Multiplier",
+    progress: 2,
+    maxProgress: 5,
+    icon: <Timer className="w-5 h-5" />,
     type: 'special',
+    status: 'active',
+    expiresAt: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString()
+  },
+  
+  // Seasonal Events
+  {
+    id: 6,
+    title: "Summer Festival",
+    description: "Participate in summer themed games",
+    reward: "Special Summer Badge + 5x Multiplier",
+    progress: 3,
+    maxProgress: 10,
+    icon: <PartyPopper className="w-5 h-5" />,
+    type: 'seasonal',
+    status: 'active',
+    expiresAt: "2024-08-31T23:59:59Z"
+  },
+  
+  // Mission Chains
+  {
+    id: 7,
+    title: "High Roller Journey",
+    description: "Complete step 2/3: Reach $5000 turnover",
+    reward: "Progressive Multiplier (current: 3x)",
+    progress: 3000,
+    maxProgress: 5000,
+    icon: <Zap className="w-5 h-5" />,
+    type: 'chain',
+    status: 'active',
+    chainStep: 2,
+    totalChainSteps: 3
+  },
+  
+  // Social Missions
+  {
+    id: 8,
+    title: "Social Butterfly",
+    description: "Invite 3 friends to join",
+    reward: "2x Multiplier + Exclusive Avatar",
+    progress: 1,
+    maxProgress: 3,
+    icon: <Users className="w-5 h-5" />,
+    type: 'social',
     status: 'active'
   },
+  
+  // Achievements
+  {
+    id: 9,
+    title: "Master Player",
+    description: "Reach 1000 total games played",
+    reward: "Permanent 1.2x Multiplier",
+    progress: 850,
+    maxProgress: 1000,
+    icon: <Award className="w-5 h-5" />,
+    type: 'achievement',
+    status: 'active'
+  },
+  
+  // VIP Exclusive
+  {
+    id: 10,
+    title: "Diamond Elite Task",
+    description: "Complete special VIP challenge",
+    reward: "15x Multiplier + Elite Badge",
+    progress: 0,
+    maxProgress: 1,
+    icon: <Crown className="w-5 h-5" />,
+    type: 'vip',
+    status: 'active',
+    vipTierRequired: "DIAMOND"
+  }
+];
+
+const missionCategories = [
+  { type: 'daily', title: 'Daily Missions', icon: <Trophy className="w-6 h-6 text-primary" /> },
+  { type: 'weekly', title: 'Weekly Missions', icon: <Calendar className="w-6 h-6 text-primary" /> },
+  { type: 'special', title: 'Special Missions', icon: <Timer className="w-6 h-6 text-primary" /> },
+  { type: 'seasonal', title: 'Seasonal Events', icon: <PartyPopper className="w-6 h-6 text-primary" /> },
+  { type: 'chain', title: 'Mission Chains', icon: <Zap className="w-6 h-6 text-primary" /> },
+  { type: 'social', title: 'Social Missions', icon: <Users className="w-6 h-6 text-primary" /> },
+  { type: 'achievement', title: 'Achievements', icon: <Medal className="w-6 h-6 text-primary" /> },
+  { type: 'vip', title: 'VIP Exclusive', icon: <Crown className="w-6 h-6 text-primary" /> }
 ];
 
 const Mission = () => {
@@ -83,9 +179,13 @@ const Mission = () => {
 
   const handleClaimReward = (mission: Mission) => {
     if (mission.progress >= mission.maxProgress) {
+      const multiplierText = mission.comboMultiplier 
+        ? `(Combo Bonus: ${mission.comboMultiplier}x)`
+        : '';
+      
       toast({
         title: "🎉 Reward Claimed!",
-        description: `You've claimed: ${mission.reward}`,
+        description: `You've claimed: ${mission.reward} ${multiplierText}`,
       });
     } else {
       toast({
@@ -96,29 +196,36 @@ const Mission = () => {
     }
   };
 
+  const getTimeRemaining = (expiresAt: string) => {
+    const remaining = new Date(expiresAt).getTime() - Date.now();
+    const hours = Math.floor(remaining / (1000 * 60 * 60));
+    const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+    return `${hours}h ${minutes}m`;
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container py-8">
         <MenuBar />
         <div className="space-y-8">
           <div className="text-center">
-            <h1 className="text-4xl font-bold mb-4">Daily Missions</h1>
+            <h1 className="text-4xl font-bold mb-4">Mission Center</h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Complete missions to earn amazing rewards and multipliers! 
-              Keep track of your progress and claim your rewards.
+              Chain missions together for combo bonuses and unlock exclusive rewards.
             </p>
           </div>
 
           <div className="grid gap-6">
-            {['daily', 'weekly', 'special'].map((category) => (
-              <div key={category}>
+            {missionCategories.map((category) => (
+              <div key={category.type}>
                 <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
-                  <Trophy className="w-6 h-6 text-primary" />
-                  {category.charAt(0).toUpperCase() + category.slice(1)} Missions
+                  {category.icon}
+                  {category.title}
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {missions
-                    .filter((mission) => mission.type === category)
+                    .filter((mission) => mission.type === category.type)
                     .map((mission) => (
                       <motion.div
                         key={mission.id}
@@ -137,6 +244,26 @@ const Mission = () => {
                                 <p className="text-sm text-muted-foreground">
                                   {mission.description}
                                 </p>
+                                {mission.expiresAt && (
+                                  <p className="text-xs text-yellow-500 mt-1">
+                                    Time remaining: {getTimeRemaining(mission.expiresAt)}
+                                  </p>
+                                )}
+                                {mission.chainStep && (
+                                  <p className="text-xs text-blue-500 mt-1">
+                                    Step {mission.chainStep} of {mission.totalChainSteps}
+                                  </p>
+                                )}
+                                {mission.vipTierRequired && (
+                                  <p className="text-xs text-purple-500 mt-1">
+                                    Requires {mission.vipTierRequired} VIP
+                                  </p>
+                                )}
+                                {mission.comboMultiplier && (
+                                  <p className="text-xs text-green-500 mt-1">
+                                    Combo Bonus: {mission.comboMultiplier}x
+                                  </p>
+                                )}
                               </div>
                             </div>
                           </div>
