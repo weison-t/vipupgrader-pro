@@ -1,9 +1,17 @@
 
-import { Badge as BadgeIcon, Crown, Trophy, Star, Target, Zap, Shield } from "lucide-react";
+import { Badge as BadgeIcon, Crown, Trophy, Star, Target, Zap, Shield, Filter } from "lucide-react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { MenuBar } from "@/components/MenuBar";
 import { Badge } from "@/components/ui/badge";
+import { useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface BadgeItem {
   id: string;
@@ -95,6 +103,12 @@ const getRarityColor = (rarity: BadgeItem["rarity"]) => {
 };
 
 const Badges = () => {
+  const [selectedRarity, setSelectedRarity] = useState<BadgeItem["rarity"] | "all">("all");
+
+  const filteredBadges = badges.filter(badge => 
+    selectedRarity === "all" ? true : badge.rarity === selectedRarity
+  );
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container py-4">
@@ -107,8 +121,27 @@ const Badges = () => {
             </p>
           </div>
 
+          <div className="flex items-center justify-end mb-4 gap-2">
+            <Filter className="w-4 h-4 text-muted-foreground" />
+            <Select
+              value={selectedRarity}
+              onValueChange={(value) => setSelectedRarity(value as BadgeItem["rarity"] | "all")}
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Filter by rarity" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Badges</SelectItem>
+                <SelectItem value="common">Common</SelectItem>
+                <SelectItem value="rare">Rare</SelectItem>
+                <SelectItem value="epic">Epic</SelectItem>
+                <SelectItem value="legendary">Legendary</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {badges.map((badge) => (
+            {filteredBadges.map((badge) => (
               <motion.div
                 key={badge.id}
                 initial={{ opacity: 0, y: 20 }}
