@@ -129,15 +129,30 @@ const badges: BadgeItem[] = [
 const getRarityColor = (rarity: BadgeItem["rarity"]) => {
   switch (rarity) {
     case "common":
-      return "bg-slate-100 text-slate-600";
+      return "bg-gradient-to-br from-slate-100 to-slate-200 text-slate-600 border border-slate-200";
     case "rare":
-      return "bg-blue-100 text-blue-600";
+      return "bg-gradient-to-br from-blue-100 to-blue-200 text-blue-600 border border-blue-200";
     case "epic":
-      return "bg-purple-100 text-purple-600";
+      return "bg-gradient-to-br from-purple-100 to-purple-200 text-purple-600 border border-purple-200";
     case "legendary":
-      return "bg-amber-100 text-amber-600";
+      return "bg-gradient-to-br from-amber-100 to-amber-200 text-amber-600 border border-amber-200";
     default:
-      return "bg-slate-100 text-slate-600";
+      return "bg-gradient-to-br from-slate-100 to-slate-200 text-slate-600 border border-slate-200";
+  }
+};
+
+const getRarityGlow = (rarity: BadgeItem["rarity"]) => {
+  switch (rarity) {
+    case "common":
+      return "shadow-[0_0_15px_rgba(148,163,184,0.2)]";
+    case "rare":
+      return "shadow-[0_0_15px_rgba(59,130,246,0.2)]";
+    case "epic":
+      return "shadow-[0_0_15px_rgba(147,51,234,0.2)]";
+    case "legendary":
+      return "shadow-[0_0_15px_rgba(245,158,11,0.3)]";
+    default:
+      return "";
   }
 };
 
@@ -179,7 +194,7 @@ const Badges = () => {
             </Select>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
             {filteredBadges.map((badge) => (
               <motion.div
                 key={badge.id}
@@ -191,35 +206,35 @@ const Badges = () => {
                   <div 
                     className={`absolute inset-0 ${
                       badge.earned 
-                        ? 'bg-gradient-to-br from-primary/20 to-primary/10' 
-                        : 'bg-gray-200'
-                    } clip-octagon shadow-lg transition-all duration-300 group-hover:scale-105`}
+                        ? `bg-gradient-to-br from-primary/5 to-primary/10 ${getRarityGlow(badge.rarity)}` 
+                        : 'bg-gradient-to-br from-gray-100 to-gray-200'
+                    } clip-octagon shadow-lg transition-all duration-300 group-hover:scale-105 backdrop-blur-sm`}
                   >
                     <div className="flex flex-col items-center justify-center h-full p-3 space-y-2">
                       <div className={`${
                         badge.earned 
                           ? badge.rarity === 'legendary' 
-                            ? 'text-amber-500'
+                            ? 'text-amber-500 drop-shadow-[0_0_8px_rgba(245,158,11,0.3)]'
                             : badge.rarity === 'epic'
-                            ? 'text-purple-500'
+                            ? 'text-purple-500 drop-shadow-[0_0_8px_rgba(147,51,234,0.2)]'
                             : badge.rarity === 'rare'
-                            ? 'text-blue-500'
-                            : 'text-primary'
+                            ? 'text-blue-500 drop-shadow-[0_0_8px_rgba(59,130,246,0.2)]'
+                            : 'text-primary drop-shadow-[0_0_8px_rgba(148,163,184,0.2)]'
                           : 'text-gray-400'
-                      } transform transition-transform group-hover:scale-110`}>
+                      } transform transition-transform group-hover:scale-110 duration-300`}>
                         {React.cloneElement(badge.icon, { className: 'w-12 h-12' })}
                       </div>
-                      <h3 className={`text-xs font-semibold text-center ${
+                      <h3 className={`text-sm font-semibold text-center ${
                         badge.earned ? 'text-primary' : 'text-gray-500'
-                      }`}>
+                      } transition-colors duration-300`}>
                         {badge.name}
                       </h3>
                       <Badge 
                         className={`${
                           badge.earned 
                             ? getRarityColor(badge.rarity) 
-                            : 'bg-gray-100 text-gray-500'
-                        } text-sm px-4 py-1.5`}
+                            : 'bg-gradient-to-br from-gray-100 to-gray-200 text-gray-500 border border-gray-200'
+                        } text-sm px-4 py-1.5 font-medium shadow-sm transition-all duration-300`}
                       >
                         {badge.rarity}
                       </Badge>
@@ -228,16 +243,16 @@ const Badges = () => {
                   
                   {/* Description overlay */}
                   {badge.earned ? (
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200 clip-octagon bg-black/80 flex items-center justify-center p-4">
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 clip-octagon bg-black/80 flex items-center justify-center p-4 backdrop-blur-sm">
                       <div className="text-center">
-                        <p className="text-xs text-white mb-2">{badge.description}</p>
+                        <p className="text-xs text-white mb-2 font-medium">{badge.description}</p>
                         <p className="text-[10px] text-white/70">{badge.requirement}</p>
                       </div>
                     </div>
                   ) : (
-                    <div className="absolute inset-0 clip-octagon bg-black/80 flex items-center justify-center p-4">
+                    <div className="absolute inset-0 clip-octagon bg-black/80 flex items-center justify-center p-4 backdrop-blur-sm">
                       <div className="text-center">
-                        <p className="text-xs text-white mb-2">{badge.description}</p>
+                        <p className="text-xs text-white mb-2 font-medium">{badge.description}</p>
                         <p className="text-[10px] text-white/70">{badge.requirement}</p>
                       </div>
                     </div>
