@@ -2,7 +2,7 @@
 import { Badge as BadgeIcon, Crown, Trophy, Star, Target, Zap, Shield } from "lucide-react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
-import MenuBar from "@/components/MenuBar";
+import { MenuBar } from "@/components/MenuBar";
 import { Badge } from "@/components/ui/badge";
 
 interface BadgeItem {
