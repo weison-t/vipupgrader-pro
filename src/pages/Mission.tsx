@@ -305,9 +305,9 @@ const Mission = () => {
       <div className="container py-4">
         <MenuBar />
         <div className="space-y-6">
-          <div className="text-center bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 py-8 rounded-lg">
-            <h1 className="text-4xl font-bold mb-4">Mission Center</h1>
-            <p className="text-muted-foreground max-w-2xl mx-auto px-4">
+          <div className="text-center bg-gradient-to-r from-purple-500/20 via-blue-500/10 to-purple-500/20 py-8 rounded-lg">
+            <h1 className="text-4xl font-bold mb-4 text-primary">Mission Center</h1>
+            <p className="text-primary/80 max-w-2xl mx-auto px-4">
               Complete missions to earn amazing rewards and multipliers! 
               Chain missions together for combo bonuses and unlock exclusive rewards.
             </p>
@@ -315,39 +315,39 @@ const Mission = () => {
 
           <div className="grid grid-cols-12 gap-4">
             <div className="col-span-12 grid grid-cols-2 md:grid-cols-4 gap-4">
-              <Card className="p-4 bg-gradient-to-br from-blue-500/10 to-blue-600/5">
+              <Card className="p-4 bg-gradient-to-br from-indigo-500/20 to-blue-500/10">
                 <div className="flex items-center gap-2">
-                  <Trophy className="w-5 h-5 text-blue-500" />
+                  <Trophy className="w-5 h-5 text-indigo-500" />
                   <div>
-                    <p className="text-sm text-muted-foreground">Active Missions</p>
-                    <p className="text-2xl font-bold">{missions.filter(m => m.status === 'active').length}</p>
+                    <p className="text-sm text-primary/80">Active Missions</p>
+                    <p className="text-2xl font-bold text-primary">{missions.filter(m => m.status === 'active').length}</p>
                   </div>
                 </div>
               </Card>
-              <Card className="p-4 bg-gradient-to-br from-green-500/10 to-green-600/5">
+              <Card className="p-4 bg-gradient-to-br from-emerald-500/20 to-green-500/10">
                 <div className="flex items-center gap-2">
-                  <Star className="w-5 h-5 text-green-500" />
+                  <Star className="w-5 h-5 text-emerald-500" />
                   <div>
-                    <p className="text-sm text-muted-foreground">Completed</p>
-                    <p className="text-2xl font-bold">{missions.filter(m => m.status === 'completed').length}</p>
+                    <p className="text-sm text-primary/80">Completed</p>
+                    <p className="text-2xl font-bold text-primary">{missions.filter(m => m.status === 'completed').length}</p>
                   </div>
                 </div>
               </Card>
-              <Card className="p-4 bg-gradient-to-br from-yellow-500/10 to-yellow-600/5">
+              <Card className="p-4 bg-gradient-to-br from-amber-500/20 to-yellow-500/10">
                 <div className="flex items-center gap-2">
-                  <Crown className="w-5 h-5 text-yellow-500" />
+                  <Crown className="w-5 h-5 text-amber-500" />
                   <div>
-                    <p className="text-sm text-muted-foreground">VIP Missions</p>
-                    <p className="text-2xl font-bold">{missions.filter(m => m.type === 'vip').length}</p>
+                    <p className="text-sm text-primary/80">VIP Missions</p>
+                    <p className="text-2xl font-bold text-primary">{missions.filter(m => m.type === 'vip').length}</p>
                   </div>
                 </div>
               </Card>
-              <Card className="p-4 bg-gradient-to-br from-purple-500/10 to-purple-600/5">
+              <Card className="p-4 bg-gradient-to-br from-purple-500/20 to-pink-500/10">
                 <div className="flex items-center gap-2">
                   <Medal className="w-5 h-5 text-purple-500" />
                   <div>
-                    <p className="text-sm text-muted-foreground">Achievements</p>
-                    <p className="text-2xl font-bold">{missions.filter(m => m.type === 'achievement').length}</p>
+                    <p className="text-sm text-primary/80">Achievements</p>
+                    <p className="text-2xl font-bold text-primary">{missions.filter(m => m.type === 'achievement').length}</p>
                   </div>
                 </div>
               </Card>
@@ -361,8 +361,8 @@ const Mission = () => {
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <div className="bg-card rounded-lg p-4">
-                    <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 border-b pb-2">
+                  <div className="bg-card rounded-lg p-4 border border-primary/10">
+                    <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 border-b border-primary/10 pb-2 text-primary">
                       {category.icon}
                       {category.title}
                     </h2>
@@ -377,11 +377,11 @@ const Mission = () => {
                             transition={{ duration: 0.3 }}
                             className="relative"
                           >
-                            <Card className="p-4 h-full flex flex-col hover:shadow-lg transition-shadow">
+                            <Card className="p-4 h-full flex flex-col hover:shadow-lg transition-shadow border border-primary/10">
                               {mission.difficulty && (
                                 <div className={`absolute top-2 right-2 px-2 py-1 rounded-full text-xs ${
                                   getDifficultyColor(mission.difficulty)
-                                } bg-background/80`}>
+                                } bg-primary/5`}>
                                   {mission.difficulty}
                                 </div>
                               )}
@@ -390,12 +390,12 @@ const Mission = () => {
                                   {mission.icon}
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                  <h3 className="font-semibold truncate">{mission.title}</h3>
-                                  <p className="text-sm text-muted-foreground line-clamp-2">
+                                  <h3 className="font-semibold truncate text-primary">{mission.title}</h3>
+                                  <p className="text-sm text-primary/70 line-clamp-2">
                                     {mission.description}
                                   </p>
                                   {mission.expiresAt && (
-                                    <p className="text-xs text-yellow-500 mt-1 flex items-center gap-1">
+                                    <p className="text-xs text-amber-500 mt-1 flex items-center gap-1">
                                       <Timer className="w-3 h-3" />
                                       {getTimeRemaining(mission.expiresAt)}
                                     </p>
@@ -413,7 +413,7 @@ const Mission = () => {
                                     </p>
                                   )}
                                   {mission.comboMultiplier && (
-                                    <p className="text-xs text-green-500 mt-1 flex items-center gap-1">
+                                    <p className="text-xs text-emerald-500 mt-1 flex items-center gap-1">
                                       <Flame className="w-3 h-3" />
                                       {mission.comboMultiplier}x Combo
                                     </p>
@@ -430,8 +430,8 @@ const Mission = () => {
                               <div className="mt-auto space-y-3">
                                 <div className="space-y-2">
                                   <div className="flex justify-between text-sm">
-                                    <span className="text-muted-foreground">Progress</span>
-                                    <span className="font-medium">
+                                    <span className="text-primary/70">Progress</span>
+                                    <span className="font-medium text-primary">
                                       {mission.progress}/{mission.maxProgress}
                                     </span>
                                   </div>
