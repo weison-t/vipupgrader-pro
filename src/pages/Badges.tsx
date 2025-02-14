@@ -219,20 +219,29 @@ const Badges = () => {
                           badge.earned 
                             ? getRarityColor(badge.rarity) 
                             : 'bg-gray-100 text-gray-500'
-                        } text-[10px]`}
+                        } text-xs px-3 py-1`}
                       >
                         {badge.rarity}
                       </Badge>
                     </div>
                   </div>
                   
-                  {/* Description tooltip */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200 clip-octagon bg-black/80 flex items-center justify-center p-4">
-                    <div className="text-center">
-                      <p className="text-xs text-white mb-2">{badge.description}</p>
-                      <p className="text-[10px] text-white/70">{badge.requirement}</p>
+                  {/* Description overlay */}
+                  {badge.earned ? (
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200 clip-octagon bg-black/80 flex items-center justify-center p-4">
+                      <div className="text-center">
+                        <p className="text-xs text-white mb-2">{badge.description}</p>
+                        <p className="text-[10px] text-white/70">{badge.requirement}</p>
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div className="absolute inset-0 clip-octagon bg-black/80 flex items-center justify-center p-4">
+                      <div className="text-center">
+                        <p className="text-xs text-white mb-2">{badge.description}</p>
+                        <p className="text-[10px] text-white/70">{badge.requirement}</p>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </motion.div>
             ))}
