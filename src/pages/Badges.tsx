@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Badge as BadgeIcon, Crown, Trophy, Star, Target, Zap, Shield, Filter, Rocket, Medal, Award, Heart, Flame } from "lucide-react";
 import { motion } from "framer-motion";
@@ -144,32 +143,32 @@ const getRarityColor = (rarity: BadgeItem["rarity"]) => {
 const getRarityGlow = (rarity: BadgeItem["rarity"]) => {
   switch (rarity) {
     case "common":
-      return "shadow-[0_0_20px_rgba(148,163,184,0.3)]";
+      return "shadow-[0_0_20px_rgba(148,163,184,0.3)] shadow-slate-200/50";
     case "rare":
-      return "shadow-[0_0_25px_rgba(59,130,246,0.3)]";
+      return "shadow-[0_0_25px_rgba(59,130,246,0.3)] shadow-blue-200/50";
     case "epic":
-      return "shadow-[0_0_30px_rgba(147,51,234,0.3)]";
+      return "shadow-[0_0_30px_rgba(147,51,234,0.3)] shadow-purple-200/50";
     case "legendary":
-      return "shadow-[0_0_35px_rgba(245,158,11,0.4)]";
+      return "shadow-[0_0_35px_rgba(245,158,11,0.4)] shadow-amber-200/50";
     default:
       return "";
   }
 };
 
 const getBadgeBackground = (rarity: BadgeItem["rarity"], earned: boolean) => {
-  if (!earned) return 'bg-gradient-to-br from-gray-200 via-gray-100 to-gray-300';
+  if (!earned) return 'bg-gradient-to-br from-gray-200 via-gray-100 to-gray-300 shadow-lg shadow-gray-300/20';
   
   switch (rarity) {
     case "common":
-      return "bg-gradient-to-br from-slate-100 via-white to-slate-200 after:absolute after:inset-0 after:bg-gradient-to-br after:from-white/20 after:to-transparent after:clip-octagon";
+      return "bg-gradient-to-br from-slate-100 via-white to-slate-200 after:absolute after:inset-0 after:bg-gradient-to-br after:from-white/20 after:to-transparent after:clip-octagon shadow-xl shadow-slate-300/30";
     case "rare":
-      return "bg-gradient-to-br from-blue-100 via-sky-50 to-blue-200 after:absolute after:inset-0 after:bg-gradient-to-br after:from-white/30 after:to-transparent after:clip-octagon";
+      return "bg-gradient-to-br from-blue-100 via-sky-50 to-blue-200 after:absolute after:inset-0 after:bg-gradient-to-br after:from-white/30 after:to-transparent after:clip-octagon shadow-xl shadow-blue-300/30";
     case "epic":
-      return "bg-gradient-to-br from-purple-100 via-fuchsia-50 to-purple-200 after:absolute after:inset-0 after:bg-gradient-to-br after:from-white/40 after:to-transparent after:clip-octagon";
+      return "bg-gradient-to-br from-purple-100 via-fuchsia-50 to-purple-200 after:absolute after:inset-0 after:bg-gradient-to-br after:from-white/40 after:to-transparent after:clip-octagon shadow-xl shadow-purple-300/30";
     case "legendary":
-      return "bg-gradient-to-br from-amber-100 via-yellow-50 to-amber-200 after:absolute after:inset-0 after:bg-gradient-to-br after:from-white/50 after:to-transparent after:clip-octagon";
+      return "bg-gradient-to-br from-amber-100 via-yellow-50 to-amber-200 after:absolute after:inset-0 after:bg-gradient-to-br after:from-white/50 after:to-transparent after:clip-octagon shadow-xl shadow-amber-300/30";
     default:
-      return "bg-gradient-to-br from-slate-100 via-white to-slate-200";
+      return "bg-gradient-to-br from-slate-100 via-white to-slate-200 shadow-xl shadow-slate-300/30";
   }
 };
 
@@ -225,12 +224,11 @@ const Badges = () => {
                   <div 
                     className={`absolute inset-0 ${getBadgeBackground(badge.rarity, badge.earned)} 
                     ${badge.earned ? getRarityGlow(badge.rarity) : ''} 
-                    clip-octagon shadow-lg transition-all duration-300 group-hover:scale-105 
+                    clip-octagon transition-all duration-300 group-hover:scale-105 group-hover:shadow-2xl
                     backdrop-blur-sm border-2 ${badge.earned ? 'border-primary/10' : 'border-gray-300/50'}
                     before:absolute before:inset-0 before:clip-octagon before:bg-gradient-to-br before:from-white/5 before:to-white/0 before:z-10`}
                   >
                     <div className="flex flex-col items-center justify-center h-full p-3 space-y-2 relative z-20">
-                      {/* Shine effect */}
                       <div className="absolute inset-0 overflow-hidden clip-octagon opacity-50">
                         <div className="absolute top-0 -left-[100%] w-[50%] h-[200%] bg-gradient-to-r from-transparent via-white/40 to-transparent transform rotate-45 transition-transform duration-1500 group-hover:translate-x-[400%]" />
                       </div>
@@ -267,16 +265,18 @@ const Badges = () => {
                     </div>
                   </div>
                   
-                  {/* Description overlay */}
                   {badge.earned ? (
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-300 clip-octagon bg-gradient-to-br from-black/90 to-black/70 flex items-center justify-center p-4 backdrop-blur-sm transform group-hover:scale-105">
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-300 clip-octagon 
+                      bg-gradient-to-br from-black/90 to-black/70 flex items-center justify-center p-4 backdrop-blur-sm 
+                      transform group-hover:scale-105 shadow-lg shadow-black/20">
                       <div className="text-center">
                         <p className="text-xs text-white mb-2 font-medium">{badge.description}</p>
                         <p className="text-[10px] text-white/70">{badge.requirement}</p>
                       </div>
                     </div>
                   ) : (
-                    <div className="absolute inset-0 clip-octagon bg-gradient-to-br from-black/90 to-black/70 flex items-center justify-center p-4 backdrop-blur-sm">
+                    <div className="absolute inset-0 clip-octagon bg-gradient-to-br from-black/90 to-black/70 
+                      flex items-center justify-center p-4 backdrop-blur-sm shadow-lg shadow-black/20">
                       <div className="text-center">
                         <p className="text-xs text-white mb-2 font-medium">{badge.description}</p>
                         <p className="text-[10px] text-white/70">{badge.requirement}</p>
