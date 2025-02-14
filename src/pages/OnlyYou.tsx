@@ -1,8 +1,7 @@
-
 import React, { useState } from 'react';
 import { MenuBar } from '@/components/MenuBar';
 import { motion } from 'framer-motion';
-import { Gift } from 'lucide-react';
+import { Gift, Party, Stars } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -23,14 +22,21 @@ const prizes = [
 const OnlyYou = () => {
   const [revealedPrizes, setRevealedPrizes] = useState<Set<number>>(new Set());
   const [isGiftOpen, setIsGiftOpen] = useState(false);
+  const [showCongrats, setShowCongrats] = useState(false);
+  const [currentPrize, setCurrentPrize] = useState<typeof prizes[0] | null>(null);
   const { toast } = useToast();
 
   const handleScratchComplete = (prizeId: number) => {
     if (!revealedPrizes.has(prizeId)) {
+      const prize = prizes.find(p => p.id === prizeId);
       setRevealedPrizes(new Set([...revealedPrizes, prizeId]));
+      setCurrentPrize(prize || null);
+      setShowCongrats(true);
+      
       toast({
-        title: "Congratulations! 🎉",
-        description: `You won ${prizes.find(p => p.id === prizeId)?.value}!`,
+        title: "🎉 Prize Revealed!",
+        description: "Check out your amazing reward!",
+        duration: 3000,
       });
     }
   };
@@ -144,6 +150,74 @@ const OnlyYou = () => {
                 </div>
               </motion.div>
             </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Congratulations Dialog */}
+        <Dialog open={showCongrats} onOpenChange={setShowCongrats}>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle className="text-center text-2xl">
+                🎊 Congratulations! 🎊
+              </DialogTitle>
+            </DialogHeader>
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.5, type: "spring" }}
+              className="p-6 text-center"
+            >
+              <div className="relative w-24 h-24 mx-auto mb-6">
+                <motion.div
+                  animate={{ 
+                    scale: [1, 1.2, 1],
+                    rotate: [0, 10, -10, 0]
+                  }}
+                  transition={{ 
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                  className="absolute inset-0 flex items-center justify-center"
+                >
+                  <div 
+                    className="w-full h-full rounded-full"
+                    style={{ 
+                      background: currentPrize?.gradient || 'linear-gradient(135deg, #845EC2, #6F44C1)',
+                      opacity: 0.2
+                    }}
+                  />
+                </motion.div>
+                <div className="absolute inset-0 flex items-center justify-center text-4xl">
+                  🎁
+                </div>
+              </div>
+              
+              <h3 className="text-xl font-bold mb-2">You've Won!</h3>
+              <div 
+                className="p-4 rounded-lg mb-4 text-xl font-bold"
+                style={{ 
+                  background: currentPrize?.gradient || 'linear-gradient(135deg, #845EC2, #6F44C1)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent'
+                }}
+              >
+                {currentPrize?.value}
+              </div>
+              
+              <p className="text-muted-foreground mb-4">
+                Your exclusive VIP reward has been added to your account! 🌟
+              </p>
+
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-2 rounded-full font-semibold shadow-lg"
+                onClick={() => setShowCongrats(false)}
+              >
+                Claim Reward
+              </motion.button>
+            </motion.div>
           </DialogContent>
         </Dialog>
       </div>
