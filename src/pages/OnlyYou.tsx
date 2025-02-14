@@ -24,6 +24,8 @@ const OnlyYou = () => {
   const [isGiftOpen, setIsGiftOpen] = useState(false);
   const [showCongrats, setShowCongrats] = useState(false);
   const [currentPrize, setCurrentPrize] = useState<typeof prizes[0] | null>(null);
+  const [showPrizeDetails, setShowPrizeDetails] = useState(false);
+  const [selectedPrize, setSelectedPrize] = useState<typeof prizes[0] | null>(null);
   const { toast } = useToast();
 
   const handleScratchComplete = (prizeId: number) => {
@@ -39,6 +41,11 @@ const OnlyYou = () => {
         duration: 3000,
       });
     }
+  };
+
+  const handleShowDetails = (prize: typeof prizes[0]) => {
+    setSelectedPrize(prize);
+    setShowPrizeDetails(true);
   };
 
   return (
@@ -85,6 +92,22 @@ const OnlyYou = () => {
                     </div>
                   </div>
                 </ScratchCard>
+                {revealedPrizes.has(prize.id) && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="mt-4"
+                  >
+                    <button
+                      onClick={() => handleShowDetails(prize)}
+                      className="w-full bg-gradient-to-r from-[#9b87f5] to-[#7E69AB] text-white px-4 py-2 rounded-lg shadow-lg hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+                    >
+                      <Stars className="w-4 h-4" />
+                      View Details
+                    </button>
+                  </motion.div>
+                )}
               </div>
             </motion.div>
           ))}
@@ -409,6 +432,62 @@ const OnlyYou = () => {
                   Claim Reward
                 </motion.button>
               </div>
+            </motion.div>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={showPrizeDetails} onOpenChange={setShowPrizeDetails}>
+          <DialogContent className="sm:max-w-[425px]">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <DialogHeader>
+                <DialogTitle className="text-center text-2xl flex items-center justify-center gap-2">
+                  <Stars className="w-6 h-6 text-[#9b87f5]" />
+                  Prize Details
+                </DialogTitle>
+              </DialogHeader>
+              {selectedPrize && (
+                <div className="p-6">
+                  <div 
+                    className="w-full h-32 rounded-lg mb-6 flex items-center justify-center"
+                    style={{ background: selectedPrize.gradient }}
+                  >
+                    <motion.div
+                      initial={{ scale: 0.8 }}
+                      animate={{ scale: 1 }}
+                      transition={{ duration: 0.5 }}
+                      className="text-white text-2xl font-bold"
+                    >
+                      {selectedPrize.value}
+                    </motion.div>
+                  </div>
+                  <div className="space-y-4">
+                    <div className="p-4 bg-muted rounded-lg">
+                      <h4 className="font-semibold mb-2">How to Claim</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Your reward has been automatically added to your account. You can use it on your next gaming session!
+                      </p>
+                    </div>
+                    <div className="p-4 bg-muted rounded-lg">
+                      <h4 className="font-semibold mb-2">Terms & Conditions</h4>
+                      <p className="text-sm text-muted-foreground">
+                        This reward is valid for 30 days from the date of winning. Minimum wagering requirements may apply.
+                      </p>
+                    </div>
+                  </div>
+                  <motion.button
+                    className="w-full mt-6 bg-gradient-to-r from-[#9b87f5] to-[#7E69AB] text-white px-6 py-3 rounded-lg shadow-lg hover:opacity-90 transition-opacity"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setShowPrizeDetails(false)}
+                  >
+                    Got it!
+                  </motion.button>
+                </div>
+              )}
             </motion.div>
           </DialogContent>
         </Dialog>
