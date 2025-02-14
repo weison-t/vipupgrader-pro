@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Shield, ChevronRight, ChevronLeft, Gift, CreditCard } from 'lucide-react';
@@ -137,14 +136,9 @@ export const VIPCard: React.FC<VIPCardProps> = ({
                   Upgraded
                 </div>
               ) : (
-                <Button
-                  onClick={onUpgradeClick}
-                  disabled={true}
-                  className="ml-4"
-                  variant="outline"
-                >
+                <div className="px-3 py-1 rounded-full text-sm bg-primary/10 text-primary">
                   Almost There
-                </Button>
+                </div>
               )}
             </div>
           </div>
@@ -211,4 +205,3 @@ const VIP_LEVELS = [
     color: '#00FFFF',
   },
 ];
-
