@@ -143,32 +143,32 @@ const getRarityColor = (rarity: BadgeItem["rarity"]) => {
 const getRarityGlow = (rarity: BadgeItem["rarity"]) => {
   switch (rarity) {
     case "common":
-      return "shadow-[0_0_20px_rgba(148,163,184,0.3)] shadow-slate-200/50 drop-shadow-lg";
+      return "shadow-[0_0_20px_rgba(148,163,184,0.3)] shadow-slate-200/50 drop-shadow-[0_8px_8px_rgba(0,0,0,0.2)]";
     case "rare":
-      return "shadow-[0_0_25px_rgba(59,130,246,0.3)] shadow-blue-200/50 drop-shadow-lg";
+      return "shadow-[0_0_25px_rgba(59,130,246,0.3)] shadow-blue-200/50 drop-shadow-[0_8px_8px_rgba(0,0,0,0.25)]";
     case "epic":
-      return "shadow-[0_0_30px_rgba(147,51,234,0.3)] shadow-purple-200/50 drop-shadow-lg";
+      return "shadow-[0_0_30px_rgba(147,51,234,0.3)] shadow-purple-200/50 drop-shadow-[0_8px_8px_rgba(0,0,0,0.3)]";
     case "legendary":
-      return "shadow-[0_0_35px_rgba(245,158,11,0.4)] shadow-amber-200/50 drop-shadow-lg";
+      return "shadow-[0_0_35px_rgba(245,158,11,0.4)] shadow-amber-200/50 drop-shadow-[0_8px_8px_rgba(0,0,0,0.35)]";
     default:
-      return "drop-shadow-lg";
+      return "drop-shadow-[0_8px_8px_rgba(0,0,0,0.2)]";
   }
 };
 
 const getBadgeBackground = (rarity: BadgeItem["rarity"], earned: boolean) => {
-  if (!earned) return 'bg-gradient-to-br from-gray-200 via-gray-100 to-gray-300 shadow-lg shadow-gray-300/20 drop-shadow-md';
+  if (!earned) return 'bg-gradient-to-br from-gray-200 via-gray-100 to-gray-300 shadow-lg shadow-gray-300/20 drop-shadow-[0_4px_4px_rgba(0,0,0,0.15)]';
   
   switch (rarity) {
     case "common":
-      return "bg-gradient-to-br from-slate-100 via-white to-slate-200 after:absolute after:inset-0 after:bg-gradient-to-br after:from-white/20 after:to-transparent after:clip-octagon shadow-xl shadow-slate-300/30 drop-shadow-xl";
+      return "bg-gradient-to-br from-slate-100 via-white to-slate-200 after:absolute after:inset-0 after:bg-gradient-to-br after:from-white/20 after:to-transparent after:clip-octagon shadow-xl shadow-slate-300/30 drop-shadow-[0_10px_10px_rgba(0,0,0,0.25)]";
     case "rare":
-      return "bg-gradient-to-br from-blue-100 via-sky-50 to-blue-200 after:absolute after:inset-0 after:bg-gradient-to-br after:from-white/30 after:to-transparent after:clip-octagon shadow-xl shadow-blue-300/30 drop-shadow-xl";
+      return "bg-gradient-to-br from-blue-100 via-sky-50 to-blue-200 after:absolute after:inset-0 after:bg-gradient-to-br after:from-white/30 after:to-transparent after:clip-octagon shadow-xl shadow-blue-300/30 drop-shadow-[0_10px_10px_rgba(0,0,0,0.25)]";
     case "epic":
-      return "bg-gradient-to-br from-purple-100 via-fuchsia-50 to-purple-200 after:absolute after:inset-0 after:bg-gradient-to-br after:from-white/40 after:to-transparent after:clip-octagon shadow-xl shadow-purple-300/30 drop-shadow-xl";
+      return "bg-gradient-to-br from-purple-100 via-fuchsia-50 to-purple-200 after:absolute after:inset-0 after:bg-gradient-to-br after:from-white/40 after:to-transparent after:clip-octagon shadow-xl shadow-purple-300/30 drop-shadow-[0_10px_10px_rgba(0,0,0,0.25)]";
     case "legendary":
-      return "bg-gradient-to-br from-amber-100 via-yellow-50 to-amber-200 after:absolute after:inset-0 after:bg-gradient-to-br after:from-white/50 after:to-transparent after:clip-octagon shadow-xl shadow-amber-300/30 drop-shadow-xl";
+      return "bg-gradient-to-br from-amber-100 via-yellow-50 to-amber-200 after:absolute after:inset-0 after:bg-gradient-to-br after:from-white/50 after:to-transparent after:clip-octagon shadow-xl shadow-amber-300/30 drop-shadow-[0_10px_10px_rgba(0,0,0,0.25)]";
     default:
-      return "bg-gradient-to-br from-slate-100 via-white to-slate-200 shadow-xl shadow-slate-300/30 drop-shadow-xl";
+      return "bg-gradient-to-br from-slate-100 via-white to-slate-200 shadow-xl shadow-slate-300/30 drop-shadow-[0_10px_10px_rgba(0,0,0,0.25)]";
   }
 };
 
