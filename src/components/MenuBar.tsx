@@ -40,6 +40,11 @@ export const MenuBar = () => {
           Mission
         </MenubarTrigger>
       </MenubarMenu>
+      <MenubarMenu>
+        <MenubarTrigger className={`font-bold ${location.pathname === '/badges' ? 'text-primary' : ''}`} onClick={() => navigate('/badges')}>
+          Badges
+        </MenubarTrigger>
+      </MenubarMenu>
     </Menubar>
   );
 };
