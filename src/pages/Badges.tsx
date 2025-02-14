@@ -1,4 +1,5 @@
 
+import React from 'react';
 import { Badge as BadgeIcon, Crown, Trophy, Star, Target, Zap, Shield, Filter, Rocket, Medal, Award, Heart, Flame } from "lucide-react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
