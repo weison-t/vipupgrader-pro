@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { MenuBar } from '@/components/MenuBar';
 import { Card } from '@/components/ui/card';
@@ -19,13 +18,15 @@ interface Mission {
   progress: number;
   maxProgress: number;
   icon: React.ReactNode;
-  type: 'daily' | 'weekly' | 'special' | 'seasonal' | 'social' | 'achievement' | 'vip' | 'chain';
+  type: 'daily' | 'weekly' | 'special' | 'seasonal' | 'social' | 'achievement' | 'vip' | 'chain' | 'tournament' | 'lucky' | 'extreme';
   status: 'active' | 'completed' | 'locked';
   expiresAt?: string;
   chainStep?: number;
   totalChainSteps?: number;
   vipTierRequired?: string;
   comboMultiplier?: number;
+  difficulty?: 'easy' | 'medium' | 'hard' | 'extreme';
+  bonusRewards?: string[];
 }
 
 const missions: Mission[] = [
@@ -160,6 +161,85 @@ const missions: Mission[] = [
     type: 'vip',
     status: 'active',
     vipTierRequired: "DIAMOND"
+  },
+
+  // Tournament Missions
+  {
+    id: 11,
+    title: "Tournament Champion",
+    description: "Reach top 3 in weekly tournament",
+    reward: "20x Multiplier + Champion Trophy",
+    progress: 0,
+    maxProgress: 1,
+    icon: <Trophy className="w-5 h-5" />,
+    type: 'tournament',
+    status: 'active',
+    difficulty: 'hard',
+    expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+    bonusRewards: ['Exclusive Avatar Frame', 'Tournament Badge']
+  },
+
+  // Lucky Spin Mission
+  {
+    id: 12,
+    title: "Lucky Spinner",
+    description: "Complete 50 spins to unlock mystery multiplier",
+    reward: "Mystery Multiplier (5x-50x)",
+    progress: 20,
+    maxProgress: 50,
+    icon: <Star className="w-5 h-5" />,
+    type: 'lucky',
+    status: 'active',
+    difficulty: 'medium',
+    bonusRewards: ['Random Premium Item', 'Lucky Badge']
+  },
+
+  // Extreme Challenge
+  {
+    id: 13,
+    title: "Extreme Challenge",
+    description: "Win 10 games in a row",
+    reward: "100x Multiplier",
+    progress: 3,
+    maxProgress: 10,
+    icon: <Flame className="w-5 h-5" />,
+    type: 'extreme',
+    status: 'active',
+    difficulty: 'extreme',
+    comboMultiplier: 2.0,
+    bonusRewards: ['Extreme Challenger Title', 'Special Effect for Avatar']
+  },
+
+  // Enhanced Chain Mission
+  {
+    id: 14,
+    title: "Master's Path",
+    description: "Complete an epic series of challenges",
+    reward: "Progressive Rewards up to 50x",
+    progress: 1,
+    maxProgress: 5,
+    icon: <Crown className="w-5 h-5" />,
+    type: 'chain',
+    status: 'active',
+    chainStep: 1,
+    totalChainSteps: 5,
+    difficulty: 'hard',
+    bonusRewards: ['Master Title', 'Exclusive Emotes']
+  },
+
+  // Enhanced Social Mission
+  {
+    id: 15,
+    title: "Community Leader",
+    description: "Help 5 new players complete their first mission",
+    reward: "10x Multiplier + Leadership Badge",
+    progress: 2,
+    maxProgress: 5,
+    icon: <Users className="w-5 h-5" />,
+    type: 'social',
+    status: 'active',
+    difficulty: 'medium',
+    bonusRewards: ['Community Leader Badge', 'Special Chat Color']
   }
 ];
 
@@ -171,7 +251,10 @@ const missionCategories = [
   { type: 'chain', title: 'Mission Chains', icon: <Zap className="w-6 h-6 text-primary" /> },
   { type: 'social', title: 'Social Missions', icon: <Users className="w-6 h-6 text-primary" /> },
   { type: 'achievement', title: 'Achievements', icon: <Medal className="w-6 h-6 text-primary" /> },
-  { type: 'vip', title: 'VIP Exclusive', icon: <Crown className="w-6 h-6 text-primary" /> }
+  { type: 'vip', title: 'VIP Exclusive', icon: <Crown className="w-6 h-6 text-primary" /> },
+  { type: 'tournament', title: 'Tournaments', icon: <Trophy className="w-6 h-6 text-primary" /> },
+  { type: 'lucky', title: 'Lucky Missions', icon: <Star className="w-6 h-6 text-primary" /> },
+  { type: 'extreme', title: 'Extreme Challenges', icon: <Flame className="w-6 h-6 text-primary" /> }
 ];
 
 const Mission = () => {
@@ -183,9 +266,13 @@ const Mission = () => {
         ? `(Combo Bonus: ${mission.comboMultiplier}x)`
         : '';
       
+      const bonusText = mission.bonusRewards 
+        ? `\nBonus Rewards: ${mission.bonusRewards.join(', ')}`
+        : '';
+      
       toast({
         title: "🎉 Reward Claimed!",
-        description: `You've claimed: ${mission.reward} ${multiplierText}`,
+        description: `You've claimed: ${mission.reward} ${multiplierText}${bonusText}`,
       });
     } else {
       toast({
@@ -201,6 +288,16 @@ const Mission = () => {
     const hours = Math.floor(remaining / (1000 * 60 * 60));
     const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
     return `${hours}h ${minutes}m`;
+  };
+
+  const getDifficultyColor = (difficulty?: string) => {
+    switch (difficulty) {
+      case 'easy': return 'text-green-500';
+      case 'medium': return 'text-yellow-500';
+      case 'hard': return 'text-orange-500';
+      case 'extreme': return 'text-red-500';
+      default: return 'text-muted-foreground';
+    }
   };
 
   return (
@@ -244,6 +341,11 @@ const Mission = () => {
                                 <p className="text-sm text-muted-foreground">
                                   {mission.description}
                                 </p>
+                                {mission.difficulty && (
+                                  <p className={`text-xs mt-1 ${getDifficultyColor(mission.difficulty)}`}>
+                                    Difficulty: {mission.difficulty.charAt(0).toUpperCase() + mission.difficulty.slice(1)}
+                                  </p>
+                                )}
                                 {mission.expiresAt && (
                                   <p className="text-xs text-yellow-500 mt-1">
                                     Time remaining: {getTimeRemaining(mission.expiresAt)}
@@ -262,6 +364,11 @@ const Mission = () => {
                                 {mission.comboMultiplier && (
                                   <p className="text-xs text-green-500 mt-1">
                                     Combo Bonus: {mission.comboMultiplier}x
+                                  </p>
+                                )}
+                                {mission.bonusRewards && (
+                                  <p className="text-xs text-indigo-500 mt-1">
+                                    Bonus Rewards: {mission.bonusRewards.join(', ')}
                                   </p>
                                 )}
                               </div>
