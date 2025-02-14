@@ -143,7 +143,7 @@ export const VIPCard: React.FC<VIPCardProps> = ({
                   className="ml-4"
                   variant="outline"
                 >
-                  Coming Soon
+                  Almost There
                 </Button>
               )}
             </div>
