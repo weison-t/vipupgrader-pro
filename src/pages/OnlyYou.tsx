@@ -1,7 +1,8 @@
+
 import React, { useState } from 'react';
 import { MenuBar } from '@/components/MenuBar';
 import { motion } from 'framer-motion';
-import { Gift, Party, Stars } from 'lucide-react';
+import { Gift, Stars } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
