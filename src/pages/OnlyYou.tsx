@@ -107,8 +107,8 @@ const OnlyYou = () => {
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.3 }}
                           >
-                            <div className="text-2xl mb-2">🔒</div>
-                            <p className="text-sm font-medium">No longer available</p>
+                            <div className="text-2xl mb-2">🎆</div>
+                            <p className="text-sm font-medium">Awesome, we've reserved your selection!</p>
                           </motion.div>
                         </div>
                       </div>
