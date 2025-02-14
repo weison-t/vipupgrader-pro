@@ -219,7 +219,7 @@ const Badges = () => {
                           badge.earned 
                             ? getRarityColor(badge.rarity) 
                             : 'bg-gray-100 text-gray-500'
-                        } text-xs px-3 py-1`}
+                        } text-sm px-4 py-1.5`}
                       >
                         {badge.rarity}
                       </Badge>
