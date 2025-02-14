@@ -205,8 +205,8 @@ const Badges = () => {
                             ? 'text-blue-500'
                             : 'text-primary'
                           : 'text-gray-400'
-                      }`}>
-                        {badge.icon}
+                      } transform transition-transform group-hover:scale-110`}>
+                        {React.cloneElement(badge.icon, { className: 'w-12 h-12' })}
                       </div>
                       <h3 className={`text-xs font-semibold text-center ${
                         badge.earned ? 'text-primary' : 'text-gray-500'
@@ -222,6 +222,14 @@ const Badges = () => {
                       >
                         {badge.rarity}
                       </Badge>
+                    </div>
+                  </div>
+                  
+                  {/* Description tooltip */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200 clip-octagon bg-black/80 flex items-center justify-center p-4">
+                    <div className="text-center">
+                      <p className="text-xs text-white mb-2">{badge.description}</p>
+                      <p className="text-[10px] text-white/70">{badge.requirement}</p>
                     </div>
                   </div>
                 </div>
