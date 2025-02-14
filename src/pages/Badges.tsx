@@ -161,13 +161,13 @@ const getBadgeBackground = (rarity: BadgeItem["rarity"], earned: boolean) => {
   
   switch (rarity) {
     case "common":
-      return "bg-gradient-to-br from-slate-100 via-white to-slate-200";
+      return "bg-gradient-to-br from-slate-100 via-white to-slate-200 after:absolute after:inset-0 after:bg-gradient-to-br after:from-white/20 after:to-transparent after:clip-octagon";
     case "rare":
-      return "bg-gradient-to-br from-blue-100 via-sky-50 to-blue-200";
+      return "bg-gradient-to-br from-blue-100 via-sky-50 to-blue-200 after:absolute after:inset-0 after:bg-gradient-to-br after:from-white/30 after:to-transparent after:clip-octagon";
     case "epic":
-      return "bg-gradient-to-br from-purple-100 via-fuchsia-50 to-purple-200";
+      return "bg-gradient-to-br from-purple-100 via-fuchsia-50 to-purple-200 after:absolute after:inset-0 after:bg-gradient-to-br after:from-white/40 after:to-transparent after:clip-octagon";
     case "legendary":
-      return "bg-gradient-to-br from-amber-100 via-yellow-50 to-amber-200";
+      return "bg-gradient-to-br from-amber-100 via-yellow-50 to-amber-200 after:absolute after:inset-0 after:bg-gradient-to-br after:from-white/50 after:to-transparent after:clip-octagon";
     default:
       return "bg-gradient-to-br from-slate-100 via-white to-slate-200";
   }
@@ -181,18 +181,20 @@ const Badges = () => {
   );
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-background/90">
       <div className="container py-4">
         <MenuBar />
         <div className="space-y-6">
-          <div className="text-center py-4">
-            <h1 className="text-4xl font-bold mb-2 text-primary">Badge Collection</h1>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
+          <div className="text-center py-8">
+            <h1 className="text-5xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
+              Badge Collection
+            </h1>
+            <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
               Collect badges by completing special achievements and showcase your accomplishments!
             </p>
           </div>
 
-          <div className="flex items-center justify-end mb-4 gap-2">
+          <div className="flex items-center justify-end mb-6 gap-2">
             <Filter className="w-4 h-4 text-muted-foreground" />
             <Select
               value={selectedRarity}
@@ -224,12 +226,13 @@ const Badges = () => {
                     className={`absolute inset-0 ${getBadgeBackground(badge.rarity, badge.earned)} 
                     ${badge.earned ? getRarityGlow(badge.rarity) : ''} 
                     clip-octagon shadow-lg transition-all duration-300 group-hover:scale-105 
-                    backdrop-blur-sm border-2 ${badge.earned ? 'border-primary/10' : 'border-gray-300/50'}`}
+                    backdrop-blur-sm border-2 ${badge.earned ? 'border-primary/10' : 'border-gray-300/50'}
+                    before:absolute before:inset-0 before:clip-octagon before:bg-gradient-to-br before:from-white/5 before:to-white/0 before:z-10`}
                   >
-                    <div className="flex flex-col items-center justify-center h-full p-3 space-y-2 relative">
+                    <div className="flex flex-col items-center justify-center h-full p-3 space-y-2 relative z-20">
                       {/* Shine effect */}
                       <div className="absolute inset-0 overflow-hidden clip-octagon opacity-50">
-                        <div className="absolute top-0 -left-[100%] w-[50%] h-[200%] bg-gradient-to-r from-transparent via-white/30 to-transparent transform rotate-45 transition-transform duration-1500 group-hover:translate-x-[400%]" />
+                        <div className="absolute top-0 -left-[100%] w-[50%] h-[200%] bg-gradient-to-r from-transparent via-white/40 to-transparent transform rotate-45 transition-transform duration-1500 group-hover:translate-x-[400%]" />
                       </div>
                       
                       <div className={`${
@@ -243,7 +246,9 @@ const Badges = () => {
                             : 'text-primary drop-shadow-[0_0_12px_rgba(148,163,184,0.3)]'
                           : 'text-gray-400'
                       } transform transition-all duration-300 group-hover:scale-110 group-hover:rotate-3`}>
-                        {React.cloneElement(badge.icon, { className: 'w-12 h-12' })}
+                        {React.cloneElement(badge.icon, { 
+                          className: 'w-12 h-12 transition-transform duration-500 group-hover:rotate-[360deg]' 
+                        })}
                       </div>
                       <h3 className={`text-sm font-semibold text-center ${
                         badge.earned ? 'text-primary' : 'text-gray-500'
@@ -264,14 +269,14 @@ const Badges = () => {
                   
                   {/* Description overlay */}
                   {badge.earned ? (
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-300 clip-octagon bg-black/80 flex items-center justify-center p-4 backdrop-blur-sm transform group-hover:scale-105">
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-300 clip-octagon bg-gradient-to-br from-black/90 to-black/70 flex items-center justify-center p-4 backdrop-blur-sm transform group-hover:scale-105">
                       <div className="text-center">
                         <p className="text-xs text-white mb-2 font-medium">{badge.description}</p>
                         <p className="text-[10px] text-white/70">{badge.requirement}</p>
                       </div>
                     </div>
                   ) : (
-                    <div className="absolute inset-0 clip-octagon bg-black/80 flex items-center justify-center p-4 backdrop-blur-sm">
+                    <div className="absolute inset-0 clip-octagon bg-gradient-to-br from-black/90 to-black/70 flex items-center justify-center p-4 backdrop-blur-sm">
                       <div className="text-center">
                         <p className="text-xs text-white mb-2 font-medium">{badge.description}</p>
                         <p className="text-[10px] text-white/70">{badge.requirement}</p>
