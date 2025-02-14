@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { MenuBar } from '@/components/MenuBar';
 import { motion } from 'framer-motion';
@@ -52,7 +51,6 @@ const OnlyYou = () => {
           Each one holds an exciting surprise waiting to be discovered. Start scratching and unveil your lucky rewards! ✨
         </p>
         
-        {/* Scratch Cards Section */}
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-8 mb-16">
           {prizes.map((prize) => (
             <motion.div 
@@ -92,7 +90,6 @@ const OnlyYou = () => {
           ))}
         </div>
 
-        {/* Gift Box Section */}
         <div className="flex justify-center mb-16">
           <motion.div
             whileHover={{ scale: 1.05 }}
@@ -123,7 +120,6 @@ const OnlyYou = () => {
           </motion.div>
         </div>
 
-        {/* Gift Dialog */}
         <Dialog open={isGiftOpen} onOpenChange={setIsGiftOpen}>
           <DialogContent className="sm:max-w-[500px]">
             <DialogHeader>
@@ -154,70 +150,116 @@ const OnlyYou = () => {
           </DialogContent>
         </Dialog>
 
-        {/* Congratulations Dialog */}
         <Dialog open={showCongrats} onOpenChange={setShowCongrats}>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle className="text-center text-2xl">
-                🎊 Congratulations! 🎊
-              </DialogTitle>
-            </DialogHeader>
+          <DialogContent className="sm:max-w-[425px] duration-500">
             <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.5, type: "spring" }}
-              className="p-6 text-center"
+              initial={{ opacity: 0, scale: 0.8, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ 
+                duration: 0.8,
+                ease: "easeOut",
+                delay: 0.2
+              }}
             >
-              <div className="relative w-24 h-24 mx-auto mb-6">
-                <motion.div
-                  animate={{ 
-                    scale: [1, 1.2, 1],
-                    rotate: [0, 10, -10, 0]
-                  }}
+              <DialogHeader>
+                <DialogTitle className="text-center text-2xl">
+                  <motion.span
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5, duration: 0.5 }}
+                  >
+                    🎊 Congratulations! 🎊
+                  </motion.span>
+                </DialogTitle>
+              </DialogHeader>
+              <div className="p-6 text-center">
+                <motion.div 
+                  className="relative w-24 h-24 mx-auto mb-6"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
                   transition={{ 
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut"
+                    delay: 0.6,
+                    duration: 0.5,
+                    type: "spring",
+                    stiffness: 260,
+                    damping: 20
                   }}
-                  className="absolute inset-0 flex items-center justify-center"
                 >
-                  <div 
-                    className="w-full h-full rounded-full"
-                    style={{ 
-                      background: currentPrize?.gradient || 'linear-gradient(135deg, #845EC2, #6F44C1)',
-                      opacity: 0.2
+                  <motion.div
+                    animate={{ 
+                      scale: [1, 1.2, 1],
+                      rotate: [0, 10, -10, 0]
                     }}
-                  />
+                    transition={{ 
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: 1
+                    }}
+                    className="absolute inset-0 flex items-center justify-center"
+                  >
+                    <div 
+                      className="w-full h-full rounded-full"
+                      style={{ 
+                        background: currentPrize?.gradient || 'linear-gradient(135deg, #845EC2, #6F44C1)',
+                        opacity: 0.2
+                      }}
+                    />
+                  </motion.div>
+                  <motion.div 
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 1, duration: 0.5 }}
+                    className="absolute inset-0 flex items-center justify-center text-4xl"
+                  >
+                    🎁
+                  </motion.div>
                 </motion.div>
-                <div className="absolute inset-0 flex items-center justify-center text-4xl">
-                  🎁
-                </div>
-              </div>
-              
-              <h3 className="text-xl font-bold mb-2">You've Won!</h3>
-              <div 
-                className="p-4 rounded-lg mb-4 text-xl font-bold"
-                style={{ 
-                  background: currentPrize?.gradient || 'linear-gradient(135deg, #845EC2, #6F44C1)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent'
-                }}
-              >
-                {currentPrize?.value}
-              </div>
-              
-              <p className="text-muted-foreground mb-4">
-                Your exclusive VIP reward has been added to your account! 🌟
-              </p>
+                
+                <motion.h3 
+                  className="text-xl font-bold mb-2"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.8, duration: 0.5 }}
+                >
+                  You've Won!
+                </motion.h3>
+                
+                <motion.div 
+                  className="p-4 rounded-lg mb-4 text-xl font-bold"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1, duration: 0.5 }}
+                  style={{ 
+                    background: currentPrize?.gradient || 'linear-gradient(135deg, #845EC2, #6F44C1)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent'
+                  }}
+                >
+                  {currentPrize?.value}
+                </motion.div>
+                
+                <motion.p 
+                  className="text-muted-foreground mb-4"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1.2, duration: 0.5 }}
+                >
+                  Your exclusive VIP reward has been added to your account! 🌟
+                </motion.p>
 
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-2 rounded-full font-semibold shadow-lg"
-                onClick={() => setShowCongrats(false)}
-              >
-                Claim Reward
-              </motion.button>
+                <motion.button
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.4, duration: 0.5 }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-2 rounded-full font-semibold shadow-lg"
+                  onClick={() => setShowCongrats(false)}
+                >
+                  Claim Reward
+                </motion.button>
+              </div>
             </motion.div>
           </DialogContent>
         </Dialog>
