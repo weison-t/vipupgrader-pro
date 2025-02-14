@@ -26,14 +26,16 @@ const OnlyYou = () => {
   const [currentPrize, setCurrentPrize] = useState<typeof prizes[0] | null>(null);
   const [showPrizeDetails, setShowPrizeDetails] = useState(false);
   const [selectedPrize, setSelectedPrize] = useState<typeof prizes[0] | null>(null);
+  const [hasScratched, setHasScratched] = useState(false);
   const { toast } = useToast();
 
   const handleScratchComplete = (prizeId: number) => {
-    if (!revealedPrizes.has(prizeId)) {
+    if (!hasScratched && !revealedPrizes.has(prizeId)) {
       const prize = prizes.find(p => p.id === prizeId);
       setRevealedPrizes(new Set([...revealedPrizes, prizeId]));
       setCurrentPrize(prize || null);
       setShowCongrats(true);
+      setHasScratched(true);
       
       toast({
         title: "🎉 Prize Revealed!",
@@ -54,63 +56,84 @@ const OnlyYou = () => {
         <MenuBar />
         <h1 className="text-4xl font-bold text-center mb-4">Special Rewards Just For You</h1>
         <p className="text-center text-muted-foreground mb-8 max-w-2xl mx-auto">
-          Welcome to your exclusive VIP rewards showcase! We've prepared these special scratch cards just for you. 
-          Each one holds an exciting surprise waiting to be discovered. Start scratching and unveil your lucky rewards! ✨
+          Welcome to your exclusive VIP rewards showcase! Choose one special scratch card to reveal your prize. 
+          Choose wisely - you can only scratch one card! ✨
         </p>
         
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-8 mb-16">
-          {prizes.map((prize) => (
-            <motion.div 
-              key={prize.id}
-              className="relative"
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.4, delay: prize.id * 0.1 }}
-            >
-              <div className="absolute -inset-1.5 bg-gradient-to-r from-pink-600 to-purple-600 rounded-lg blur opacity-20"></div>
-              <div className="relative">
-                <ScratchCard
-                  width={200}
-                  height={200}
-                  onComplete={() => handleScratchComplete(prize.id)}
-                >
-                  <div 
-                    className="w-[200px] h-[200px] flex items-center justify-center p-6 rounded-lg"
-                    style={{ 
-                      background: prize.gradient,
-                      boxShadow: 'inset 0 0 40px rgba(0,0,0,0.2)',
-                    }}
-                  >
-                    <div className="text-center">
-                      <div className="text-3xl mb-3">💎</div>
-                      <div className="text-white font-bold text-xl leading-tight">
-                        {prize.value}
-                      </div>
-                      <div className="text-white/80 text-sm mt-2">
-                        Exclusive Reward
-                      </div>
-                    </div>
-                  </div>
-                </ScratchCard>
-                {revealedPrizes.has(prize.id) && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="mt-4"
-                  >
-                    <button
-                      onClick={() => handleShowDetails(prize)}
-                      className="w-full bg-gradient-to-r from-[#9b87f5] to-[#7E69AB] text-white px-4 py-2 rounded-lg shadow-lg hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+          {prizes.map((prize) => {
+            const isRevealed = revealedPrizes.has(prize.id);
+            const isDisabled = hasScratched && !isRevealed;
+
+            return (
+              <motion.div 
+                key={prize.id}
+                className="relative"
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.4, delay: prize.id * 0.1 }}
+              >
+                <div className="absolute -inset-1.5 bg-gradient-to-r from-pink-600 to-purple-600 rounded-lg blur opacity-20"></div>
+                <div className="relative">
+                  <div className={`relative ${isDisabled ? 'pointer-events-none' : ''}`}>
+                    <ScratchCard
+                      width={200}
+                      height={200}
+                      onComplete={() => handleScratchComplete(prize.id)}
                     >
-                      <Stars className="w-4 h-4" />
-                      View Details
-                    </button>
-                  </motion.div>
-                )}
-              </div>
-            </motion.div>
-          ))}
+                      <div 
+                        className="w-[200px] h-[200px] flex items-center justify-center p-6 rounded-lg"
+                        style={{ 
+                          background: prize.gradient,
+                          boxShadow: 'inset 0 0 40px rgba(0,0,0,0.2)',
+                        }}
+                      >
+                        <div className="text-center">
+                          <div className="text-3xl mb-3">💎</div>
+                          <div className="text-white font-bold text-xl leading-tight">
+                            {prize.value}
+                          </div>
+                          <div className="text-white/80 text-sm mt-2">
+                            Exclusive Reward
+                          </div>
+                        </div>
+                      </div>
+                    </ScratchCard>
+                    {isDisabled && (
+                      <div className="absolute inset-0 bg-gray-900/50 backdrop-blur-sm rounded-lg flex items-center justify-center">
+                        <div className="text-white text-center p-4">
+                          <motion.div
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.3 }}
+                          >
+                            <div className="text-2xl mb-2">🔒</div>
+                            <p className="text-sm font-medium">No longer available</p>
+                          </motion.div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  {isRevealed && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="mt-4"
+                    >
+                      <button
+                        onClick={() => handleShowDetails(prize)}
+                        className="w-full bg-gradient-to-r from-[#9b87f5] to-[#7E69AB] text-white px-4 py-2 rounded-lg shadow-lg hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+                      >
+                        <Stars className="w-4 h-4" />
+                        View Details
+                      </button>
+                    </motion.div>
+                  )}
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
 
         <div className="flex justify-center mb-16">
