@@ -36,8 +36,8 @@ export const MenuBar = () => {
         </MenubarTrigger>
       </MenubarMenu>
       <MenubarMenu>
-        <MenubarTrigger className={`font-bold ${location.pathname === '/test' ? 'text-primary' : ''}`} onClick={() => navigate('/test')}>
-          Test
+        <MenubarTrigger className={`font-bold ${location.pathname === '/mission' ? 'text-primary' : ''}`} onClick={() => navigate('/mission')}>
+          Mission
         </MenubarTrigger>
       </MenubarMenu>
     </Menubar>
