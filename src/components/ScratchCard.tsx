@@ -20,8 +20,35 @@ const ScratchCard: React.FC<ScratchCardProps> = ({ width, height, children, onCo
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    ctx.fillStyle = '#e5e5e5';
+    // Create gradient background
+    const gradient = ctx.createLinearGradient(0, 0, width, height);
+    gradient.addColorStop(0, '#e5e5e5');
+    gradient.addColorStop(1, '#f5f5f5');
+    ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, width, height);
+
+    // Add "Scratch Me!" text
+    ctx.font = 'bold 24px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#666';
+    ctx.fillText('Scratch Me!', width / 2, height / 2);
+
+    // Add decorative pattern
+    ctx.strokeStyle = '#ddd';
+    ctx.lineWidth = 2;
+    for (let i = 0; i < width; i += 20) {
+      ctx.beginPath();
+      ctx.moveTo(i, 0);
+      ctx.lineTo(i, height);
+      ctx.stroke();
+    }
+    for (let i = 0; i < height; i += 20) {
+      ctx.beginPath();
+      ctx.moveTo(0, i);
+      ctx.lineTo(width, i);
+      ctx.stroke();
+    }
   }, [width, height]);
 
   const scratch = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
@@ -61,14 +88,14 @@ const ScratchCard: React.FC<ScratchCardProps> = ({ width, height, children, onCo
 
   return (
     <div className="relative" style={{ width, height }}>
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 rounded-lg overflow-hidden shadow-lg">
         {children}
       </div>
       <canvas
         ref={canvasRef}
         width={width}
         height={height}
-        className="absolute inset-0 cursor-pointer"
+        className="absolute inset-0 cursor-pointer rounded-lg"
         onMouseDown={() => setIsScratching(true)}
         onMouseUp={() => setIsScratching(false)}
         onMouseMove={scratch}

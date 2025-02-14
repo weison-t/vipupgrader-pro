@@ -44,7 +44,7 @@ const OnlyYou = () => {
         {/* Scratch Cards Section */}
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-16">
           {prizes.map((prize) => (
-            <div key={prize.id} className="relative flex justify-center">
+            <div key={prize.id} className="relative flex justify-center transform hover:scale-105 transition-transform duration-200">
               <ScratchCard
                 width={200}
                 height={192}
@@ -52,7 +52,10 @@ const OnlyYou = () => {
               >
                 <div 
                   className="w-[200px] h-[192px] flex items-center justify-center text-white font-bold text-xl"
-                  style={{ backgroundColor: prize.color }}
+                  style={{ 
+                    background: `linear-gradient(135deg, ${prize.color}, ${prize.color}dd)`,
+                    boxShadow: 'inset 0 0 20px rgba(0,0,0,0.1)'
+                  }}
                 >
                   {prize.value}
                 </div>
