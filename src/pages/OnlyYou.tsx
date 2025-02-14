@@ -39,7 +39,11 @@ const OnlyYou = () => {
     <div className="min-h-screen bg-background">
       <div className="container py-8">
         <MenuBar />
-        <h1 className="text-4xl font-bold text-center mb-8">Special Rewards Just For You</h1>
+        <h1 className="text-4xl font-bold text-center mb-4">Special Rewards Just For You</h1>
+        <p className="text-center text-muted-foreground mb-8 max-w-2xl mx-auto">
+          Welcome to your exclusive VIP rewards showcase! We've prepared these special scratch cards just for you. 
+          Each one holds an exciting surprise waiting to be discovered. Start scratching and unveil your lucky rewards! ✨
+        </p>
         
         {/* Scratch Cards Section */}
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-16">
