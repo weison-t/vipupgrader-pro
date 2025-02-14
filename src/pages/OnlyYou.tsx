@@ -97,26 +97,175 @@ const OnlyYou = () => {
             className="cursor-pointer"
             onClick={() => setIsGiftOpen(true)}
           >
-            <div className="w-64 h-64 relative">
+            <div className="w-72 h-72 relative">
               <motion.div
-                className="absolute inset-0 bg-[#FDE1D3] rounded-lg shadow-lg"
+                className="absolute inset-0 rounded-2xl shadow-2xl overflow-hidden"
                 animate={{
                   rotate: [0, 2, -2, 0],
                 }}
                 transition={{
-                  duration: 2,
+                  duration: 4,
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
+                style={{
+                  background: 'linear-gradient(135deg, #FDE1D3, #F7CAC9)',
+                }}
               >
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Gift className="w-24 h-24 text-[#9b87f5]" />
-                </div>
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-32 bg-[#9b87f5] transform -rotate-45 origin-bottom" />
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-32 bg-[#9b87f5] transform rotate-45 origin-bottom" />
+                <motion.div 
+                  className="absolute inset-0"
+                  animate={{
+                    scale: [1, 1.02, 1],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                >
+                  <motion.div 
+                    className="absolute left-1/2 -translate-x-1/2 w-12 h-full bg-gradient-to-b from-[#9b87f5] to-[#7E69AB]"
+                    animate={{
+                      scale: [1, 1.02, 1],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                  />
+                  
+                  <motion.div 
+                    className="absolute top-1/2 -translate-y-1/2 w-full h-12 bg-gradient-to-r from-[#9b87f5] to-[#7E69AB]"
+                    animate={{
+                      scale: [1, 1.02, 1],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: 0.5,
+                    }}
+                  />
+                  
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 z-10">
+                    <motion.div
+                      className="w-24 h-24 relative"
+                      animate={{
+                        rotate: [0, 5, -5, 0],
+                      }}
+                      transition={{
+                        duration: 4,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      }}
+                    >
+                      <motion.div
+                        className="absolute left-0 w-10 h-16 rounded-full bg-gradient-to-br from-[#9b87f5] to-[#7E69AB] origin-right"
+                        animate={{
+                          rotate: [-20, -15, -20],
+                          scale: [1, 1.05, 1],
+                        }}
+                        transition={{
+                          duration: 2,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                        }}
+                      />
+                      
+                      <motion.div
+                        className="absolute right-0 w-10 h-16 rounded-full bg-gradient-to-bl from-[#9b87f5] to-[#7E69AB] origin-left"
+                        animate={{
+                          rotate: [20, 15, 20],
+                          scale: [1, 1.05, 1],
+                        }}
+                        transition={{
+                          duration: 2,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                        }}
+                      />
+                      
+                      <motion.div
+                        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-gradient-to-r from-[#9b87f5] to-[#7E69AB] shadow-lg"
+                        animate={{
+                          scale: [1, 1.1, 1],
+                        }}
+                        transition={{
+                          duration: 2,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                        }}
+                      />
+                    </motion.div>
+                  </div>
+
+                  <motion.div
+                    className="absolute inset-0 flex items-center justify-center"
+                    initial={{ scale: 0.8 }}
+                    animate={{
+                      scale: [0.8, 0.85, 0.8],
+                      rotate: [0, 5, -5, 0],
+                    }}
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                  >
+                    <Gift className="w-32 h-32 text-[#7E69AB] opacity-80" />
+                  </motion.div>
+
+                  <motion.div
+                    className="absolute inset-0"
+                    animate={{
+                      opacity: [0.5, 1, 0.5],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                  >
+                    {[...Array(6)].map((_, i) => (
+                      <motion.div
+                        key={i}
+                        className="absolute w-3 h-3 text-yellow-300"
+                        style={{
+                          left: `${Math.random() * 100}%`,
+                          top: `${Math.random() * 100}%`,
+                        }}
+                        animate={{
+                          scale: [1, 1.5, 1],
+                          opacity: [0.5, 1, 0.5],
+                        }}
+                        transition={{
+                          duration: 2,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                          delay: i * 0.2,
+                        }}
+                      >
+                        ✨
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                </motion.div>
               </motion.div>
             </div>
-            <p className="text-center mt-4 text-lg font-semibold">Click to open your special gift!</p>
+            <motion.p 
+              className="text-center mt-6 text-lg font-semibold bg-gradient-to-r from-[#9b87f5] to-[#7E69AB] bg-clip-text text-transparent"
+              animate={{
+                scale: [1, 1.02, 1],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            >
+              Click to open your special gift!
+            </motion.p>
           </motion.div>
         </div>
 
