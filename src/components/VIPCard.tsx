@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Shield, ChevronRight, ChevronLeft, Gift, CreditCard } from 'lucide-react';
@@ -138,8 +137,8 @@ export const VIPCard: React.FC<VIPCardProps> = ({
                 className="ml-4"
                 variant={currentTurnover >= currentSubTierTurnover ? "default" : "outline"}
               >
-                {currentTurnover >= currentSubTierTurnover ? "Upgrade Now" : "Not Eligible"}
-                <ChevronRight className="w-4 h-4 ml-2" />
+                {currentTurnover >= currentSubTierTurnover ? "Upgraded" : "Not Eligible"}
+                <ChevronRight className="w-4 w-4 ml-2" />
               </Button>
             </div>
           </div>
@@ -206,4 +205,3 @@ const VIP_LEVELS = [
     color: '#00FFFF',
   },
 ];
-
