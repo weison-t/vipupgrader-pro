@@ -20,53 +20,55 @@ const ScratchCard: React.FC<ScratchCardProps> = ({ width, height, children, onCo
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Create gradient background
+    // Create metallic gradient background
     const gradient = ctx.createLinearGradient(0, 0, width, height);
-    gradient.addColorStop(0, '#e5e5e5');
-    gradient.addColorStop(0.5, '#f5f5f5');
-    gradient.addColorStop(1, '#e5e5e5');
+    gradient.addColorStop(0, '#e0e0e0');
+    gradient.addColorStop(0.2, '#f5f5f5');
+    gradient.addColorStop(0.5, '#ffffff');
+    gradient.addColorStop(0.8, '#f5f5f5');
+    gradient.addColorStop(1, '#e0e0e0');
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, width, height);
 
-    // Add "Scratch Me!" text
+    // Add "Scratch Here!" text with shadow
+    ctx.save();
+    ctx.shadowColor = 'rgba(0,0,0,0.2)';
+    ctx.shadowBlur = 4;
     ctx.font = 'bold 24px Arial';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = '#666';
-    ctx.fillText('Scratch Me!', width / 2, height / 2);
+    ctx.fillText('Scratch Here!', width / 2, height / 2);
+    ctx.restore();
 
-    // Add sparkle pattern
-    ctx.strokeStyle = '#ddd';
+    // Add circular pattern
+    ctx.strokeStyle = '#ccc';
     ctx.lineWidth = 1;
     
-    // Draw diagonal lines
-    for (let i = -height; i < width; i += 20) {
+    // Create circular pattern
+    for (let radius = 20; radius < Math.max(width, height); radius += 20) {
       ctx.beginPath();
-      ctx.moveTo(i, 0);
-      ctx.lineTo(i + height, height);
+      ctx.arc(width / 2, height / 2, radius, 0, Math.PI * 2);
       ctx.stroke();
     }
-    
-    // Draw stars
-    const drawStar = (x: number, y: number, size: number) => {
+
+    // Add sparkles
+    const drawSparkle = (x: number, y: number) => {
+      const size = 3;
       ctx.beginPath();
-      for (let i = 0; i < 5; i++) {
-        ctx.lineTo(
-          x + size * Math.cos((i * 4 * Math.PI) / 5),
-          y + size * Math.sin((i * 4 * Math.PI) / 5)
-        );
-      }
-      ctx.closePath();
-      ctx.strokeStyle = '#ccc';
+      ctx.moveTo(x - size, y);
+      ctx.lineTo(x + size, y);
+      ctx.moveTo(x, y - size);
+      ctx.lineTo(x, y + size);
+      ctx.strokeStyle = '#ddd';
       ctx.stroke();
     };
 
-    // Add random stars
-    for (let i = 0; i < 10; i++) {
-      drawStar(
+    // Add random sparkles
+    for (let i = 0; i < 15; i++) {
+      drawSparkle(
         Math.random() * width,
-        Math.random() * height,
-        3
+        Math.random() * height
       );
     }
   }, [width, height]);
@@ -87,14 +89,15 @@ const ScratchCard: React.FC<ScratchCardProps> = ({ width, height, children, onCo
       : e.clientY - rect.top;
 
     ctx.globalCompositeOperation = 'destination-out';
-    ctx.beginPath();
     
-    // Create a more natural scratch effect
+    // Create a more sophisticated scratch effect
     const radius = 20;
     const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
     gradient.addColorStop(0, 'rgba(0,0,0,1)');
+    gradient.addColorStop(0.5, 'rgba(0,0,0,0.8)');
     gradient.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = gradient;
+    ctx.beginPath();
     ctx.arc(x, y, radius, 0, Math.PI * 2);
     ctx.fill();
 
