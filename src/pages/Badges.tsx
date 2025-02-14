@@ -1,5 +1,5 @@
 
-import { Badge as BadgeIcon, Crown, Trophy, Star, Target, Zap, Shield, Filter } from "lucide-react";
+import { Badge as BadgeIcon, Crown, Trophy, Star, Target, Zap, Shield, Filter, Rocket, Medal, Award, Heart, Flame } from "lucide-react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { MenuBar } from "@/components/MenuBar";
@@ -20,7 +20,6 @@ interface BadgeItem {
   icon: JSX.Element;
   rarity: "common" | "rare" | "epic" | "legendary";
   earned: boolean;
-  progress: number;
   requirement: string;
 }
 
@@ -29,61 +28,100 @@ const badges: BadgeItem[] = [
     id: "first-win",
     name: "First Victory",
     description: "Win your first game",
-    icon: <Trophy className="w-6 h-6 text-amber-500" />,
+    icon: <Trophy className="w-8 h-8" />,
     rarity: "common",
     earned: true,
-    progress: 100,
     requirement: "Win 1 game"
   },
   {
     id: "high-roller",
     name: "High Roller",
     description: "Place a bet of $1,000 or more",
-    icon: <Crown className="w-6 h-6 text-purple-500" />,
+    icon: <Crown className="w-8 h-8" />,
     rarity: "rare",
     earned: false,
-    progress: 50,
     requirement: "Place a $1,000+ bet"
   },
   {
     id: "lucky-streak",
     name: "Lucky Streak",
     description: "Win 5 games in a row",
-    icon: <Zap className="w-6 h-6 text-yellow-500" />,
+    icon: <Zap className="w-8 h-8" />,
     rarity: "epic",
     earned: false,
-    progress: 20,
     requirement: "Win 5 consecutive games"
   },
   {
     id: "master-player",
     name: "Master Player",
     description: "Achieve VIP status",
-    icon: <Star className="w-6 h-6 text-blue-500" />,
+    icon: <Star className="w-8 h-8" />,
     rarity: "legendary",
     earned: false,
-    progress: 0,
     requirement: "Reach VIP status"
   },
   {
     id: "sharp-shooter",
     name: "Sharp Shooter",
     description: "Hit 3 perfect scores",
-    icon: <Target className="w-6 h-6 text-red-500" />,
+    icon: <Target className="w-8 h-8" />,
     rarity: "rare",
-    earned: false,
-    progress: 33,
+    earned: true,
     requirement: "Get 3 perfect scores"
   },
   {
     id: "veteran",
     name: "Veteran",
     description: "Play for 30 days",
-    icon: <Shield className="w-6 h-6 text-green-500" />,
+    icon: <Shield className="w-8 h-8" />,
     rarity: "epic",
     earned: false,
-    progress: 80,
     requirement: "Play for 30 days"
+  },
+  {
+    id: "pioneer",
+    name: "Pioneer",
+    description: "Be among the first 100 players",
+    icon: <Rocket className="w-8 h-8" />,
+    rarity: "legendary",
+    earned: true,
+    requirement: "Early registration"
+  },
+  {
+    id: "champion",
+    name: "Champion",
+    description: "Win 50 games total",
+    icon: <Medal className="w-8 h-8" />,
+    rarity: "epic",
+    earned: false,
+    requirement: "Win 50 games"
+  },
+  {
+    id: "social-butterfly",
+    name: "Social Butterfly",
+    description: "Make 10 friends",
+    icon: <Heart className="w-8 h-8" />,
+    rarity: "common",
+    earned: true,
+    requirement: "Add 10 friends"
+  },
+  {
+    id: "hot-streak",
+    name: "Hot Streak",
+    description: "Win 10 games in one day",
+    icon: <Flame className="w-8 h-8" />,
+    rarity: "legendary",
+    earned: false,
+    requirement: "10 wins in 24h"
+  },
+  {
+    id: "achievement-hunter",
+    name: "Achievement Hunter",
+    description: "Earn 5 different badges",
+    icon: <Award className="w-8 h-8" />,
+    rarity: "rare",
+    earned: true,
+    requirement: "Collect 5 badges"
   }
 ];
 
@@ -140,53 +178,53 @@ const Badges = () => {
             </Select>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {filteredBadges.map((badge) => (
               <motion.div
                 key={badge.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.3 }}
               >
-                <Card className={`p-4 relative ${badge.earned ? 'border-primary' : 'border-border'}`}>
-                  <div className="flex items-start gap-4">
-                    <div className={`p-3 rounded-lg ${badge.earned ? 'bg-primary/10' : 'bg-muted'}`}>
-                      {badge.icon}
-                    </div>
-                    <div className="space-y-1 flex-1">
-                      <div className="flex items-center justify-between">
-                        <h3 className="font-semibold text-primary">{badge.name}</h3>
-                        <Badge className={`${getRarityColor(badge.rarity)}`}>
-                          {badge.rarity}
-                        </Badge>
+                <div className="group relative aspect-square">
+                  <div 
+                    className={`absolute inset-0 ${
+                      badge.earned 
+                        ? 'bg-gradient-to-br from-primary/20 to-primary/10' 
+                        : 'bg-gray-200'
+                    } clip-octagon shadow-lg transition-all duration-300 group-hover:scale-105`}
+                  >
+                    <div className="flex flex-col items-center justify-center h-full p-3 space-y-2">
+                      <div className={`${
+                        badge.earned 
+                          ? badge.rarity === 'legendary' 
+                            ? 'text-amber-500'
+                            : badge.rarity === 'epic'
+                            ? 'text-purple-500'
+                            : badge.rarity === 'rare'
+                            ? 'text-blue-500'
+                            : 'text-primary'
+                          : 'text-gray-400'
+                      }`}>
+                        {badge.icon}
                       </div>
-                      <p className="text-sm text-muted-foreground">{badge.description}</p>
-                      <div className="space-y-2">
-                        <div className="flex justify-between text-sm">
-                          <span className="text-muted-foreground">{badge.requirement}</span>
-                          <span className="font-medium text-primary">{badge.progress}%</span>
-                        </div>
-                        <div className="h-2 bg-muted rounded-full overflow-hidden">
-                          <div 
-                            className={`h-full transition-all duration-300 rounded-full ${
-                              badge.earned 
-                                ? 'bg-primary' 
-                                : badge.progress >= 50 
-                                  ? 'bg-blue-500' 
-                                  : 'bg-muted-foreground'
-                            }`}
-                            style={{ width: `${badge.progress}%` }}
-                          />
-                        </div>
-                      </div>
+                      <h3 className={`text-xs font-semibold text-center ${
+                        badge.earned ? 'text-primary' : 'text-gray-500'
+                      }`}>
+                        {badge.name}
+                      </h3>
+                      <Badge 
+                        className={`${
+                          badge.earned 
+                            ? getRarityColor(badge.rarity) 
+                            : 'bg-gray-100 text-gray-500'
+                        } text-[10px]`}
+                      >
+                        {badge.rarity}
+                      </Badge>
                     </div>
                   </div>
-                  {badge.earned && (
-                    <div className="absolute top-2 right-2">
-                      <BadgeIcon className="w-4 h-4 text-primary" />
-                    </div>
-                  )}
-                </Card>
+                </div>
               </motion.div>
             ))}
           </div>
