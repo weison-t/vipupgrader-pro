@@ -9,6 +9,7 @@ import Journey from "./pages/Journey";
 import Privilege from "./pages/Privilege";
 import OnlyYou from "./pages/OnlyYou";
 import Mission from "./pages/Mission";
+import Badges from "./pages/Badges";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/privilege" element={<Privilege />} />
           <Route path="/only-you" element={<OnlyYou />} />
           <Route path="/mission" element={<Mission />} />
+          <Route path="/badges" element={<Badges />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
