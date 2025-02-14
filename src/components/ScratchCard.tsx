@@ -23,7 +23,8 @@ const ScratchCard: React.FC<ScratchCardProps> = ({ width, height, children, onCo
     // Create gradient background
     const gradient = ctx.createLinearGradient(0, 0, width, height);
     gradient.addColorStop(0, '#e5e5e5');
-    gradient.addColorStop(1, '#f5f5f5');
+    gradient.addColorStop(0.5, '#f5f5f5');
+    gradient.addColorStop(1, '#e5e5e5');
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, width, height);
 
@@ -34,20 +35,39 @@ const ScratchCard: React.FC<ScratchCardProps> = ({ width, height, children, onCo
     ctx.fillStyle = '#666';
     ctx.fillText('Scratch Me!', width / 2, height / 2);
 
-    // Add decorative pattern
+    // Add sparkle pattern
     ctx.strokeStyle = '#ddd';
-    ctx.lineWidth = 2;
-    for (let i = 0; i < width; i += 20) {
+    ctx.lineWidth = 1;
+    
+    // Draw diagonal lines
+    for (let i = -height; i < width; i += 20) {
       ctx.beginPath();
       ctx.moveTo(i, 0);
-      ctx.lineTo(i, height);
+      ctx.lineTo(i + height, height);
       ctx.stroke();
     }
-    for (let i = 0; i < height; i += 20) {
+    
+    // Draw stars
+    const drawStar = (x: number, y: number, size: number) => {
       ctx.beginPath();
-      ctx.moveTo(0, i);
-      ctx.lineTo(width, i);
+      for (let i = 0; i < 5; i++) {
+        ctx.lineTo(
+          x + size * Math.cos((i * 4 * Math.PI) / 5),
+          y + size * Math.sin((i * 4 * Math.PI) / 5)
+        );
+      }
+      ctx.closePath();
+      ctx.strokeStyle = '#ccc';
       ctx.stroke();
+    };
+
+    // Add random stars
+    for (let i = 0; i < 10; i++) {
+      drawStar(
+        Math.random() * width,
+        Math.random() * height,
+        3
+      );
     }
   }, [width, height]);
 
@@ -68,7 +88,14 @@ const ScratchCard: React.FC<ScratchCardProps> = ({ width, height, children, onCo
 
     ctx.globalCompositeOperation = 'destination-out';
     ctx.beginPath();
-    ctx.arc(x, y, 20, 0, Math.PI * 2);
+    
+    // Create a more natural scratch effect
+    const radius = 20;
+    const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
+    gradient.addColorStop(0, 'rgba(0,0,0,1)');
+    gradient.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = gradient;
+    ctx.arc(x, y, radius, 0, Math.PI * 2);
     ctx.fill();
 
     // Calculate revealed percentage

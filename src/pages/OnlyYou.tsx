@@ -13,11 +13,11 @@ import { useToast } from "@/hooks/use-toast";
 import ScratchCard from '@/components/ScratchCard';
 
 const prizes = [
-  { id: 1, value: "50 Free Spins", color: "#F97316" },
-  { id: 2, value: "$100 Bonus", color: "#D946EF" },
-  { id: 3, value: "150% Deposit Match", color: "#8B5CF6" },
-  { id: 4, value: "25% Cashback", color: "#EC4899" },
-  { id: 5, value: "VIP Points x2", color: "#F43F5E" }
+  { id: 1, value: "50 Free Spins", color: "#F97316", gradient: "linear-gradient(135deg, #F97316, #FFB088)" },
+  { id: 2, value: "$100 Bonus", color: "#D946EF", gradient: "linear-gradient(135deg, #D946EF, #F8B4FF)" },
+  { id: 3, value: "150% Deposit Match", color: "#8B5CF6", gradient: "linear-gradient(135deg, #8B5CF6, #C4B5FD)" },
+  { id: 4, value: "25% Cashback", color: "#EC4899", gradient: "linear-gradient(135deg, #EC4899, #FAB8D9)" },
+  { id: 5, value: "VIP Points x2", color: "#F43F5E", gradient: "linear-gradient(135deg, #F43F5E, #FCA5A5)" }
 ];
 
 const OnlyYou = () => {
@@ -46,25 +46,39 @@ const OnlyYou = () => {
         </p>
         
         {/* Scratch Cards Section */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-8 mb-16">
           {prizes.map((prize) => (
-            <div key={prize.id} className="relative flex justify-center transform hover:scale-105 transition-transform duration-200">
-              <ScratchCard
-                width={200}
-                height={192}
-                onComplete={() => handleScratchComplete(prize.id)}
-              >
-                <div 
-                  className="w-[200px] h-[192px] flex items-center justify-center text-white font-bold text-xl"
-                  style={{ 
-                    background: `linear-gradient(135deg, ${prize.color}, ${prize.color}dd)`,
-                    boxShadow: 'inset 0 0 20px rgba(0,0,0,0.1)'
-                  }}
+            <motion.div 
+              key={prize.id} 
+              className="relative flex justify-center"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.3, delay: prize.id * 0.1 }}
+              whileHover={{ scale: 1.05 }}
+            >
+              <div className="relative">
+                <div className="absolute -inset-1 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 rounded-lg blur opacity-30 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+                <ScratchCard
+                  width={200}
+                  height={192}
+                  onComplete={() => handleScratchComplete(prize.id)}
                 >
-                  {prize.value}
-                </div>
-              </ScratchCard>
-            </div>
+                  <div 
+                    className="w-[200px] h-[192px] flex items-center justify-center text-white font-bold text-xl p-4 text-center"
+                    style={{ 
+                      background: prize.gradient,
+                      boxShadow: 'inset 0 0 30px rgba(0,0,0,0.2)',
+                      borderRadius: '8px',
+                    }}
+                  >
+                    <div className="flex flex-col items-center space-y-2">
+                      <span className="text-2xl">🎁</span>
+                      {prize.value}
+                    </div>
+                  </div>
+                </ScratchCard>
+              </div>
+            </motion.div>
           ))}
         </div>
 
